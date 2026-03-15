@@ -900,6 +900,7 @@ function renderCalculadora(){
 }
 
 function calcUpdate(){
+  const now = new Date();
   const inc=+document.getElementById('slInc').value;
   const apy=+document.getElementById('slRate').value/100;
   const exp=+document.getElementById('slExp').value;
