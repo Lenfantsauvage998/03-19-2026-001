@@ -561,9 +561,9 @@ async function loadAll() {
     setTimeout(()=>setProgress(0),800);
     document.getElementById('splashScreen').style.display='none';
   } catch(e) {
-    setSplash('Error: '+e.message+' — Verifica que el SQL fue ejecutado en Supabase.');
-    console.error(e);
-  }
+  console.error(e);
+  alert(e.stack);
+}
 }
 
 function buildMonthly(txs) {
