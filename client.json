@@ -4,13 +4,14 @@
     "name": "Daniel Figueredo",
     "branding": {
       "app_title": "DFG Finance OS",
+      "initials": "DF",
       "hero_name": "Daniel Figueredo",
       "goal_amount": 50000000,
       "goal_label": "Meta 50M",
       "budget_limit": 400000,
       "optimal_budget": 232000,
       "currency": "COP",
-      "theme": "forest",
+      "theme": "phantom",
       "_theme_options": ["phantom","carbon","forest","solar","arctic"]
     }
   },
@@ -36,7 +37,7 @@
       }
     },
     "flujo": {
-      "enabled": true,
+      "enabled": false,
       "label": "Flujo",
       "features": {
         "cashflow_chart": true,
@@ -57,7 +58,7 @@
       }
     },
     "proyeccion": {
-      "enabled": true,
+      "enabled": false,
       "label": "Proyección",
       "features": {
         "goal_slider": true,
@@ -77,7 +78,7 @@
       }
     },
     "mes_perfecto": {
-      "enabled": true,
+      "enabled": false,
       "label": "Mes Perfecto",
       "features": {
         "kpi_cards": true,
@@ -89,7 +90,7 @@
       }
     },
     "montecarlo": {
-      "enabled": true,
+      "enabled": false,
       "label": "Portafolios",
       "features": {
         "portfolio_selector": true,
@@ -100,7 +101,7 @@
       }
     },
     "calculator": {
-      "enabled": true,
+      "enabled": false,
       "label": "Calculadora",
       "features": {
         "capital_summary": true,
@@ -111,11 +112,11 @@
       }
     },
     "insights": {
-      "enabled": true,
+      "enabled": false,
       "label": "Insights"
     },
     "predictor": {
-      "enabled": true,
+      "enabled": false,
       "label": "Predictor"
     }
   },

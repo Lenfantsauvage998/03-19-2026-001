@@ -447,7 +447,7 @@ input[type=range]{width:100%;accent-color:var(--ac2);cursor:pointer;height:20px;
 <!-- PIN LOCK SCREEN -->
 <div id="pinScreen" style="position:fixed;inset:0;background:var(--pin-bg);z-index:1000;display:flex;align-items:center;justify-content:center;padding:16px;">
   <div class="pin-card fu">
-    <div class="pin-title">DFG Finance</div>
+    <div class="pin-title" id="pinTitle">DFG Finance</div>
     <div class="pin-sub">Ingresa tu PIN para continuar</div>
     <div id="pinDots" class="pin-dots-row">
       <div class="pin-dot"></div><div class="pin-dot"></div>
@@ -479,7 +479,7 @@ input[type=range]{width:100%;accent-color:var(--ac2);cursor:pointer;height:20px;
 
 <nav>
   <div class="nav-inner">
-    <div class="nav-logo">DFG<span>.finance</span></div>
+    <div class="nav-logo" id="navLogo">DFG<span>.finance</span></div>
     <div class="nav-links">
       <button class="nl active" data-nav-module="overview" onclick="goTo('overview')">Overview</button>
       <button class="nl" data-nav-module="flujo" onclick="goTo('flujo')">Flujo</button>
@@ -502,7 +502,7 @@ input[type=range]{width:100%;accent-color:var(--ac2);cursor:pointer;height:20px;
       Live · Supabase
     </div>
     <h1 style="font-family:var(--font-display);font-size:clamp(28px,6vw,60px);font-weight:800;line-height:1.05;letter-spacing:-.02em;margin-bottom:8px">
-      Daniel <span style="color:var(--ac2)">Figueredo</span><br>Financial OS
+      <span id="heroFirstName">Daniel</span> <span id="heroLastName" style="color:var(--ac2)">Figueredo</span><br>Financial OS
     </h1>
     <div style="color:var(--m);font-size:11px;margin-bottom:22px" id="heroSub">Cargando...</div>
     <div class="kpi-grid" id="kpiGrid">
@@ -721,9 +721,6 @@ input[type=range]{width:100%;accent-color:var(--ac2);cursor:pointer;height:20px;
         <div class="cf-card" style="background:rgba(240,83,83,0.07);border:1px solid rgba(240,83,83,0.2)"><div style="font-size:10px;color:var(--m);text-transform:uppercase;letter-spacing:.07em;margin-bottom:7px">Dejaste en la mesa</div><div style="font-family:var(--font-figure);font-size:24px;font-weight:800;color:var(--rd)" id="cfGap">...</div><div style="font-size:10px;color:var(--rd);margin-top:4px">vs escenario perfecto</div></div>
       </div>
       <div class="chart-wrap" style="height:200px;margin-bottom:14px"><canvas id="cCounterfact"></canvas></div>
-      <div style="padding:12px 14px;background:rgba(34,212,122,0.06);border:1px solid rgba(34,212,122,0.18);border-radius:10px;font-size:12px;color:var(--m);line-height:1.8">
-        <strong style="color:var(--t)">La conclusión real:</strong> Enero costó <strong style="color:var(--rd)">$1M de diferencia acumulada</strong> por el shopping masivo. Febrero lo compensó parcialmente. <strong style="color:var(--gr)">Empezar perfecto HOY vale más</strong> — en 12 meses la diferencia entre perfecto y actual es $2.75M COP.
-      </div>
     </div>
   </div>
 </div>
@@ -897,7 +894,7 @@ input[type=range]{width:100%;accent-color:var(--ac2);cursor:pointer;height:20px;
 
 <footer style="padding:24px 0;text-align:center;font-size:11px;color:var(--m);border-top:1px solid var(--b);">
   <div class="wrap">
-    <div style="margin-bottom:5px">DFG Finance OS · <span id="footerTs"></span></div>
+    <div style="margin-bottom:5px"><span id="footerApp">DFG Finance OS</span> · <span id="footerTs"></span></div>
     <div style="color:var(--m2)">Supabase PostgreSQL · All data live</div>
   </div>
 </footer>
@@ -928,9 +925,14 @@ input[type=range]{width:100%;accent-color:var(--ac2);cursor:pointer;height:20px;
     const r = await fetch('client.json');
     if(r.ok){
       const cfg = await r.json();
+      // ── Theme ──────────────────────────────────────────
       const theme = cfg?.client?.branding?.theme || 'phantom';
       document.documentElement.setAttribute('data-theme', theme);
       localStorage.setItem('dfg_theme', theme);
+      // ── PIN screen branding (shown before auth) ────────
+      const b = cfg?.client?.branding || {};
+      const el = document.getElementById('pinTitle');
+      if(el) el.textContent = b.initials || cfg?.client?.name || 'Finance';
     }
   }catch(e){}
 })();
@@ -1018,7 +1020,7 @@ const MODULE_SECTION = {
 };
 
 const DEFAULT_CFG = {
-  client:{id:'default',name:'Usuario',branding:{app_title:'DFG Finance OS',goal_amount:50000000,budget_limit:400000,optimal_budget:232000}},
+  client:{id:'default',name:'Usuario',branding:{app_title:'DFG Finance OS',initials:'FO',hero_name:'Finance Usuario',goal_amount:50000000,budget_limit:400000,optimal_budget:232000}},
   modules:{
     home:{enabled:true,features:{kpi_networth:true,kpi_salary:true,kpi_interests:true,kpi_shopping:true,goal_progress_bar:true}},
     overview:{enabled:true,features:{networth_chart:true,salary_timeline:true}},
@@ -1047,6 +1049,32 @@ function applyConfig(cfg){
   if(b.budget_limit)   BUDGET_LIMIT   =b.budget_limit;
   if(b.optimal_budget) OPTIMAL_BUDGET =b.optimal_budget;
   if(b.app_title)      document.title =b.app_title;
+
+  // ── Client identity ─────────────────────────────────
+  // Derive first / last name from cfg.client.name or hero_name
+  const fullName  = (b.hero_name || cfg.client?.name || 'Usuario').trim();
+  const nameParts = fullName.split(' ');
+  const firstName = nameParts[0] || fullName;
+  const lastName  = nameParts.slice(1).join(' ') || '';
+  const initials  = b.initials || nameParts.map(p=>p[0]).join('').toUpperCase().slice(0,3);
+
+  // PIN screen title
+  const pinTitleEl = document.getElementById('pinTitle');
+  if(pinTitleEl) pinTitleEl.textContent = initials;
+
+  // Navbar logo: initials bold + '.finance' muted
+  const navLogoEl = document.getElementById('navLogo');
+  if(navLogoEl) navLogoEl.innerHTML = initials + '<span>.finance</span>';
+
+  // Hero H1 first & last name
+  const heroFirstEl = document.getElementById('heroFirstName');
+  const heroLastEl  = document.getElementById('heroLastName');
+  if(heroFirstEl) heroFirstEl.textContent = firstName;
+  if(heroLastEl)  heroLastEl.textContent  = lastName;
+
+  // Footer app title
+  const footerAppEl = document.getElementById('footerApp');
+  if(footerAppEl) footerAppEl.textContent = b.app_title || 'Finance OS';
 
   // ── Apply visual theme ─────────────────────────────
   const theme = b.theme || 'phantom';
