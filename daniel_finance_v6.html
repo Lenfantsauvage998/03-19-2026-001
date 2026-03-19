@@ -1010,8 +1010,8 @@ function renderGastos() {
   const m=DB.monthly;
   const dynLimit=buildPrediction()?.target||BUDGET_LIMIT;
   const limitLbl=fmt(dynLimit)+' objetivo';
-  const titleEl=document.getElementById('expMLimitTitle');
-  if(titleEl) titleEl.textContent='Gasto mensual vs objetivo '+fmt(dynLimit);
+  const limitTitleEl=document.getElementById('expMLimitTitle');
+  if(limitTitleEl) titleEl.textContent='Gasto mensual vs objetivo '+fmt(dynLimit);
   mkCh('cExpM',{type:'bar',data:{labels:m.map(x=>x.month.slice(0,3)+' '+x.year),datasets:[{label:'Gasto real',data:m.map(x=>x.expenses),backgroundColor:m.map(x=>x.expenses>dynLimit*1.25?'rgba(240,83,83,0.75)':x.expenses>dynLimit?'rgba(245,166,35,0.7)':'rgba(34,212,122,0.6)'),borderRadius:4},{label:limitLbl,data:m.map(()=>dynLimit),type:'line',borderColor:'rgba(245,166,35,0.6)',borderDash:[5,4],pointRadius:0,fill:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{boxWidth:10,font:{size:10}}}},scales:{x:xO,y:yO}}});
   const dowMap={0:0,1:0,2:0,3:0,4:0,5:0,6:0};
   re.forEach(t=>{const d=new Date(t.date+'T12:00:00');dowMap[d.getDay()]+=t.amount;});

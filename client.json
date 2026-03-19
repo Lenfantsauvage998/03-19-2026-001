@@ -49,7 +49,7 @@
         "month_filter": true,
         "category_bars": true,
         "category_donut": true,
-        "monthly_limit_chart": true,
+        "monthly_limit_chart": false,
         "day_of_week_grid": true,
         "top10_table": true
       }
