@@ -10,7 +10,7 @@
 <meta name="apple-mobile-web-app-title" content="DFG Finance">
 <link rel="manifest" href="manifest.json">
 <title>DFG Finance OS</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=JetBrains+Mono:wght@400;500&family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Jost:wght@400;500;700&family=Space+Grotesk:wght@400;500;700&family=Crimson+Pro:ital,wght@0,400;0,600;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
 /* ════════════════════════════════════════════════════════════
@@ -41,6 +41,9 @@
   /* ══ Typography ═════════════════════════════════════════ */
   --font-body:    'JetBrains Mono', monospace;
   --font-display: 'Syne', sans-serif;
+  /* figure = big monetary numbers; defaults to display font.
+     FROST overrides with Playfair Display for the premium serif touch */
+  --font-figure:  var(--font-display);
   /* ══ Backward-compat aliases — all CSS rules keep working */
   --bg:  var(--color-base);
   --bg2: var(--color-surface);
@@ -96,8 +99,9 @@
   --color-text-mid:      #7a7672;
   --color-text-low:      #48443e;
   --color-muted-bg:      #111111;
-  --font-body:    'JetBrains Mono', monospace;
-  --font-display: 'Syne', sans-serif;
+  /* IRON: Bebas Neue condensed headers + IBM Plex Mono data columns */
+  --font-body:    'IBM Plex Mono', monospace;
+  --font-display: 'Bebas Neue', sans-serif;
   --nav-bg:   rgba(4,4,4,0.97);
   --tab-bg:   rgba(4,4,4,0.99);
   --ac-bg:    rgba(212,168,67,0.10);
@@ -128,8 +132,9 @@
   --color-text-mid:      #5e7266;
   --color-text-low:      #2c3e32;
   --color-muted-bg:      #0d1e12;
-  --font-body:    'JetBrains Mono', monospace;
-  --font-display: 'Space Grotesk', sans-serif;
+  /* GROVE: Cormorant Garamond editorial serif + Jost modern body */
+  --font-body:    'Jost', sans-serif;
+  --font-display: 'Cormorant Garamond', serif;
   --nav-bg:   rgba(6,13,9,0.96);
   --tab-bg:   rgba(6,13,9,0.98);
   --ac-bg:    rgba(29,184,106,0.10);
@@ -158,7 +163,8 @@
   --color-text-mid:      #7a6e58;
   --color-text-low:      #48401e;
   --color-muted-bg:      #181208;
-  --font-body:    'JetBrains Mono', monospace;
+  /* EMBER: Space Grotesk quirky display + Crimson Pro readable serif body */
+  --font-body:    'Crimson Pro', serif;
   --font-display: 'Space Grotesk', sans-serif;
   --nav-bg:   rgba(12,9,0,0.97);
   --tab-bg:   rgba(12,9,0,0.99);
@@ -188,8 +194,11 @@
   --color-text-mid:      #5a6880;
   --color-text-low:      #9aacc4;
   --color-muted-bg:      #dce8f8;
-  --font-body:    'Inter', sans-serif;
-  --font-display: 'Inter', sans-serif;
+  /* FROST: Plus Jakarta Sans for all UI; Playfair Display only for
+     key monetary figures — one serif touch gives premium banking feel */
+  --font-body:    'Plus Jakarta Sans', sans-serif;
+  --font-display: 'Plus Jakarta Sans', sans-serif;
+  --font-figure:  'Playfair Display', serif;
   --nav-bg:   rgba(240,244,250,0.96);
   --tab-bg:   rgba(240,244,250,0.98);
   --ac-bg:    rgba(26,82,212,0.09);
@@ -316,7 +325,7 @@ nav{position:sticky;top:0;z-index:100;background:var(--nav-bg);backdrop-filter:b
 .kpi{background:var(--bg2);border:1px solid var(--b);border-radius:12px;padding:14px;position:relative;overflow:hidden;transition:all .2s;}
 .kpi::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--kc,var(--ac));border-radius:12px 12px 0 0;}
 .kpi-l{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--m);margin-bottom:5px;}
-.kpi-v{font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--t);line-height:1;margin-bottom:4px;}
+.kpi-v{font-family:var(--font-figure);font-size:20px;font-weight:700;color:var(--t);line-height:1;margin-bottom:4px;}
 @media(min-width:768px){.kpi-v{font-size:26px;}}
 .kpi-s{font-size:10px;color:var(--m);}
 .badge{display:inline-block;font-size:10px;font-weight:500;padding:2px 7px;border-radius:20px;margin-top:3px;}
@@ -419,7 +428,7 @@ input[type=range]{width:100%;accent-color:var(--ac2);cursor:pointer;height:20px;
 .tl-item{position:relative;margin-bottom:16px;}
 .tl-dot{position:absolute;left:-17px;top:4px;width:10px;height:10px;border-radius:50%;border:2px solid var(--bg2);}
 .tl-date{font-size:10px;color:var(--m);margin-bottom:2px;}
-.tl-amount{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;}
+.tl-amount{font-family:var(--font-figure);font-size:16px;font-weight:700;}
 
 /* Safe area support */
 @supports(padding-bottom:env(safe-area-inset-bottom)){
@@ -488,7 +497,7 @@ input[type=range]{width:100%;accent-color:var(--ac2);cursor:pointer;height:20px;
       <span style="width:6px;height:6px;border-radius:50%;background:var(--gr);animation:spin 3s linear infinite;display:inline-block"></span>
       Live · Supabase
     </div>
-    <h1 style="font-family:'Syne',sans-serif;font-size:clamp(28px,6vw,60px);font-weight:800;line-height:1.05;letter-spacing:-.02em;margin-bottom:8px">
+    <h1 style="font-family:var(--font-display);font-size:clamp(28px,6vw,60px);font-weight:800;line-height:1.05;letter-spacing:-.02em;margin-bottom:8px">
       Daniel <span style="color:var(--ac2)">Figueredo</span><br>Financial OS
     </h1>
     <div style="color:var(--m);font-size:11px;margin-bottom:22px" id="heroSub">Cargando...</div>
@@ -501,7 +510,7 @@ input[type=range]{width:100%;accent-color:var(--ac2);cursor:pointer;height:20px;
     <div class="card">
       <div class="ct" id="nwProgressTitle">Progreso hacia $50M COP</div>
       <div style="display:flex;justify-content:space-between;margin-bottom:6px">
-        <span style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--ac2)" id="nwLabel">$0</span>
+        <span style="font-family:var(--font-figure);font-size:16px;font-weight:700;color:var(--ac2)" id="nwLabel">$0</span>
         <span style="font-size:11px;color:var(--m)" id="nwMetaLabel">Meta $50M</span>
       </div>
       <div class="nw-track"><div class="nw-fill" id="nwBar" style="width:0%"></div></div>
@@ -577,7 +586,7 @@ input[type=range]{width:100%;accent-color:var(--ac2);cursor:pointer;height:20px;
       <div style="background:var(--bg3);border:1px solid var(--b);border-radius:10px;padding:14px" data-module="proyeccion" data-feature="goal_slider">
         <label style="font-size:10px;color:var(--m);text-transform:uppercase;letter-spacing:.07em;display:flex;justify-content:space-between;margin-bottom:8px">
           Meta de ahorro (COP)
-          <span id="targetDisplayLabel" style="color:var(--am);font-family:'Syne',sans-serif;font-size:14px;font-weight:700">$50M</span>
+          <span id="targetDisplayLabel" style="color:var(--am);font-family:var(--font-display);font-size:14px;font-weight:700">$50M</span>
         </label>
         <input type="range" min="10000000" max="200000000" step="5000000" value="50000000"
           id="slTarget" oninput="updateTarget(this.value)"
@@ -589,7 +598,7 @@ input[type=range]{width:100%;accent-color:var(--ac2);cursor:pointer;height:20px;
       <div style="background:var(--bg3);border:1px solid var(--b);border-radius:10px;padding:14px" data-module="proyeccion" data-feature="apy_slider">
         <label style="font-size:10px;color:var(--m);text-transform:uppercase;letter-spacing:.07em;display:flex;justify-content:space-between;margin-bottom:8px">
           APY anual (%)
-          <span id="apyDisplayLabel" style="color:var(--tl);font-family:'Syne',sans-serif;font-size:14px;font-weight:700">9.0%</span>
+          <span id="apyDisplayLabel" style="color:var(--tl);font-family:var(--font-display);font-size:14px;font-weight:700">9.0%</span>
         </label>
         <input type="range" min="1" max="30" step="0.5" value="9"
           id="slAPY" oninput="updateAPY(this.value)"
@@ -635,10 +644,10 @@ input[type=range]{width:100%;accent-color:var(--ac2);cursor:pointer;height:20px;
         <div class="card">
           <div class="ct">Resumen del mes</div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
-            <div style="background:var(--bg3);border-radius:10px;border:1px solid var(--b);padding:12px;text-align:center"><div style="font-size:10px;color:var(--m);margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em">Ingresos</div><div id="mInc" style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--gr)">$0</div></div>
-            <div style="background:var(--bg3);border-radius:10px;border:1px solid var(--b);padding:12px;text-align:center"><div style="font-size:10px;color:var(--m);margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em">Gastos</div><div id="mExp" style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--rd)">$0</div></div>
-            <div style="background:var(--bg3);border-radius:10px;border:1px solid var(--b);padding:12px;text-align:center"><div style="font-size:10px;color:var(--m);margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em">Balance</div><div id="mNet" style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--ac2)">$0</div></div>
-            <div style="background:var(--bg3);border-radius:10px;border:1px solid rgba(245,166,35,0.3);padding:12px;text-align:center"><div style="font-size:10px;color:var(--m);margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em">Presupuesto</div><div id="mBudget" style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--am)">$0</div></div>
+            <div style="background:var(--bg3);border-radius:10px;border:1px solid var(--b);padding:12px;text-align:center"><div style="font-size:10px;color:var(--m);margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em">Ingresos</div><div id="mInc" style="font-family:var(--font-display);font-size:16px;font-weight:700;color:var(--gr)">$0</div></div>
+            <div style="background:var(--bg3);border-radius:10px;border:1px solid var(--b);padding:12px;text-align:center"><div style="font-size:10px;color:var(--m);margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em">Gastos</div><div id="mExp" style="font-family:var(--font-display);font-size:16px;font-weight:700;color:var(--rd)">$0</div></div>
+            <div style="background:var(--bg3);border-radius:10px;border:1px solid var(--b);padding:12px;text-align:center"><div style="font-size:10px;color:var(--m);margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em">Balance</div><div id="mNet" style="font-family:var(--font-display);font-size:16px;font-weight:700;color:var(--ac2)">$0</div></div>
+            <div style="background:var(--bg3);border-radius:10px;border:1px solid rgba(245,166,35,0.3);padding:12px;text-align:center"><div style="font-size:10px;color:var(--m);margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em">Presupuesto</div><div id="mBudget" style="font-family:var(--font-display);font-size:16px;font-weight:700;color:var(--am)">$0</div></div>
           </div>
           <div style="font-size:11px;color:var(--m);margin-bottom:5px;display:flex;justify-content:space-between"><span id="diarioBudgetLbl">Uso presupuesto</span><span id="bPct" style="color:var(--ac2);font-weight:500">0%</span></div>
           <div style="height:6px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden"><div id="bBar" style="height:100%;width:0%;border-radius:4px;background:var(--gr);transition:width .4s,background .3s"></div></div>
@@ -648,7 +657,7 @@ input[type=range]{width:100%;accent-color:var(--ac2);cursor:pointer;height:20px;
             <div class="ct" style="margin:0">Historial</div>
             <div style="display:flex;gap:6px;align-items:center">
               <select id="histFilter" onchange="renderDiario()"
-                style="padding:5px 9px;background:var(--bg3);border:1px solid var(--b2);border-radius:7px;color:var(--t);font-family:'JetBrains Mono',monospace;font-size:10px;outline:none;cursor:pointer;-webkit-appearance:none">
+                style="padding:5px 9px;background:var(--bg3);border:1px solid var(--b2);border-radius:7px;color:var(--t);font-family:var(--font-body);font-size:10px;outline:none;cursor:pointer;-webkit-appearance:none">
               </select>
               <button class="btn-sm" data-module="diario" data-feature="csv_export" onclick="exportCSV()">↓ CSV</button>
             </div>
@@ -703,9 +712,9 @@ input[type=range]{width:100%;accent-color:var(--ac2);cursor:pointer;height:20px;
     <div class="card" data-module="mes_perfecto" data-feature="counterfactual">
       <div class="ct">¿Dónde estarías si siempre hubieras sido perfecto?</div>
       <div class="counterfact-grid" style="margin-bottom:14px">
-        <div class="cf-card" style="background:var(--bg3);border:1px solid var(--b)"><div style="font-size:10px;color:var(--m);text-transform:uppercase;letter-spacing:.07em;margin-bottom:7px">Capital real hoy</div><div style="font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--t)" id="cfReal">...</div><div style="font-size:10px;color:var(--m);margin-top:4px">Lo que tienes</div></div>
-        <div class="cf-card" style="background:rgba(34,212,122,0.07);border:1px solid rgba(34,212,122,0.3)"><div style="font-size:10px;color:var(--m);text-transform:uppercase;letter-spacing:.07em;margin-bottom:7px">Si siempre perfecto</div><div style="font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--gr)" id="cfPerf">...</div><div style="font-size:10px;color:var(--m);margin-top:4px" id="cfPerfSubtext">Con óptimo/mes desde inicio</div></div>
-        <div class="cf-card" style="background:rgba(240,83,83,0.07);border:1px solid rgba(240,83,83,0.2)"><div style="font-size:10px;color:var(--m);text-transform:uppercase;letter-spacing:.07em;margin-bottom:7px">Dejaste en la mesa</div><div style="font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--rd)" id="cfGap">...</div><div style="font-size:10px;color:var(--rd);margin-top:4px">vs escenario perfecto</div></div>
+        <div class="cf-card" style="background:var(--bg3);border:1px solid var(--b)"><div style="font-size:10px;color:var(--m);text-transform:uppercase;letter-spacing:.07em;margin-bottom:7px">Capital real hoy</div><div style="font-family:var(--font-figure);font-size:24px;font-weight:800;color:var(--t)" id="cfReal">...</div><div style="font-size:10px;color:var(--m);margin-top:4px">Lo que tienes</div></div>
+        <div class="cf-card" style="background:rgba(34,212,122,0.07);border:1px solid rgba(34,212,122,0.3)"><div style="font-size:10px;color:var(--m);text-transform:uppercase;letter-spacing:.07em;margin-bottom:7px">Si siempre perfecto</div><div style="font-family:var(--font-figure);font-size:24px;font-weight:800;color:var(--gr)" id="cfPerf">...</div><div style="font-size:10px;color:var(--m);margin-top:4px" id="cfPerfSubtext">Con óptimo/mes desde inicio</div></div>
+        <div class="cf-card" style="background:rgba(240,83,83,0.07);border:1px solid rgba(240,83,83,0.2)"><div style="font-size:10px;color:var(--m);text-transform:uppercase;letter-spacing:.07em;margin-bottom:7px">Dejaste en la mesa</div><div style="font-family:var(--font-figure);font-size:24px;font-weight:800;color:var(--rd)" id="cfGap">...</div><div style="font-size:10px;color:var(--rd);margin-top:4px">vs escenario perfecto</div></div>
       </div>
       <div class="chart-wrap" style="height:200px;margin-bottom:14px"><canvas id="cCounterfact"></canvas></div>
       <div style="padding:12px 14px;background:rgba(34,212,122,0.06);border:1px solid rgba(34,212,122,0.18);border-radius:10px;font-size:12px;color:var(--m);line-height:1.8">
@@ -725,41 +734,41 @@ input[type=range]{width:100%;accent-color:var(--ac2);cursor:pointer;height:20px;
     <!-- Portfolio selector -->
     <div class="g3" style="margin-bottom:14px" id="portSelector" data-module="montecarlo" data-feature="portfolio_selector">
       <div class="scenario" id="port0" onclick="selectPort(0)" style="cursor:pointer;border-color:rgba(45,212,191,0.4);background:rgba(45,212,191,0.04)">
-        <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--tl);margin-bottom:4px">Conservador</div>
+        <div style="font-family:var(--font-display);font-size:14px;font-weight:700;color:var(--tl);margin-bottom:4px">Conservador</div>
         <div style="font-size:11px;color:var(--m);margin-bottom:8px">CDTs 60% · ETF Bonos 30% · Cash 10%</div>
         <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px">
           <span style="font-size:10px;padding:2px 7px;border-radius:20px;background:rgba(45,212,191,0.15);color:var(--tl)">9–11% retorno</span>
           <span style="font-size:10px;padding:2px 7px;border-radius:20px;background:rgba(34,212,122,0.12);color:var(--gr)">Bajo riesgo</span>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
-          <div style="text-align:center"><div style="font-size:9px;color:var(--m);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px">Retorno</div><div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--tl)">10%</div></div>
-          <div style="text-align:center"><div style="font-size:9px;color:var(--m);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px">Volatilidad</div><div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--gr)">5%</div></div>
+          <div style="text-align:center"><div style="font-size:9px;color:var(--m);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px">Retorno</div><div style="font-family:var(--font-display);font-size:14px;font-weight:700;color:var(--tl)">10%</div></div>
+          <div style="text-align:center"><div style="font-size:9px;color:var(--m);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px">Volatilidad</div><div style="font-family:var(--font-display);font-size:14px;font-weight:700;color:var(--gr)">5%</div></div>
           <div style="text-align:center"><div style="font-size:9px;color:var(--m);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px">Riesgo</div><div style="font-size:11px;color:var(--tl);overflow:hidden;white-space:nowrap">★★☆☆</div></div>
         </div>
       </div>
       <div class="scenario" id="port1" onclick="selectPort(1)" style="cursor:pointer">
-        <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--bl);margin-bottom:4px">Moderado</div>
+        <div style="font-family:var(--font-display);font-size:14px;font-weight:700;color:var(--bl);margin-bottom:4px">Moderado</div>
         <div style="font-size:11px;color:var(--m);margin-bottom:8px">VOO/VT 50% · CDTs 30% · Bonos 20%</div>
         <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px">
           <span style="font-size:10px;padding:2px 7px;border-radius:20px;background:rgba(77,159,255,0.15);color:var(--bl)">12–16% retorno</span>
           <span style="font-size:10px;padding:2px 7px;border-radius:20px;background:rgba(245,166,35,0.12);color:var(--am)">Riesgo medio</span>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
-          <div style="text-align:center"><div style="font-size:9px;color:var(--m);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px">Retorno</div><div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--bl)">14%</div></div>
-          <div style="text-align:center"><div style="font-size:9px;color:var(--m);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px">Volatilidad</div><div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--am)">12%</div></div>
+          <div style="text-align:center"><div style="font-size:9px;color:var(--m);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px">Retorno</div><div style="font-family:var(--font-display);font-size:14px;font-weight:700;color:var(--bl)">14%</div></div>
+          <div style="text-align:center"><div style="font-size:9px;color:var(--m);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px">Volatilidad</div><div style="font-family:var(--font-display);font-size:14px;font-weight:700;color:var(--am)">12%</div></div>
           <div style="text-align:center"><div style="font-size:9px;color:var(--m);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px">Riesgo</div><div style="font-size:11px;color:var(--bl);overflow:hidden;white-space:nowrap">★★★☆</div></div>
         </div>
       </div>
       <div class="scenario" id="port2" onclick="selectPort(2)" style="cursor:pointer">
-        <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--am);margin-bottom:4px">Agresivo</div>
+        <div style="font-family:var(--font-display);font-size:14px;font-weight:700;color:var(--am);margin-bottom:4px">Agresivo</div>
         <div style="font-size:11px;color:var(--m);margin-bottom:8px">QQQ/VGT 60% · VOO 25% · Cripto 15%</div>
         <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px">
           <span style="font-size:10px;padding:2px 7px;border-radius:20px;background:rgba(245,166,35,0.15);color:var(--am)">18–28% retorno</span>
           <span style="font-size:10px;padding:2px 7px;border-radius:20px;background:rgba(240,83,83,0.12);color:var(--rd)">Alto riesgo</span>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
-          <div style="text-align:center"><div style="font-size:9px;color:var(--m);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px">Retorno</div><div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--am)">22%</div></div>
-          <div style="text-align:center"><div style="font-size:9px;color:var(--m);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px">Volatilidad</div><div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--rd)">22%</div></div>
+          <div style="text-align:center"><div style="font-size:9px;color:var(--m);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px">Retorno</div><div style="font-family:var(--font-display);font-size:14px;font-weight:700;color:var(--am)">22%</div></div>
+          <div style="text-align:center"><div style="font-size:9px;color:var(--m);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px">Volatilidad</div><div style="font-family:var(--font-display);font-size:14px;font-weight:700;color:var(--rd)">22%</div></div>
           <div style="text-align:center"><div style="font-size:9px;color:var(--m);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px">Riesgo</div><div style="font-size:11px;color:var(--am);overflow:hidden;white-space:nowrap">★★★★</div></div>
         </div>
       </div>
@@ -768,15 +777,15 @@ input[type=range]{width:100%;accent-color:var(--ac2);cursor:pointer;height:20px;
     <!-- Controls -->
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px">
       <div style="background:var(--bg3);border:1px solid var(--b);border-radius:10px;padding:14px">
-        <label style="font-size:10px;color:var(--m);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:8px">Capital inicial <span id="mcCapV" style="color:var(--ac2);font-family:'Syne',sans-serif;font-size:14px;font-weight:700">$5M</span></label>
+        <label style="font-size:10px;color:var(--m);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:8px">Capital inicial <span id="mcCapV" style="color:var(--ac2);font-family:var(--font-display);font-size:14px;font-weight:700">$5M</span></label>
         <input type="range" min="1000000" max="30000000" step="500000" value="5000000" id="mcCap" oninput="updateMC()" style="width:100%;accent-color:var(--ac2)">
       </div>
       <div style="background:var(--bg3);border:1px solid var(--b);border-radius:10px;padding:14px">
-        <label style="font-size:10px;color:var(--m);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:8px">Aporte mensual <span id="mcAporteV" style="color:var(--ac2);font-family:'Syne',sans-serif;font-size:14px;font-weight:700">$500K</span></label>
+        <label style="font-size:10px;color:var(--m);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:8px">Aporte mensual <span id="mcAporteV" style="color:var(--ac2);font-family:var(--font-display);font-size:14px;font-weight:700">$500K</span></label>
         <input type="range" min="0" max="10000000" step="100000" value="500000" id="mcAporte" oninput="updateMC()" style="width:100%;accent-color:var(--ac2)">
       </div>
       <div style="background:var(--bg3);border:1px solid var(--b);border-radius:10px;padding:14px">
-        <label style="font-size:10px;color:var(--m);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:8px">Horizonte <span id="mcYearsV" style="color:var(--ac2);font-family:'Syne',sans-serif;font-size:14px;font-weight:700">5 años</span></label>
+        <label style="font-size:10px;color:var(--m);text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:8px">Horizonte <span id="mcYearsV" style="color:var(--ac2);font-family:var(--font-display);font-size:14px;font-weight:700">5 años</span></label>
         <input type="range" min="1" max="20" step="1" value="5" id="mcYears" oninput="updateMC()" style="width:100%;accent-color:var(--ac2)">
       </div>
     </div>
@@ -792,10 +801,10 @@ input[type=range]{width:100%;accent-color:var(--ac2);cursor:pointer;height:20px;
       <div class="card">
         <div class="ct">Resultados de la simulación</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
-          <div style="background:var(--bg3);border:1px solid var(--b);border-radius:10px;padding:14px;text-align:center"><div style="font-size:10px;color:var(--m);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px">P10 pesimista</div><div id="mcP10" style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--rd)">-</div></div>
-          <div style="background:var(--bg3);border:1px solid var(--b);border-radius:10px;padding:14px;text-align:center"><div style="font-size:10px;color:var(--m);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px">P50 mediana</div><div id="mcP50" style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--ac2)">-</div></div>
-          <div style="background:var(--bg3);border:1px solid var(--b);border-radius:10px;padding:14px;text-align:center"><div style="font-size:10px;color:var(--m);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px">P90 optimista</div><div id="mcP90" style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--gr)">-</div></div>
-          <div style="background:var(--bg3);border:1px solid var(--b);border-radius:10px;padding:14px;text-align:center"><div style="font-size:10px;color:var(--m);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px">Sharpe ratio</div><div id="mcSharpe" style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--am)">-</div></div>
+          <div style="background:var(--bg3);border:1px solid var(--b);border-radius:10px;padding:14px;text-align:center"><div style="font-size:10px;color:var(--m);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px">P10 pesimista</div><div id="mcP10" style="font-family:var(--font-figure);font-size:18px;font-weight:700;color:var(--rd)">-</div></div>
+          <div style="background:var(--bg3);border:1px solid var(--b);border-radius:10px;padding:14px;text-align:center"><div style="font-size:10px;color:var(--m);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px">P50 mediana</div><div id="mcP50" style="font-family:var(--font-figure);font-size:18px;font-weight:700;color:var(--ac2)">-</div></div>
+          <div style="background:var(--bg3);border:1px solid var(--b);border-radius:10px;padding:14px;text-align:center"><div style="font-size:10px;color:var(--m);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px">P90 optimista</div><div id="mcP90" style="font-family:var(--font-figure);font-size:18px;font-weight:700;color:var(--gr)">-</div></div>
+          <div style="background:var(--bg3);border:1px solid var(--b);border-radius:10px;padding:14px;text-align:center"><div style="font-size:10px;color:var(--m);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px">Sharpe ratio</div><div id="mcSharpe" style="font-family:var(--font-figure);font-size:18px;font-weight:700;color:var(--am)">-</div></div>
         </div>
       </div>
       <div class="card">
@@ -812,14 +821,14 @@ input[type=range]{width:100%;accent-color:var(--ac2);cursor:pointer;height:20px;
     <div class="section-header"><span class="snum">08</span><h2 class="stitle">Calculadora de Ahorro</h2></div>
     <p class="ssub">Capital base real desde Supabase · Recalcula en tiempo real</p>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px" data-module="calculator" data-feature="capital_summary">
-      <div style="background:rgba(34,212,122,0.07);border:1px solid rgba(34,212,122,0.25);border-radius:12px;padding:14px;text-align:center"><div style="font-size:10px;color:var(--m);text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px">Capital actual</div><div id="calcCap" style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--gr)">...</div></div>
-      <div style="background:var(--bg3);border:1px solid rgba(45,212,191,0.25);border-radius:12px;padding:14px;text-align:center"><div style="font-size:10px;color:var(--m);text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px">Interés/mes</div><div id="calcInt" style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--tl)">...</div></div>
-      <div style="background:var(--bg3);border:1px solid var(--b);border-radius:12px;padding:14px;text-align:center"><div style="font-size:10px;color:var(--m);text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px">Ahorro promedio</div><div id="calcAvg" style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--ac2)">...</div></div>
-      <div style="background:rgba(245,166,35,0.06);border:1px solid rgba(245,166,35,0.2);border-radius:12px;padding:14px;text-align:center"><div style="font-size:10px;color:var(--m);text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px">Presupuesto restante</div><div id="calcBudget" style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--am)">...</div></div>
+      <div style="background:rgba(34,212,122,0.07);border:1px solid rgba(34,212,122,0.25);border-radius:12px;padding:14px;text-align:center"><div style="font-size:10px;color:var(--m);text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px">Capital actual</div><div id="calcCap" style="font-family:var(--font-figure);font-size:20px;font-weight:800;color:var(--gr)">...</div></div>
+      <div style="background:var(--bg3);border:1px solid rgba(45,212,191,0.25);border-radius:12px;padding:14px;text-align:center"><div style="font-size:10px;color:var(--m);text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px">Interés/mes</div><div id="calcInt" style="font-family:var(--font-figure);font-size:20px;font-weight:800;color:var(--tl)">...</div></div>
+      <div style="background:var(--bg3);border:1px solid var(--b);border-radius:12px;padding:14px;text-align:center"><div style="font-size:10px;color:var(--m);text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px">Ahorro promedio</div><div id="calcAvg" style="font-family:var(--font-figure);font-size:20px;font-weight:800;color:var(--ac2)">...</div></div>
+      <div style="background:rgba(245,166,35,0.06);border:1px solid rgba(245,166,35,0.2);border-radius:12px;padding:14px;text-align:center"><div style="font-size:10px;color:var(--m);text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px">Presupuesto restante</div><div id="calcBudget" style="font-family:var(--font-figure);font-size:20px;font-weight:800;color:var(--am)">...</div></div>
     </div>
     <div class="calc-grid">
       <div class="calc-panel">
-        <h3 style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;margin-bottom:14px">Variables</h3>
+        <h3 style="font-family:var(--font-display);font-size:15px;font-weight:700;margin-bottom:14px">Variables</h3>
         <div class="sl-group"><label>Ingreso mensual <span id="slIncV">$0</span></label><input type="range" min="500000" max="8000000" step="100000" value="2180000" id="slInc" oninput="calcUpdate()"></div>
         <div class="sl-group"><label>Tasa interés anual <span id="slRateV">9%</span></label><input type="range" min="1" max="25" step="0.5" value="9" id="slRate" oninput="calcUpdate()"></div>
         <div class="sl-group"><label>Gastos mensuales <span id="slExpV">$0</span></label><input type="range" min="100000" max="3000000" step="50000" value="400000" id="slExp" oninput="calcUpdate()"></div>
@@ -828,15 +837,15 @@ input[type=range]{width:100%;accent-color:var(--ac2);cursor:pointer;height:20px;
         <div style="background:var(--bg2);border:1px solid var(--b);border-radius:12px;padding:14px;margin-top:4px">
           <div class="ct">Resultado</div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-            <div style="text-align:center"><div id="rSave" style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--gr)">-</div><div style="font-size:10px;color:var(--m);margin-top:2px">Ahorro/mes</div></div>
-            <div style="text-align:center"><div id="rRate" style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--am)">-</div><div style="font-size:10px;color:var(--m);margin-top:2px">Tasa ahorro</div></div>
-            <div style="text-align:center"><div id="rIntM" style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--tl)">-</div><div style="font-size:10px;color:var(--m);margin-top:2px">Interés/mes</div></div>
-            <div style="text-align:center"><div id="rTotal" style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--ac2)">-</div><div style="font-size:10px;color:var(--m);margin-top:2px">Total al final</div></div>
+            <div style="text-align:center"><div id="rSave" style="font-family:var(--font-display);font-size:16px;font-weight:700;color:var(--gr)">-</div><div style="font-size:10px;color:var(--m);margin-top:2px">Ahorro/mes</div></div>
+            <div style="text-align:center"><div id="rRate" style="font-family:var(--font-display);font-size:16px;font-weight:700;color:var(--am)">-</div><div style="font-size:10px;color:var(--m);margin-top:2px">Tasa ahorro</div></div>
+            <div style="text-align:center"><div id="rIntM" style="font-family:var(--font-display);font-size:16px;font-weight:700;color:var(--tl)">-</div><div style="font-size:10px;color:var(--m);margin-top:2px">Interés/mes</div></div>
+            <div style="text-align:center"><div id="rTotal" style="font-family:var(--font-display);font-size:16px;font-weight:700;color:var(--ac2)">-</div><div style="font-size:10px;color:var(--m);margin-top:2px">Total al final</div></div>
           </div>
         </div>
       </div>
       <div class="calc-panel">
-        <h3 style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;margin-bottom:14px">Proyección & Hitos</h3>
+        <h3 style="font-family:var(--font-display);font-size:15px;font-weight:700;margin-bottom:14px">Proyección & Hitos</h3>
         <div class="chart-wrap" style="height:160px;margin-bottom:14px"><canvas id="cCalc"></canvas></div>
         <div class="ct">Hitos financieros</div>
         <div id="milestones"></div>
@@ -976,8 +985,9 @@ let grd, xO, yO;
 function rebuildAxes(){
   grd = {color: cssVar('--grid-c') || 'rgba(255,255,255,0.04)'};
   const tc = cssVar('--tick-c') || '#6b6d7e';
-  xO  = {ticks:{color:tc,font:{family:'JetBrains Mono',size:9}},grid:grd};
-  yO  = {ticks:{color:tc,font:{family:'JetBrains Mono',size:9},callback:v=>fmt(v)},grid:grd};
+  const chartFont = cssVar('--font-body') || 'JetBrains Mono';
+  xO  = {ticks:{color:tc,font:{family:chartFont,size:9}},grid:grd};
+  yO  = {ticks:{color:tc,font:{family:chartFont,size:9},callback:v=>fmt(v)},grid:grd};
 }
 rebuildAxes(); // initialise with default theme values
 let CH = {};
@@ -1242,14 +1252,14 @@ function renderFlujo() {
       const lbl=new Date(+y,+mo-1,1).toLocaleString('es',{month:'short',year:'numeric'});
       return`<div style="text-align:center;padding:12px;background:var(--bg3);border-radius:10px;border:1px solid ${total>30000?'rgba(45,212,191,0.25)':'var(--b)'}">
         <div style="font-size:10px;color:var(--m);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px">${lbl}</div>
-        <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--tl)">${fmt(total)}</div>
+        <div style="font-family:var(--font-display);font-size:18px;font-weight:700;color:var(--tl)">${fmt(total)}</div>
         <div style="font-size:10px;color:var(--m);margin-top:2px">${account}</div>
       </div>`;
     }).join('')+
     (Object.keys(intByMonth).length>1?`
     <div style="text-align:center;padding:14px;background:rgba(45,212,191,0.07);border-radius:10px;border:1px solid rgba(45,212,191,0.35)">
       <div style="font-size:10px;color:var(--m);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px">Total acumulado</div>
-      <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--tl)">${fmtF(intTotal)}</div>
+      <div style="font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--tl)">${fmtF(intTotal)}</div>
     </div>`:'');
 }
 
@@ -1287,11 +1297,11 @@ function renderGastos() {
   const maxD=Math.max(...Object.values(dowMap));
   const DL=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
   const dowLblSize=isMobile?'8px':'9px';const dowValSize=isMobile?'9px':'11px';
-  document.getElementById('dowGrid').innerHTML=DL.map((l,i)=>{const v=dowMap[i];const hot=v===maxD;const col=hot?'var(--rd)':v>maxD*0.5?'var(--am)':'var(--m)';return`<div class="dow-cell ${hot?'hot':''}"><div style="font-size:${dowLblSize};text-transform:uppercase;letter-spacing:.04em;color:var(--m);margin-bottom:3px">${l}</div><div style="font-family:'Syne',sans-serif;font-size:${dowValSize};font-weight:700;color:${col}">${fmt(v)}</div><div style="height:3px;background:rgba(255,255,255,0.06);border-radius:2px;margin-top:5px;overflow:hidden"><div style="height:100%;width:${(v/maxD*100).toFixed(0)}%;background:${col};border-radius:2px"></div></div></div>`;}).join('');
+  document.getElementById('dowGrid').innerHTML=DL.map((l,i)=>{const v=dowMap[i];const hot=v===maxD;const col=hot?'var(--rd)':v>maxD*0.5?'var(--am)':'var(--m)';return`<div class="dow-cell ${hot?'hot':''}"><div style="font-size:${dowLblSize};text-transform:uppercase;letter-spacing:.04em;color:var(--m);margin-bottom:3px">${l}</div><div style="font-family:var(--font-display);font-size:${dowValSize};font-weight:700;color:${col}">${fmt(v)}</div><div style="height:3px;background:rgba(255,255,255,0.06);border-radius:2px;margin-top:5px;overflow:hidden"><div style="height:100%;width:${(v/maxD*100).toFixed(0)}%;background:${col};border-radius:2px"></div></div></div>`;}).join('');
   const top=[...re].sort((a,b)=>b.amount-a.amount).slice(0,10);
   const titleEl=document.getElementById('topTblTitle');
   if(titleEl) titleEl.textContent=filterVal==='all'?'Top 10 gastos individuales — Todos los meses':`Top 10 gastos — ${filterVal.replace('-',' ')}`;
-  document.getElementById('topTbl').innerHTML=top.map((t,i)=>{const col=CAT_COL[t.category]||'#888';return`<tr><td style="color:var(--m)">${i+1}</td><td style="color:var(--m)">${t.date}</td><td style="font-weight:500">${t.description||t.category}</td><td><span class="cpill" style="background:${col}22;color:${col}">${t.category}</span></td><td class="td-neg" style="text-align:right;font-family:'Syne',sans-serif;font-weight:600">-${fmtF(t.amount)}</td></tr>`;}).join('');
+  document.getElementById('topTbl').innerHTML=top.map((t,i)=>{const col=CAT_COL[t.category]||'#888';return`<tr><td style="color:var(--m)">${i+1}</td><td style="color:var(--m)">${t.date}</td><td style="font-weight:500">${t.description||t.category}</td><td><span class="cpill" style="background:${col}22;color:${col}">${t.category}</span></td><td class="td-neg" style="text-align:right;font-family:var(--font-display);font-weight:600">-${fmtF(t.amount)}</td></tr>`;}).join('');
 }
 
 function updateTarget(val){
@@ -1347,9 +1357,9 @@ function renderProyeccion() {
     const reached=bal>=target;
     const d=new Date(); d.setMonth(d.getMonth()+months);
     return`<div class="scenario ${s.feat?'feat':''}">
-      <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;margin-bottom:4px;color:${s.color}">${s.label}</div>
+      <div style="font-family:var(--font-display);font-size:14px;font-weight:700;margin-bottom:4px;color:${s.color}">${s.label}</div>
       <div style="font-size:11px;color:var(--m);margin-bottom:8px">${fmt(s.save)}/mes ahorrado</div>
-      <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:${s.color};margin-bottom:2px">${reached?d.toLocaleString('es',{month:'short',year:'numeric'}):'> 50 años'}</div>
+      <div style="font-family:var(--font-display);font-size:20px;font-weight:700;color:${s.color};margin-bottom:2px">${reached?d.toLocaleString('es',{month:'short',year:'numeric'}):'> 50 años'}</div>
       <div style="font-size:11px;color:var(--m)">~${reached?months:'-'} meses</div>
     </div>`;
   }).join('');
@@ -1614,8 +1624,8 @@ const CMAP=Object.fromEntries([...CATS_EXP,...CATS_INC].map(c=>[c.id,c]));
 
 function setType(t){
   txType=t;
-  document.getElementById('btnExp').style.cssText=`flex:1;padding:9px;border:none;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:12px;cursor:pointer;font-weight:600;transition:all .15s;background:${t==='expense'?'var(--rd)':'transparent'};color:${t==='expense'?'#fff':'var(--m)'}`;
-  document.getElementById('btnInc').style.cssText=`flex:1;padding:9px;border:none;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:12px;cursor:pointer;font-weight:600;transition:all .15s;background:${t==='income'?'var(--gr)':'transparent'};color:${t==='income'?'#000':'var(--m)'}`;
+  document.getElementById('btnExp').style.cssText=`flex:1;padding:9px;border:none;border-radius:8px;font-family:var(--font-body);font-size:12px;cursor:pointer;font-weight:600;transition:all .15s;background:${t==='expense'?'var(--rd)':'transparent'};color:${t==='expense'?'#fff':'var(--m)'}`;
+  document.getElementById('btnInc').style.cssText=`flex:1;padding:9px;border:none;border-radius:8px;font-family:var(--font-body);font-size:12px;cursor:pointer;font-weight:600;transition:all .15s;background:${t==='income'?'var(--gr)':'transparent'};color:${t==='income'?'#000':'var(--m)'}`;
   buildCatGrid();
 }
 
@@ -1628,7 +1638,7 @@ function buildCatGrid(){
     const b=document.createElement('button');
     b.id='cat_'+c.id; b.textContent=c.lbl;
     b.onclick=()=>selectCat(c.id);
-    b.style.cssText=`padding:7px 3px;border:1px solid ${c.id===selCat?c.col+'66':'var(--b2)'};border-radius:8px;background:${c.id===selCat?c.col+'33':'var(--bg3)'};color:${c.id===selCat?c.col:'var(--m)'};font-family:'JetBrains Mono',monospace;font-size:10px;cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent`;
+    b.style.cssText=`padding:7px 3px;border:1px solid ${c.id===selCat?c.col+'66':'var(--b2)'};border-radius:8px;background:${c.id===selCat?c.col+'33':'var(--bg3)'};color:${c.id===selCat?c.col:'var(--m)'};font-family:var(--font-body);font-size:10px;cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent`;
     el.appendChild(b);
   });
 }
@@ -1836,7 +1846,7 @@ function renderDiario(){
         </div>
       </div>
       <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
-        <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:${col}">${sign}${fmtF(t.amount)}</div>
+        <div style="font-family:var(--font-display);font-size:14px;font-weight:700;color:${col}">${sign}${fmtF(t.amount)}</div>
         <button onclick="deleteTx(${t.id})" style="background:none;border:none;color:var(--m);cursor:pointer;padding:3px 6px;font-size:14px;-webkit-tap-highlight-color:transparent" onmouseover="this.style.color='var(--rd)'" onmouseout="this.style.color='var(--m)'">✕</button>
       </div>
     </div>`;
@@ -2272,17 +2282,17 @@ function renderPredictor(){
     <div style="display:grid;grid-template-columns:1fr;gap:10px">
       <div style="background:rgba(34,212,122,0.07);border:1px solid rgba(34,212,122,0.25);border-radius:10px;padding:16px;text-align:center">
         <div style="font-size:10px;color:var(--m);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Ahorro extra / año</div>
-        <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--gr)">${fmt(annualSaving)}</div>
+        <div style="font-family:var(--font-display);font-size:22px;font-weight:800;color:var(--gr)">${fmt(annualSaving)}</div>
         <div style="font-size:10px;color:var(--m);margin-top:4px">cumpliendo el objetivo cada mes</div>
       </div>
       <div style="background:var(--ac-glow);border:1px solid var(--ac-bd);border-radius:10px;padding:16px;text-align:center">
         <div style="font-size:10px;color:var(--m);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Llegas a la meta en</div>
-        <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--ac2)">${mthsWith >= 999 ? '∞' : mthsWith+' meses'}</div>
+        <div style="font-family:var(--font-display);font-size:22px;font-weight:800;color:var(--ac2)">${mthsWith >= 999 ? '∞' : mthsWith+' meses'}</div>
         <div style="font-size:10px;color:var(--m);margin-top:4px">vs ${mthsWithout>=999?'∞':mthsWithout+' meses'} sin optimizar</div>
       </div>
       <div style="background:var(--bg3);border:1px solid var(--b);border-radius:10px;padding:16px;text-align:center">
         <div style="font-size:10px;color:var(--m);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Meses adelantados</div>
-        <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--am)">${mthsAhead}</div>
+        <div style="font-family:var(--font-display);font-size:22px;font-weight:800;color:var(--am)">${mthsAhead}</div>
         <div style="font-size:10px;color:var(--m);margin-top:4px">si cumples el objetivo siempre</div>
       </div>
     </div>`;
@@ -2433,7 +2443,7 @@ function updateMC(){
 //  INIT
 // ══════════════════════════════════════════════════════════
 Chart.defaults.color=cssVar('--tick-c')||'#6b6d7e';
-Chart.defaults.font.family='JetBrains Mono';
+Chart.defaults.font.family=cssVar('--font-body')||'JetBrains Mono';
 Chart.defaults.font.size=10;
 document.getElementById('txDate').value=new Date().toISOString().slice(0,10);
 
