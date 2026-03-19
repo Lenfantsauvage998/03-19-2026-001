@@ -291,9 +291,12 @@ nav{position:sticky;top:0;z-index:100;background:var(--nav-bg);backdrop-filter:b
 .nav-logo span{color:var(--m);font-weight:400;}
 
 /* Bottom tab bar for mobile */
-.tab-bar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:100;background:var(--tab-bg);backdrop-filter:blur(20px);border-top:1px solid var(--b);padding:8px 0 calc(8px + env(safe-area-inset-bottom));justify-content:space-around;}
+.tab-bar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:100;background:var(--tab-bg);backdrop-filter:blur(20px);border-top:1px solid var(--b);padding:8px 0 calc(8px + env(safe-area-inset-bottom));justify-content:space-around;scrollbar-width:none;}
+.tab-bar::-webkit-scrollbar{display:none;}
+/* When more tabs than fit comfortably, scroll horizontally */
+.tab-bar.overflow{justify-content:flex-start;overflow-x:auto;padding-left:8px;padding-right:8px;gap:0;}
 @media(max-width:767px){.tab-bar{display:flex;} body{padding-bottom:72px;} nav .nav-links{display:none;}}
-.tab-item{display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 8px;cursor:pointer;border:none;background:none;color:var(--m);font-family:var(--font-body);font-size:9px;letter-spacing:.04em;text-transform:uppercase;min-width:44px;transition:color .15s;}
+.tab-item{display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 10px;cursor:pointer;border:none;background:none;color:var(--m);font-family:var(--font-body);font-size:9px;letter-spacing:.04em;text-transform:uppercase;min-width:52px;flex-shrink:0;transition:color .15s;}
 .tab-item.active{color:var(--ac2);}
 .tab-icon{font-size:18px;line-height:1;}
 
@@ -900,14 +903,7 @@ input[type=range]{width:100%;accent-color:var(--ac2);cursor:pointer;height:20px;
 </footer>
 
 <!-- BOTTOM TAB BAR (mobile) -->
-<div class="tab-bar" id="tabBar">
-  <button class="tab-item active" data-module="home" onclick="goTo('home');setTab(0)"><span class="tab-icon">⌂</span>Home</button>
-  <button class="tab-item" data-module="flujo" onclick="goTo('flujo');setTab(1)"><span class="tab-icon">↕</span>Flujo</button>
-  <button class="tab-item" data-module="diario" onclick="goTo('diario');setTab(2)"><span class="tab-icon">+</span>Diario</button>
-  <button class="tab-item" data-module="mes_perfecto" onclick="goTo('perfecto');setTab(3)"><span class="tab-icon">★</span>Perfecto</button>
-  <button class="tab-item" data-module="montecarlo" onclick="goTo('montecarlo');setTab(4)"><span class="tab-icon">📈</span>MC</button>
-  <button class="tab-item" data-module="predictor" onclick="goTo('predictor');setTab(5)"><span class="tab-icon">🎯</span>Target</button>
-</div>
+<div class="tab-bar" id="tabBar"><!-- populated by buildTabBar() in applyConfig --></div>
 
 <script>
 // ══════════════════════════════════════════════════════════
@@ -1019,6 +1015,22 @@ const MODULE_SECTION = {
   predictor:'predictor',
 };
 
+// Icon + short label + scroll-target for every possible tab.
+// label is the fallback; cfg.modules[key].label always wins.
+const TAB_META = {
+  home:         { icon:'⌂',  label:'Home',      to:'home'        },
+  overview:     { icon:'◎',  label:'Overview',   to:'overview'    },
+  flujo:        { icon:'↕',  label:'Flujo',      to:'flujo'       },
+  gastos:       { icon:'$',  label:'Gastos',     to:'gastos'      },
+  proyeccion:   { icon:'⬆', label:'Meta',       to:'proyeccion'  },
+  diario:       { icon:'+',  label:'Diario',     to:'diario'      },
+  mes_perfecto: { icon:'★',  label:'Perfecto',   to:'perfecto'    },
+  montecarlo:   { icon:'⚂',  label:'Portafolios',to:'montecarlo'  },
+  calculator:   { icon:'≡',  label:'Calc',       to:'calculator'  },
+  insights:     { icon:'◆',  label:'Insights',   to:'insights'    },
+  predictor:    { icon:'⊙',  label:'Predictor',  to:'predictor'   },
+};
+
 const DEFAULT_CFG = {
   client:{id:'default',name:'Usuario',branding:{app_title:'DFG Finance OS',initials:'FO',hero_name:'Finance Usuario',goal_amount:50000000,budget_limit:400000,optimal_budget:232000}},
   modules:{
@@ -1105,11 +1117,8 @@ function applyConfig(cfg){
     const mod=cfg.modules?.[key];
     if(mod!==undefined) link.style.display=mod.enabled?'':'none';
   });
-  // Mobile tab bar
-  const tabs=cfg.nav?.mobile_tabs||Object.keys(MODULE_SECTION);
-  document.querySelectorAll('.tab-item[data-module]').forEach(btn=>{
-    btn.style.display=tabs.includes(btn.dataset.module)?'':'none';
-  });
+  // Mobile tab bar — rebuild from enabled modules
+  buildTabBar(cfg);
   // Re-sequence section numbers based on which sections are visible
   renumberSections();
 }
@@ -1123,6 +1132,34 @@ function renumberSections(){
     if(section && section.style.display==='none') return;
     el.textContent=String(n++).padStart(2,'0');
   });
+}
+
+// Rebuilds the mobile bottom tab bar from scratch based solely on
+// which modules have enabled:true in cfg. Uses cfg.modules[key].label
+// as the tab label (falls back to TAB_META default).
+// Adds class "overflow" when >5 tabs so the bar scrolls horizontally.
+function buildTabBar(cfg){
+  const bar=document.getElementById('tabBar');
+  if(!bar) return;
+  bar.innerHTML='';
+  const mods=cfg.modules||{};
+  Object.entries(mods).forEach(([key,mod])=>{
+    if(!mod.enabled) return;
+    const meta=TAB_META[key];
+    if(!meta) return;
+    const label=mod.label||meta.label;
+    const btn=document.createElement('button');
+    btn.className='tab-item';
+    btn.dataset.module=key;
+    btn.innerHTML=`<span class="tab-icon">${meta.icon}</span>${label}`;
+    btn.addEventListener('click',()=>{ goTo(meta.to); setTab(key); });
+    bar.appendChild(btn);
+  });
+  // Mark the first tab active
+  const first=bar.querySelector('.tab-item');
+  if(first) first.classList.add('active');
+  // Switch to scrollable layout when many tabs
+  bar.classList.toggle('overflow', bar.children.length>5);
 }
 
 let DB = {};
@@ -2347,7 +2384,7 @@ function renderPredictor(){
 //  NAV
 // ══════════════════════════════════════════════════════════
 function goTo(id){const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});}
-function setTab(i){document.querySelectorAll('.tab-item').forEach((b,j)=>b.classList.toggle('active',j===i));}
+function setTab(key){document.querySelectorAll('.tab-item').forEach(b=>b.classList.toggle('active',b.dataset.module===key));}
 window.addEventListener('scroll',()=>{
   const ids=['home','overview','flujo','gastos','proyeccion','diario','perfecto','calculator','insights','predictor'];
   const links=document.querySelectorAll('.nl');
