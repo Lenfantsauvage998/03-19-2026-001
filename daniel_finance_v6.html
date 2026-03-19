@@ -412,7 +412,7 @@ input[type=range]{width:100%;accent-color:var(--ac2);cursor:pointer;height:20px;
             <div style="background:var(--bg3);border-radius:10px;border:1px solid var(--b);padding:12px;text-align:center"><div style="font-size:10px;color:var(--m);margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em">Balance</div><div id="mNet" style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--ac2)">$0</div></div>
             <div style="background:var(--bg3);border-radius:10px;border:1px solid rgba(245,166,35,0.3);padding:12px;text-align:center"><div style="font-size:10px;color:var(--m);margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em">Presupuesto</div><div id="mBudget" style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--am)">$0</div></div>
           </div>
-          <div style="font-size:11px;color:var(--m);margin-bottom:5px;display:flex;justify-content:space-between"><span>Uso presupuesto ($232K)</span><span id="bPct" style="color:var(--ac2);font-weight:500">0%</span></div>
+          <div style="font-size:11px;color:var(--m);margin-bottom:5px;display:flex;justify-content:space-between"><span id="diarioBudgetLbl">Uso presupuesto</span><span id="bPct" style="color:var(--ac2);font-weight:500">0%</span></div>
           <div style="height:6px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden"><div id="bBar" style="height:100%;width:0%;border-radius:4px;background:var(--gr);transition:width .4s,background .3s"></div></div>
         </div>
         <div class="card">
@@ -438,15 +438,15 @@ input[type=range]{width:100%;accent-color:var(--ac2);cursor:pointer;height:20px;
     <div class="section-header"><span class="snum">06</span><h2 class="stitle">Mes Perfecto & Distancia Real</h2></div>
     <p class="ssub">¿Cuánto podrías ahorrar si optimizaras cada peso?</p>
     <div class="kpi-grid" style="margin-bottom:14px">
-      <div class="kpi" style="--kc:var(--gr)"><div class="kpi-l">Mes perfecto abs.</div><div class="kpi-v" style="color:var(--gr)">$197K</div><div class="kpi-s">mínimo teórico</div></div>
-      <div class="kpi" style="--kc:var(--tl)"><div class="kpi-l">Mes perfecto real</div><div class="kpi-v" style="color:var(--tl)">$232K</div><div class="kpi-s">alcanzable hoy</div></div>
+      <div class="kpi" style="--kc:var(--gr)"><div class="kpi-l">Mes perfecto abs.</div><div class="kpi-v" id="perfectKpiV" style="color:var(--gr)">...</div><div class="kpi-s">mínimo teórico</div></div>
+      <div class="kpi" style="--kc:var(--tl)"><div class="kpi-l">Mes perfecto real</div><div class="kpi-v" id="realisticKpiV" style="color:var(--tl)">...</div><div class="kpi-s">alcanzable hoy</div></div>
       <div class="kpi" style="--kc:var(--am)"><div class="kpi-l">Tu promedio actual</div><div class="kpi-v" id="avgExpKpi" style="color:var(--am)">...</div><div class="kpi-s">promedio real</div></div>
       <div class="kpi" style="--kc:var(--ac2)"><div class="kpi-l">Extra a ahorrar/año</div><div class="kpi-v" id="extraSaveKpi" style="color:var(--ac2)">...</div><div class="kpi-s">si llegas al óptimo</div></div>
     </div>
 
     <div class="g2" style="margin-bottom:14px">
       <div class="card">
-        <div class="ct">Desglose mes perfecto realista ($232K)</div>
+        <div class="ct" id="perfBreakdownTitle">Desglose mes perfecto realista</div>
         <div class="hb-row"><span class="hb-lbl">Comida (meal prep)</span><div class="hb-track"><div class="hb-fill" style="width:43%;background:var(--gr)"></div></div><span class="hb-val" style="color:var(--gr)">$100K</span></div>
         <div class="hb-row"><span class="hb-lbl">Transporte</span><div class="hb-track"><div class="hb-fill" style="width:17%;background:var(--am)"></div></div><span class="hb-val" style="color:var(--am)">$40K</span></div>
         <div class="hb-row"><span class="hb-lbl">Personal/familia</span><div class="hb-track"><div class="hb-fill" style="width:13%;background:var(--ac2)"></div></div><span class="hb-val" style="color:var(--ac2)">$30K</span></div>
@@ -467,7 +467,7 @@ input[type=range]{width:100%;accent-color:var(--ac2);cursor:pointer;height:20px;
       <div class="ct">Score financiero mensual</div>
       <div class="score-grid" id="scoreCards"></div>
       <div style="margin-top:12px;padding:10px 12px;background:var(--bg3);border-radius:8px;font-size:11px;color:var(--m);line-height:1.7">
-        <strong style="color:var(--t)">Score:</strong> 100 = mes perfecto ($232K). Febrero fue tu mejor mes — gastaste <em style="color:var(--tl)">menos que el óptimo</em>. Enero fue el peor con 22/100.
+        <strong style="color:var(--t)">Score:</strong> <span id="scoreDescText">100 = mes perfecto</span>. Tu mejor mes gastaste <em style="color:var(--tl)">menos que el óptimo</em> — replica ese comportamiento.
       </div>
     </div>
 
@@ -476,7 +476,7 @@ input[type=range]{width:100%;accent-color:var(--ac2);cursor:pointer;height:20px;
       <div class="ct">¿Dónde estarías si siempre hubieras sido perfecto?</div>
       <div class="counterfact-grid" style="margin-bottom:14px">
         <div class="cf-card" style="background:var(--bg3);border:1px solid var(--b)"><div style="font-size:10px;color:var(--m);text-transform:uppercase;letter-spacing:.07em;margin-bottom:7px">Capital real hoy</div><div style="font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--t)" id="cfReal">...</div><div style="font-size:10px;color:var(--m);margin-top:4px">Lo que tienes</div></div>
-        <div class="cf-card" style="background:rgba(34,212,122,0.07);border:1px solid rgba(34,212,122,0.3)"><div style="font-size:10px;color:var(--m);text-transform:uppercase;letter-spacing:.07em;margin-bottom:7px">Si siempre perfecto</div><div style="font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--gr)" id="cfPerf">...</div><div style="font-size:10px;color:var(--m);margin-top:4px">Con $232K/mes desde Dic</div></div>
+        <div class="cf-card" style="background:rgba(34,212,122,0.07);border:1px solid rgba(34,212,122,0.3)"><div style="font-size:10px;color:var(--m);text-transform:uppercase;letter-spacing:.07em;margin-bottom:7px">Si siempre perfecto</div><div style="font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--gr)" id="cfPerf">...</div><div style="font-size:10px;color:var(--m);margin-top:4px" id="cfPerfSubtext">Con óptimo/mes desde inicio</div></div>
         <div class="cf-card" style="background:rgba(240,83,83,0.07);border:1px solid rgba(240,83,83,0.2)"><div style="font-size:10px;color:var(--m);text-transform:uppercase;letter-spacing:.07em;margin-bottom:7px">Dejaste en la mesa</div><div style="font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--rd)" id="cfGap">...</div><div style="font-size:10px;color:var(--rd);margin-top:4px">vs escenario perfecto</div></div>
       </div>
       <div class="chart-wrap" style="height:200px;margin-bottom:14px"><canvas id="cCounterfact"></canvas></div>
@@ -1103,8 +1103,54 @@ function renderProyeccion() {
       plugins:{legend:{labels:{boxWidth:12,font:{size:10}}}},scales:{x:xO,y:yO}}});
 }
 
+// ── Dynamic perfect-month targets ──────────────────────────────────────────
+// PERFECT   = best completed month × 0.80  (absolute theoretical minimum)
+// REALISTIC = avg of best 2 completed months × 0.90  (consistently achievable)
+// Both exclude the current in-progress month to avoid partial-data skew.
+function computePerfectTargets() {
+  const now = new Date();
+  const curKey = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+
+  // Filter to completed months only; use expense totals > 0
+  const completed = DB.monthly.filter(m => {
+    const mo = String(MONTH_NUM[m.month]||0).padStart(2,'0');
+    return `${m.year}-${mo}` !== curKey && m.expenses > 0;
+  });
+
+  if (!completed.length) return { PERFECT: 197000, REALISTIC: 232000 };
+
+  // Sort ascending by expenses
+  const sorted = [...completed].sort((a,b) => a.expenses - b.expenses);
+
+  // Absolute minimum: best single month, reduce 20%
+  const PERFECT = Math.round(sorted[0].expenses * 0.80);
+
+  // Realistic: average of top-2 best months, reduce 10%
+  const top2 = sorted.slice(0, Math.min(2, sorted.length));
+  const avgBest2 = top2.reduce((s,m) => s + m.expenses, 0) / top2.length;
+  const REALISTIC = Math.round(avgBest2 * 0.90);
+
+  return { PERFECT, REALISTIC };
+}
+
 function renderPerfecto() {
-  const PERFECT=197000, REALISTIC=232000;
+  const { PERFECT, REALISTIC } = computePerfectTargets();
+
+  // Update KPI cards and labels with computed targets
+  const el_pKpi = document.getElementById('perfectKpiV');
+  if (el_pKpi) el_pKpi.textContent = fmt(PERFECT);
+  const el_rKpi = document.getElementById('realisticKpiV');
+  if (el_rKpi) el_rKpi.textContent = fmt(REALISTIC);
+  const el_brTitle = document.getElementById('perfBreakdownTitle');
+  if (el_brTitle) el_brTitle.textContent = `Desglose mes perfecto realista (${fmt(REALISTIC)})`;
+  const el_cfSub = document.getElementById('cfPerfSubtext');
+  if (el_cfSub) el_cfSub.textContent = `Con ${fmt(REALISTIC)}/mes desde inicio`;
+  const el_scoreDesc = document.getElementById('scoreDescText');
+  if (el_scoreDesc) el_scoreDesc.textContent = `100 = mes perfecto (${fmt(REALISTIC)})`;
+
+  // Sync global so renderInsights / renderDiario use the same target
+  OPTIMAL_BUDGET = REALISTIC;
+
   const nowP=new Date();
   const currentYearP=nowP.getFullYear();
   const currentMonthNumP=nowP.getMonth()+1;
@@ -1178,7 +1224,7 @@ function renderPerfecto() {
         {label:'Gasto real',data:MONTHS_DATA.map(m=>m.actual),
          backgroundColor:MONTHS_DATA.map(m=>m.actual>600000?'rgba(240,83,83,0.75)':m.actual>300000?'rgba(245,166,35,0.7)':m.isCurrentMonth?'rgba(167,139,250,0.7)':'rgba(34,212,122,0.65)'),
          borderRadius:4},
-        {label:'Óptimo $232K',data:MONTHS_DATA.map(()=>REALISTIC),type:'line',
+        {label:`Óptimo ${fmt(REALISTIC)}`,data:MONTHS_DATA.map(()=>REALISTIC),type:'line',
          borderColor:'rgba(45,212,191,0.8)',borderDash:[5,4],pointRadius:0,fill:false}
       ]},
     options:{responsive:true,maintainAspectRatio:false,animation:{duration:400},
@@ -1211,7 +1257,7 @@ function renderPerfecto() {
   // DEBUG: log exactly what buildMonthly sees for each month
   console.log('=== COUNTERFACTUAL DEBUG ===');
   DB.monthly.forEach(m=>{
-    console.log(`${m.month} ${m.year}: income=${m.income.toLocaleString()} expenses=${m.expenses.toLocaleString()} overspend=${Math.max(0,m.expenses-232000).toLocaleString()}`);
+    console.log(`${m.month} ${m.year}: income=${m.income.toLocaleString()} expenses=${m.expenses.toLocaleString()} overspend=${Math.max(0,m.expenses-REALISTIC).toLocaleString()}`);
   });
   console.log('DB.all count:', DB.all.length);
   console.log('DB.expenses count:', DB.expenses.length);
@@ -1272,7 +1318,7 @@ function renderPerfecto() {
   if(cfGapEl) cfGapEl.textContent=fmt(gap)+(gap>0?` (+${cfGapPct}%)`:'');
   mkCh('cCounterfact',{type:'line',data:{labels:allLbl,datasets:[
     {label:'Balance real',data:realBalArr,borderColor:'#a78bfa',backgroundColor:'rgba(124,92,252,0.08)',fill:true,tension:.4,pointBackgroundColor:'#a78bfa',pointBorderColor:'#fff',pointBorderWidth:2,pointRadius:4},
-    {label:'Si siempre perfecto ($232K/mes)',data:perfBalArr,borderColor:'#22d47a',backgroundColor:'rgba(34,212,122,0.05)',fill:true,tension:.4,pointBackgroundColor:'#22d47a',pointBorderColor:'#fff',pointBorderWidth:2,pointRadius:4,borderDash:[6,3]}
+    {label:`Si siempre perfecto (${fmt(REALISTIC)}/mes)`,data:perfBalArr,borderColor:'#22d47a',backgroundColor:'rgba(34,212,122,0.05)',fill:true,tension:.4,pointBackgroundColor:'#22d47a',pointBorderColor:'#fff',pointBorderWidth:2,pointRadius:4,borderDash:[6,3]}
   ]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:500},
     plugins:{legend:{labels:{boxWidth:12,font:{size:10}}},
       tooltip:{callbacks:{afterBody:items=>{if(items.length===2){const d=items[1].raw-items[0].raw;return['','Diferencia: '+fmtF(d)+' COP'];}}}}},
@@ -1484,7 +1530,8 @@ function renderDiario(){
   const curMonth=DB.all.filter(t=>t.date&&t.date.startsWith(currentYM)&&t.type!=='transfer');
   const inc=curMonth.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0);
   const exp=curMonth.filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0);
-  const net=inc-exp, BUDGET=232000, rem=BUDGET-exp;
+  const BUDGET=OPTIMAL_BUDGET||computePerfectTargets().REALISTIC;
+  const net=inc-exp, rem=BUDGET-exp;
   const pctVal=Math.min(200,exp/BUDGET*100);
   document.getElementById('mInc').textContent=fmt(inc);
   document.getElementById('mExp').textContent=fmt(exp);
@@ -1495,6 +1542,8 @@ function renderDiario(){
   document.getElementById('bPct').textContent=pctVal.toFixed(0)+'%';
   document.getElementById('bBar').style.width=pctVal+'%';
   document.getElementById('bBar').style.background=pctVal>=100?'var(--rd)':pctVal>=80?'var(--am)':'var(--gr)';
+  const diarioBudgetLbl=document.getElementById('diarioBudgetLbl');
+  if(diarioBudgetLbl) diarioBudgetLbl.textContent=`Uso presupuesto (${fmt(BUDGET)})`;
 
   // History filtered by selector
   const histEl=document.getElementById('txHistory');
@@ -1548,7 +1597,7 @@ function renderCalculadora(){
   const now=new Date();
   const dInMonth=new Date(now.getFullYear(),now.getMonth()+1,0).getDate();
   const dLeft=dInMonth-now.getDate();
-  const budgetLeft=Math.round(232000/dInMonth*dLeft);
+  const budgetLeft=Math.round((OPTIMAL_BUDGET||computePerfectTargets().REALISTIC)/dInMonth*dLeft);
   const avgSave=DB.monthly.length?DB.monthly.reduce((s,m)=>s+(m.income-m.expenses),0)/DB.monthly.length:1730000;
   // Salary: avg quincena × 2 = monthly salary estimate
   const salTxC=DB.income.filter(t=>(t.subcategory||'').toLowerCase()==='salary');
@@ -1649,7 +1698,7 @@ function renderInsights(){
   const cur       = DB.curBal;
   const mths      = DB.monthly.length || 1;
   const target    = USER_TARGET;
-  const REALISTIC = 232000;
+  const REALISTIC = OPTIMAL_BUDGET || computePerfectTargets().REALISTIC;
 
   // ── Compute all metrics from live data ──
   const totalIncome   = DB.income.filter(t=>(t.subcategory||'').toLowerCase()!=='interest').reduce((s,t)=>s+t.amount,0);
@@ -1752,7 +1801,7 @@ function renderInsights(){
   // 6. Best month lesson
   if(bestMonth){
     ins.push({ic:'var(--ac2)',flag:`⭐ Mejor mes: ${bestMonth.month.slice(0,3)} ${bestMonth.year} (${fmt(bestMonth.expenses)})`,
-      txt:`${bestMonth.month} fue tu mes más eficiente con solo ${fmt(bestMonth.expenses)} en gastos. ${bestMonth.expenses<=REALISTIC?'¡Estuviste por debajo del óptimo!':'Estuvo '+fmt(bestMonth.expenses-REALISTIC)+' sobre el óptimo de $232K.'} Replica ese comportamiento.`});
+      txt:`${bestMonth.month} fue tu mes más eficiente con solo ${fmt(bestMonth.expenses)} en gastos. ${bestMonth.expenses<=REALISTIC?'¡Estuviste por debajo del óptimo!':'Estuvo '+fmt(bestMonth.expenses-REALISTIC)+' sobre el óptimo de '+fmt(REALISTIC)+'.'} Replica ese comportamiento.`});
   }
 
   // 7. Risk day
