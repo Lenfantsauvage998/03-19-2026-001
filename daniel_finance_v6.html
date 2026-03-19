@@ -1285,7 +1285,7 @@ function renderGastos() {
   const isMobile=window.innerWidth<600;
   const pieWrap=document.getElementById('cPieWrap');
   if(pieWrap) pieWrap.style.height=isMobile?'220px':'160px';
-  mkCh('cPie',{type:'doughnut',data:{labels:cats.map(c=>c[0]),datasets:[{data:cats.map(c=>c[1]),backgroundColor:cats.map(c=>CAT_COL[c[0]]||'#888'),borderColor:'#0e0f15',borderWidth:3}]},options:{responsive:true,maintainAspectRatio:false,cutout:'65%',plugins:{legend:{position:isMobile?'bottom':'right',labels:{boxWidth:9,font:{size:10},padding:isMobile?6:10}}}}});
+  mkCh('cPie',{type:'doughnut',data:{labels:cats.map(c=>c[0]),datasets:[{data:cats.map(c=>c[1]),backgroundColor:cats.map(c=>CAT_COL[c[0]]||'#888'),borderColor:cssVar('--color-surface')||'#0e0f15',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,cutout:'65%',plugins:{legend:{position:isMobile?'bottom':'right',labels:{boxWidth:9,font:{size:10},padding:isMobile?6:10}}}}});
   const m=DB.monthly;
   const dynLimit=buildPrediction()?.target||BUDGET_LIMIT;
   const limitLbl=fmt(dynLimit)+' objetivo';
