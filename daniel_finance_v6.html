@@ -418,6 +418,10 @@ input[type=range]{width:100%;accent-color:var(--ac2);cursor:pointer;height:20px;
 .dow-cell.hot{border-color:rgba(240,83,83,0.35);background:rgba(240,83,83,0.07);}
 @media(min-width:480px){.dow-grid{gap:5px;} .dow-cell{padding:8px 4px;}}
 
+/* CAPITAL SUMMARY 2×2 grid — must live in CSS so applyConfig(display:'')
+   doesn't strip the display:grid that was on the inline style */
+.cap-summary{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:14px;}
+
 /* GASTOS FILTER */
 #gastosMonthFilter{width:100%;padding:10px 12px;background:var(--bg3);border:0.5px solid var(--b2);border-radius:8px;color:var(--t);font-family:var(--font-body);font-size:12px;outline:none;cursor:pointer;-webkit-appearance:none;appearance:none;}
 @media(min-width:600px){#gastosMonthFilter{width:auto;font-size:11px;padding:6px 10px;}}
@@ -820,7 +824,7 @@ input[type=range]{width:100%;accent-color:var(--ac2);cursor:pointer;height:20px;
   <div class="wrap">
     <div class="section-header"><span class="snum">08</span><h2 class="stitle">Calculadora de Ahorro</h2></div>
     <p class="ssub">Capital base real desde Supabase · Recalcula en tiempo real</p>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px" data-module="calculator" data-feature="capital_summary">
+    <div class="cap-summary" data-module="calculator" data-feature="capital_summary">
       <div style="background:rgba(34,212,122,0.07);border:1px solid rgba(34,212,122,0.25);border-radius:12px;padding:14px;text-align:center"><div style="font-size:10px;color:var(--m);text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px">Capital actual</div><div id="calcCap" style="font-family:var(--font-figure);font-size:20px;font-weight:800;color:var(--gr)">...</div></div>
       <div style="background:var(--bg3);border:1px solid rgba(45,212,191,0.25);border-radius:12px;padding:14px;text-align:center"><div style="font-size:10px;color:var(--m);text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px">Interés/mes</div><div id="calcInt" style="font-family:var(--font-figure);font-size:20px;font-weight:800;color:var(--tl)">...</div></div>
       <div style="background:var(--bg3);border:1px solid var(--b);border-radius:12px;padding:14px;text-align:center"><div style="font-size:10px;color:var(--m);text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px">Ahorro promedio</div><div id="calcAvg" style="font-family:var(--font-figure);font-size:20px;font-weight:800;color:var(--ac2)">...</div></div>
