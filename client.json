@@ -29,7 +29,7 @@
       }
     },
     "overview": {
-      "enabled": false,
+      "enabled": true,
       "label": "Overview",
       "features": {
         "networth_chart": true,
@@ -37,7 +37,7 @@
       }
     },
     "flujo": {
-      "enabled": false,
+      "enabled": true,
       "label": "Flujo",
       "features": {
         "cashflow_chart": true,
@@ -46,7 +46,7 @@
       }
     },
     "gastos": {
-      "enabled": false,
+      "enabled": true,
       "label": "Gastos",
       "features": {
         "month_filter": true,
@@ -58,7 +58,7 @@
       }
     },
     "proyeccion": {
-      "enabled": false,
+      "enabled": true,
       "label": "Proyección",
       "features": {
         "goal_slider": true,
@@ -78,7 +78,7 @@
       }
     },
     "mes_perfecto": {
-      "enabled": false,
+      "enabled": true,
       "label": "Mes Perfecto",
       "features": {
         "kpi_cards": true,
@@ -90,7 +90,7 @@
       }
     },
     "montecarlo": {
-      "enabled": false,
+      "enabled": true,
       "label": "Portafolios",
       "features": {
         "portfolio_selector": true,
@@ -101,7 +101,7 @@
       }
     },
     "calculator": {
-      "enabled": false,
+      "enabled": true,
       "label": "Calculadora",
       "features": {
         "capital_summary": true,
@@ -112,11 +112,11 @@
       }
     },
     "insights": {
-      "enabled": false,
+      "enabled": true,
       "label": "Insights"
     },
     "predictor": {
-      "enabled": false,
+      "enabled": true,
       "label": "Predictor"
     }
   },

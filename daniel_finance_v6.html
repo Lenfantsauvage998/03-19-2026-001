@@ -484,15 +484,17 @@ input[type=range]{width:100%;accent-color:var(--ac2);cursor:pointer;height:20px;
   <div class="nav-inner">
     <div class="nav-logo" id="navLogo">DFG<span>.finance</span></div>
     <div class="nav-links">
-      <button class="nl active" data-nav-module="overview" onclick="goTo('overview')">Overview</button>
+      <button class="nl active" data-nav-module="home" onclick="goTo('home')">Inicio</button>
+      <button class="nl" data-nav-module="diario" onclick="goTo('diario')">Diario <span class="nb">VIVO</span></button>
+      <button class="nl" data-nav-module="overview" onclick="goTo('overview')">Resumen</button>
       <button class="nl" data-nav-module="flujo" onclick="goTo('flujo')">Flujo</button>
       <button class="nl" data-nav-module="gastos" onclick="goTo('gastos')">Gastos</button>
       <button class="nl" data-nav-module="proyeccion" onclick="goTo('proyeccion')">50M</button>
-      <button class="nl" data-nav-module="diario" onclick="goTo('diario')">Diario <span class="nb">LIVE</span></button>
       <button class="nl" data-nav-module="mes_perfecto" onclick="goTo('perfecto')">Mes Perfecto</button>
-      <button class="nl" data-nav-module="montecarlo" onclick="goTo('montecarlo')">Portafolios</button><button class="nl" data-nav-module="calculator" onclick="goTo('calculator')">Calc</button>
-      <button class="nl" data-nav-module="insights" onclick="goTo('insights')">Insights</button>
+      <button class="nl" data-nav-module="montecarlo" onclick="goTo('montecarlo')">Portafolios</button>
+      <button class="nl" data-nav-module="calculator" onclick="goTo('calculator')">Calc</button>
       <button class="nl" data-nav-module="predictor" onclick="goTo('predictor')">Predictor</button>
+      <button class="nl" data-nav-module="insights" onclick="goTo('insights')">Alertas</button>
     </div>
   </div>
 </nav>
@@ -502,17 +504,17 @@ input[type=range]{width:100%;accent-color:var(--ac2);cursor:pointer;height:20px;
   <div class="wrap">
     <div style="display:inline-flex;align-items:center;gap:8px;font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--ac2);background:var(--ac-bg);border:1px solid var(--ac-bd);padding:4px 12px;border-radius:20px;margin-bottom:14px">
       <span style="width:6px;height:6px;border-radius:50%;background:var(--gr);animation:spin 3s linear infinite;display:inline-block"></span>
-      Live · Supabase
+      En vivo · Supabase
     </div>
     <h1 style="font-family:var(--font-display);font-size:clamp(28px,6vw,60px);font-weight:800;line-height:1.05;letter-spacing:-.02em;margin-bottom:8px">
-      <span id="heroFirstName">Daniel</span> <span id="heroLastName" style="color:var(--ac2)">Figueredo</span><br>Financial OS
+      <span id="heroFirstName">Daniel</span> <span id="heroLastName" style="color:var(--ac2)">Figueredo</span><br>Sistema Financiero
     </h1>
     <div style="color:var(--m);font-size:11px;margin-bottom:22px" id="heroSub">Cargando...</div>
     <div class="kpi-grid" id="kpiGrid">
-      <div class="kpi" style="--kc:var(--gr)"><div class="kpi-l">Net Worth</div><div class="kpi-v skel" style="height:28px;width:80%">&nbsp;</div></div>
-      <div class="kpi" style="--kc:var(--bl)"><div class="kpi-l">Salary prom.</div><div class="kpi-v skel" style="height:28px;width:70%">&nbsp;</div></div>
+      <div class="kpi" style="--kc:var(--gr)"><div class="kpi-l">Patrimonio neto</div><div class="kpi-v skel" style="height:28px;width:80%">&nbsp;</div></div>
+      <div class="kpi" style="--kc:var(--bl)"><div class="kpi-l">Ingreso Avg</div><div class="kpi-v skel" style="height:28px;width:70%">&nbsp;</div></div>
       <div class="kpi" style="--kc:var(--tl)"><div class="kpi-l">Intereses</div><div class="kpi-v skel" style="height:28px;width:60%">&nbsp;</div></div>
-      <div class="kpi" style="--kc:var(--rd)"><div class="kpi-l">Shopping</div><div class="kpi-v skel" style="height:28px;width:75%">&nbsp;</div></div>
+      <div class="kpi" style="--kc:var(--rd)"><div class="kpi-l">Compras</div><div class="kpi-v skel" style="height:28px;width:75%">&nbsp;</div></div>
     </div>
     <div class="card">
       <div class="ct" id="nwProgressTitle">Progreso hacia $50M COP</div>
@@ -528,14 +530,86 @@ input[type=range]{width:100%;accent-color:var(--ac2);cursor:pointer;height:20px;
   </div>
 </div>
 
+<!-- 02 DIARIO — always position 2 -->
+<div class="section" id="diario">
+  <div class="wrap">
+    <div class="section-header"><span class="snum">02</span><h2 class="stitle">Diario de Transacciones</h2></div>
+    <p class="ssub">Guarda directamente en Supabase</p>
+    <div class="g2">
+      <div class="card" style="border-color:var(--ac-bd)" data-module="diario" data-feature="transaction_form">
+        <div class="ct">Nueva transacción</div>
+        <div style="display:flex;gap:0;margin-bottom:14px;background:var(--bg3);border-radius:10px;padding:3px">
+          <button id="btnExp" class="type-btn" onclick="setType('expense')" style="background:var(--rd);color:#fff">− Gasto</button>
+          <button id="btnInc" class="type-btn" onclick="setType('income')"  style="background:transparent;color:var(--m)">+ Ingreso</button>
+        </div>
+        <div class="fi">
+          <label>Monto (COP)</label>
+          <div style="position:relative">
+            <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--m)">$</span>
+            <input id="txAmt" type="number" inputmode="numeric" class="fi amount-inp" placeholder="0" oninput="liveAmt(this)" style="padding-left:28px">
+          </div>
+          <div id="txFmt" style="font-size:11px;color:var(--ac2);margin-top:4px;min-height:15px"></div>
+        </div>
+        <div class="fi">
+          <label>Categoría</label>
+          <div id="catGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px"></div>
+          <!-- Formulario nueva categoría personalizada -->
+          <div id="catAddForm" style="display:none;margin-top:8px;padding:11px;background:var(--bg2);border:1px solid var(--ac-bd);border-radius:10px">
+            <div style="font-size:10px;color:var(--ac2);font-weight:600;letter-spacing:.05em;text-transform:uppercase;margin-bottom:9px">Nueva categoría</div>
+            <div style="display:grid;grid-template-columns:44px 1fr 34px;gap:6px;margin-bottom:8px;align-items:center">
+              <input id="newCatEmoji" type="text" maxlength="2" placeholder="🏷" style="padding:7px 4px;text-align:center;font-size:16px;background:var(--bg3);border:1px solid var(--b2);border-radius:8px;color:var(--t);font-family:var(--font-body);outline:none;width:100%">
+              <input id="newCatName"  type="text" placeholder="Nombre (ej: Gym, Netflix...)" style="padding:7px 10px;background:var(--bg3);border:1px solid var(--b2);border-radius:8px;color:var(--t);font-family:var(--font-body);font-size:12px;outline:none;width:100%">
+              <input id="newCatColor" type="color" value="#a78bfa" title="Color" style="width:34px;height:34px;padding:2px;background:var(--bg3);border:1px solid var(--b2);border-radius:8px;cursor:pointer">
+            </div>
+            <div style="display:flex;gap:6px">
+              <button onclick="addCustomCat()" style="flex:1;padding:8px;background:var(--ac2);border:none;border-radius:8px;color:#000;font-family:var(--font-body);font-size:11px;font-weight:700;cursor:pointer">Guardar</button>
+              <button onclick="document.getElementById('catAddForm').style.display='none'" style="padding:8px 12px;background:var(--bg3);border:1px solid var(--b2);border-radius:8px;color:var(--m);font-family:var(--font-body);font-size:11px;cursor:pointer">Cancelar</button>
+            </div>
+          </div>
+        </div>
+        <div class="fi"><label>Descripción</label><input id="txDesc" type="text" class="fi" placeholder="ej: Mercado, Uber..."></div>
+        <div class="fi"><label>Fecha</label><input id="txDate" type="date" class="fi"></div>
+        <button class="btn-p" onclick="addTx()">Registrar transacción</button>
+        <div id="txMsg" style="margin-top:10px;font-size:11px;text-align:center;min-height:16px"></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div class="card">
+          <div class="ct">Resumen del mes</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+            <div style="background:var(--bg3);border-radius:10px;border:1px solid var(--b);padding:12px;text-align:center"><div style="font-size:10px;color:var(--m);margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em">Ingresos</div><div id="mInc" style="font-family:var(--font-display);font-size:16px;font-weight:700;color:var(--gr)">$0</div></div>
+            <div style="background:var(--bg3);border-radius:10px;border:1px solid var(--b);padding:12px;text-align:center"><div style="font-size:10px;color:var(--m);margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em">Gastos</div><div id="mExp" style="font-family:var(--font-display);font-size:16px;font-weight:700;color:var(--rd)">$0</div></div>
+            <div style="background:var(--bg3);border-radius:10px;border:1px solid var(--b);padding:12px;text-align:center"><div style="font-size:10px;color:var(--m);margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em">Balance</div><div id="mNet" style="font-family:var(--font-display);font-size:16px;font-weight:700;color:var(--ac2)">$0</div></div>
+            <div style="background:var(--bg3);border-radius:10px;border:1px solid rgba(245,166,35,0.3);padding:12px;text-align:center"><div style="font-size:10px;color:var(--m);margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em">Presupuesto</div><div id="mBudget" style="font-family:var(--font-display);font-size:16px;font-weight:700;color:var(--am)">$0</div></div>
+          </div>
+          <div style="font-size:11px;color:var(--m);margin-bottom:5px;display:flex;justify-content:space-between"><span id="diarioBudgetLbl">Uso presupuesto</span><span id="bPct" style="color:var(--ac2);font-weight:500">0%</span></div>
+          <div style="height:6px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden"><div id="bBar" style="height:100%;width:0%;border-radius:4px;background:var(--gr);transition:width .4s,background .3s"></div></div>
+        </div>
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+            <div class="ct" style="margin:0">Historial</div>
+            <div style="display:flex;gap:6px;align-items:center">
+              <select id="histFilter" onchange="renderDiario()"
+                style="padding:5px 9px;background:var(--bg3);border:1px solid var(--b2);border-radius:7px;color:var(--t);font-family:var(--font-body);font-size:10px;outline:none;cursor:pointer;-webkit-appearance:none">
+              </select>
+              <button class="btn-sm" data-module="diario" data-feature="csv_export" onclick="exportStatement()" title="Estado financiero completo en PDF">↓ Estado completo</button>
+              <button class="btn-sm" data-module="diario" data-feature="csv_export" onclick="exportStatement(['diario'])" title="Solo el diario de transacciones en PDF" style="margin-left:4px">↓ Mi Diario</button>
+            </div>
+          </div>
+          <div id="txHistory" style="max-height:340px;overflow-y:auto;-webkit-overflow-scrolling:touch"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- 01 OVERVIEW -->
 <div class="section" id="overview">
   <div class="wrap">
-    <div class="section-header"><span class="snum">01</span><h2 class="stitle">Net Worth & Evolución</h2></div>
+    <div class="section-header"><span class="snum">01</span><h2 class="stitle">Patrimonio neto & Evolución</h2></div>
     <p class="ssub">Datos directos de Supabase · monthly_balance</p>
     <div class="g64">
-      <div class="card"><div class="ct">Net worth mes a mes</div><div class="chart-wrap" style="height:220px"><canvas id="cNW"></canvas></div></div>
-      <div class="card" data-module="overview" data-feature="salary_timeline"><div class="ct">Salary</div><div id="salaryList" class="tl" style="margin-top:6px"></div></div>
+      <div class="card"><div class="ct">Patrimonio mes a mes</div><div class="chart-wrap" style="height:220px"><canvas id="cNW"></canvas></div></div>
+      <div class="card" data-module="overview" data-feature="salary_timeline"><div class="ct">Últimos salarios</div><div id="salaryList" class="tl" style="margin-top:6px"></div></div>
     </div>
   </div>
 </div>
@@ -621,60 +695,6 @@ input[type=range]{width:100%;accent-color:var(--ac2);cursor:pointer;height:20px;
   </div>
 </div>
 
-<!-- 05 DIARIO -->
-<div class="section" id="diario">
-  <div class="wrap">
-    <div class="section-header"><span class="snum">05</span><h2 class="stitle">Diario de Transacciones</h2></div>
-    <p class="ssub">Guarda directamente en Supabase</p>
-    <div class="g2">
-      <div class="card" style="border-color:var(--ac-bd)" data-module="diario" data-feature="transaction_form">
-        <div class="ct">Nueva transacción</div>
-        <div style="display:flex;gap:0;margin-bottom:14px;background:var(--bg3);border-radius:10px;padding:3px">
-          <button id="btnExp" class="type-btn" onclick="setType('expense')" style="background:var(--rd);color:#fff">− Gasto</button>
-          <button id="btnInc" class="type-btn" onclick="setType('income')"  style="background:transparent;color:var(--m)">+ Ingreso</button>
-        </div>
-        <div class="fi">
-          <label>Monto (COP)</label>
-          <div style="position:relative">
-            <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--m)">$</span>
-            <input id="txAmt" type="number" inputmode="numeric" class="fi amount-inp" placeholder="0" oninput="liveAmt(this)" style="padding-left:28px">
-          </div>
-          <div id="txFmt" style="font-size:11px;color:var(--ac2);margin-top:4px;min-height:15px"></div>
-        </div>
-        <div class="fi"><label>Categoría</label><div id="catGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px"></div></div>
-        <div class="fi"><label>Descripción</label><input id="txDesc" type="text" class="fi" placeholder="ej: Mercado, Uber..."></div>
-        <div class="fi"><label>Fecha</label><input id="txDate" type="date" class="fi"></div>
-        <button class="btn-p" onclick="addTx()">Registrar transacción</button>
-        <div id="txMsg" style="margin-top:10px;font-size:11px;text-align:center;min-height:16px"></div>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:12px">
-        <div class="card">
-          <div class="ct">Resumen del mes</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
-            <div style="background:var(--bg3);border-radius:10px;border:1px solid var(--b);padding:12px;text-align:center"><div style="font-size:10px;color:var(--m);margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em">Ingresos</div><div id="mInc" style="font-family:var(--font-display);font-size:16px;font-weight:700;color:var(--gr)">$0</div></div>
-            <div style="background:var(--bg3);border-radius:10px;border:1px solid var(--b);padding:12px;text-align:center"><div style="font-size:10px;color:var(--m);margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em">Gastos</div><div id="mExp" style="font-family:var(--font-display);font-size:16px;font-weight:700;color:var(--rd)">$0</div></div>
-            <div style="background:var(--bg3);border-radius:10px;border:1px solid var(--b);padding:12px;text-align:center"><div style="font-size:10px;color:var(--m);margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em">Balance</div><div id="mNet" style="font-family:var(--font-display);font-size:16px;font-weight:700;color:var(--ac2)">$0</div></div>
-            <div style="background:var(--bg3);border-radius:10px;border:1px solid rgba(245,166,35,0.3);padding:12px;text-align:center"><div style="font-size:10px;color:var(--m);margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em">Presupuesto</div><div id="mBudget" style="font-family:var(--font-display);font-size:16px;font-weight:700;color:var(--am)">$0</div></div>
-          </div>
-          <div style="font-size:11px;color:var(--m);margin-bottom:5px;display:flex;justify-content:space-between"><span id="diarioBudgetLbl">Uso presupuesto</span><span id="bPct" style="color:var(--ac2);font-weight:500">0%</span></div>
-          <div style="height:6px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden"><div id="bBar" style="height:100%;width:0%;border-radius:4px;background:var(--gr);transition:width .4s,background .3s"></div></div>
-        </div>
-        <div class="card">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
-            <div class="ct" style="margin:0">Historial</div>
-            <div style="display:flex;gap:6px;align-items:center">
-              <select id="histFilter" onchange="renderDiario()"
-                style="padding:5px 9px;background:var(--bg3);border:1px solid var(--b2);border-radius:7px;color:var(--t);font-family:var(--font-body);font-size:10px;outline:none;cursor:pointer;-webkit-appearance:none">
-              </select>
-              <button class="btn-sm" data-module="diario" data-feature="csv_export" onclick="exportCSV()">↓ CSV</button>
-            </div>
-          </div>
-          <div id="txHistory" style="max-height:340px;overflow-y:auto;-webkit-overflow-scrolling:touch"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 
 <!-- 06 MES PERFECTO -->
 <div class="section" id="perfecto">
@@ -697,7 +717,7 @@ input[type=range]{width:100%;accent-color:var(--ac2);cursor:pointer;height:20px;
         <div class="hb-row"><span class="hb-lbl">Claro (plan mejor)</span><div class="hb-track"><div class="hb-fill" style="width:12%;background:var(--bl)"></div></div><span class="hb-val" style="color:var(--bl)">$28K</span></div>
         <div class="hb-row"><span class="hb-lbl">Universidad</span><div class="hb-track"><div class="hb-fill" style="width:6%;background:var(--tl)"></div></div><span class="hb-val" style="color:var(--tl)">$14K</span></div>
         <div class="hb-row"><span class="hb-lbl">Buffer</span><div class="hb-track"><div class="hb-fill" style="width:9%;background:var(--m)"></div></div><span class="hb-val" style="color:var(--m)">$20K</span></div>
-        <div class="hb-row" style="margin-top:8px;padding-top:10px;border-top:1px solid var(--b)"><span class="hb-lbl" style="color:var(--t)">Shopping</span><div class="hb-track"><div class="hb-fill" style="width:0%"></div></div><span class="hb-val" style="color:var(--gr)">$0 ← regla</span></div>
+        <div class="hb-row" style="margin-top:8px;padding-top:10px;border-top:1px solid var(--b)"><span class="hb-lbl" style="color:var(--t)">Compras</span><div class="hb-track"><div class="hb-fill" style="width:0%"></div></div><span class="hb-val" style="color:var(--gr)">$0 ← regla</span></div>
       </div>
       <div class="card">
         <div class="ct">Distancia al mes perfecto por mes</div>
@@ -859,15 +879,6 @@ input[type=range]{width:100%;accent-color:var(--ac2);cursor:pointer;height:20px;
   </div>
 </div>
 
-<!-- 08 INSIGHTS -->
-<div class="section" id="insights">
-  <div class="wrap">
-    <div class="section-header"><span class="snum">09</span><h2 class="stitle">Insights & Alertas</h2></div>
-    <p class="ssub">Generados desde tus datos reales</p>
-    <div class="g2" id="insightGrid"></div>
-  </div>
-</div>
-
 <!-- 10 PREDICTOR DE AHORRO -->
 <div class="section" id="predictor" data-module="predictor">
   <div class="wrap">
@@ -895,10 +906,19 @@ input[type=range]{width:100%;accent-color:var(--ac2);cursor:pointer;height:20px;
   </div>
 </div>
 
+<!-- INSIGHTS — always last section -->
+<div class="section" id="insights">
+  <div class="wrap">
+    <div class="section-header"><span class="snum">09</span><h2 class="stitle">Alertas & Análisis</h2></div>
+    <p class="ssub">Generados desde tus datos reales</p>
+    <div class="g2" id="insightGrid"></div>
+  </div>
+</div>
+
 <footer style="padding:24px 0;text-align:center;font-size:11px;color:var(--m);border-top:1px solid var(--b);">
   <div class="wrap">
     <div style="margin-bottom:5px"><span id="footerApp">DFG Finance OS</span> · <span id="footerTs"></span></div>
-    <div style="color:var(--m2)">Supabase PostgreSQL · All data live</div>
+    <div style="color:var(--m2)">Supabase PostgreSQL · Datos en tiempo real</div>
   </div>
 </footer>
 
@@ -1018,8 +1038,8 @@ const MODULE_SECTION = {
 // Icon + short label + scroll-target for every possible tab.
 // label is the fallback; cfg.modules[key].label always wins.
 const TAB_META = {
-  home:         { icon:'⌂',  label:'Home',      to:'home'        },
-  overview:     { icon:'◎',  label:'Overview',   to:'overview'    },
+  home:         { icon:'⌂',  label:'Inicio',     to:'home'        },
+  overview:     { icon:'◎',  label:'Resumen',    to:'overview'    },
   flujo:        { icon:'↕',  label:'Flujo',      to:'flujo'       },
   gastos:       { icon:'$',  label:'Gastos',     to:'gastos'      },
   proyeccion:   { icon:'⬆', label:'Meta',       to:'proyeccion'  },
@@ -1027,7 +1047,7 @@ const TAB_META = {
   mes_perfecto: { icon:'★',  label:'Perfecto',   to:'perfecto'    },
   montecarlo:   { icon:'⚂',  label:'Portafolios',to:'montecarlo'  },
   calculator:   { icon:'≡',  label:'Calc',       to:'calculator'  },
-  insights:     { icon:'◆',  label:'Insights',   to:'insights'    },
+  insights:     { icon:'◆',  label:'Alertas',    to:'insights'    },
   predictor:    { icon:'⊙',  label:'Predictor',  to:'predictor'   },
 };
 
@@ -1138,13 +1158,22 @@ function renumberSections(){
 // which modules have enabled:true in cfg. Uses cfg.modules[key].label
 // as the tab label (falls back to TAB_META default).
 // Adds class "overflow" when >5 tabs so the bar scrolls horizontally.
+// FIXED ORDER: home is always 1st · diario is always 2nd · rest follow.
 function buildTabBar(cfg){
   const bar=document.getElementById('tabBar');
   if(!bar) return;
   bar.innerHTML='';
   const mods=cfg.modules||{};
-  Object.entries(mods).forEach(([key,mod])=>{
-    if(!mod.enabled) return;
+
+  // Build ordered key list: home first · diario second · insights always last
+  const FIRST  = ['home','diario'];
+  const LAST   = ['insights'];
+  const middle = Object.keys(mods).filter(k=>![...FIRST,...LAST].includes(k));
+  const ordered = [...FIRST, ...middle, ...LAST];
+
+  ordered.forEach(key=>{
+    const mod=mods[key];
+    if(!mod||!mod.enabled) return;
     const meta=TAB_META[key];
     if(!meta) return;
     const label=mod.label||meta.label;
@@ -1252,10 +1281,8 @@ function renderAll() {
 function renderHero() {
   const cur=DB.curBal, target=USER_TARGET;
   const p=(cur/target*100).toFixed(1);
-  // Salary: find avg quincena then ×2 to get monthly salary estimate
-  const salary=DB.income.filter(t=>(t.subcategory||'').toLowerCase()==='salary');
-  const avgQuincena=salary.length?salary.reduce((s,t)=>s+t.amount,0)/salary.length:0;
-  const avgSal=avgQuincena*2;  // two quincenas = one full monthly salary
+  // Ingreso Avg: promedio mensual de TODOS los ingresos (no solo salario)
+  const avgSal=DB.monthly.length?DB.monthly.reduce((s,m)=>s+m.income,0)/DB.monthly.length:0;
   const interest=DB.income.filter(t=>(t.subcategory||'').toLowerCase()==='interest').reduce((s,t)=>s+t.amount,0);
   const shopping=DB.real_exp.filter(t=>t.category==='Shopping').reduce((s,t)=>s+t.amount,0);
   // Compute top expense category dynamically
@@ -1266,10 +1293,10 @@ function renderHero() {
   const topCatColor=CAT_COL[topCatName]||'var(--rd)';
   const mthsCount=DB.monthly.length||1;
 
-  document.getElementById('heroSub').textContent=`${DB.all.length} transacciones · ${DB.monthly.length} meses · Live`;
+  document.getElementById('heroSub').textContent=`${DB.all.length} transacciones · ${DB.monthly.length} meses · En vivo`;
   document.getElementById('kpiGrid').innerHTML=`
-    <div class="kpi fu" style="--kc:var(--gr)"><div class="kpi-l">Net Worth</div><div class="kpi-v" style="color:var(--gr)">${fmt(cur)}</div><div class="kpi-s">COP</div><div class="badge bg">en tiempo real</div></div>
-    <div class="kpi fu" style="--kc:var(--bl)"><div class="kpi-l">Salary prom.</div><div class="kpi-v">${fmt(avgSal)}</div><div class="kpi-s">COP/mes</div><div class="badge ba">Salary</div></div>
+    <div class="kpi fu" style="--kc:var(--gr)"><div class="kpi-l">Patrimonio neto</div><div class="kpi-v" style="color:var(--gr)">${fmt(cur)}</div><div class="kpi-s">COP</div><div class="badge bg">en tiempo real</div></div>
+    <div class="kpi fu" style="--kc:var(--bl)"><div class="kpi-l">Ingreso Avg</div><div class="kpi-v">${fmt(avgSal)}</div><div class="kpi-s">COP/mes</div><div class="badge ba">todos los ingresos</div></div>
     <div class="kpi fu" style="--kc:var(--tl)"><div class="kpi-l">Intereses</div><div class="kpi-v" style="color:var(--tl)">${fmt(interest)}</div><div class="kpi-s">acumulados</div><div class="badge bt">9% APY</div></div>
     <div class="kpi fu" style="--kc:${topCatColor}"><div class="kpi-l">${topCatName} #1</div><div class="kpi-v" style="color:${topCatColor}">${fmt(topCatAmt)}</div><div class="kpi-s">mayor gasto acumulado</div><div class="badge br">~${fmt(topCatAmt/mthsCount)}/mes</div></div>`;
 
@@ -1282,14 +1309,14 @@ function renderOverview() {
   const bal=DB.balances;
   const labels=bal.map(b=>b.month.slice(0,3)+' '+b.year);
   const values=bal.map(b=>b.balance);
-  mkCh('cNW',{type:'line',data:{labels,datasets:[{label:'Net Worth',data:values,borderColor:cssVar('--ac'),backgroundColor:cssVar('--ac-glow'),fill:true,tension:.4,pointBackgroundColor:cssVar('--ac'),pointBorderColor:'#fff',pointBorderWidth:2,pointRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>fmtF(c.raw)+' COP'}}},scales:{x:xO,y:yO}}});
+  mkCh('cNW',{type:'line',data:{labels,datasets:[{label:'Patrimonio neto',data:values,borderColor:cssVar('--ac'),backgroundColor:cssVar('--ac-glow'),fill:true,tension:.4,pointBackgroundColor:cssVar('--ac'),pointBorderColor:'#fff',pointBorderWidth:2,pointRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>fmtF(c.raw)+' COP'}}},scales:{x:xO,y:yO}}});
 
   const salTx=DB.income.filter(t=>(t.subcategory||'').toLowerCase()==='salary').sort((a,b)=>a.date.localeCompare(b.date)).slice(-3);
   const cols=['#6b7280','#4d9fff','#a78bfa','#f5a623','#22d47a'];
   document.getElementById('salaryList').innerHTML=salTx.map((t,i)=>`
     <div class="tl-item"><div class="tl-dot" style="background:${cols[i%cols.length]}"></div>
     <div class="tl-date">${t.date}</div>
-    <div style="font-size:11px;color:var(--m);margin-bottom:2px">${t.description||'Salary'}</div>
+    <div style="font-size:11px;color:var(--m);margin-bottom:2px">${t.description||'Salario'}</div>
     <div class="tl-amount" style="color:${cols[i%cols.length]}">${fmtF(t.amount)}</div></div>`).join('');
 }
 
@@ -1300,7 +1327,7 @@ function renderFlujo() {
   // Build source datasets dynamically — only show sources that have data
   // Build source datasets — one bar per real income source, only show if has data
   const SRC_SOURCES = [
-    {key:'salary',    label:'Salary',     color:'rgba(34,212,122,0.75)'},
+    {key:'salary',    label:'Salario',    color:'rgba(34,212,122,0.75)'},
     {key:'didi',      label:'Didi/Uber',  color:'rgba(245,166,35,0.75)'},
     {key:'freelance', label:'Freelance',  color:'rgba(77,159,255,0.75)'},
     {key:'interest',  label:'Intereses',  color:'rgba(45,212,191,0.75)'},
@@ -1400,7 +1427,7 @@ function updateTarget(val){
   if(heroTarget) heroTarget.textContent=lbl;
   // Update nav button text
   const navBtn=document.querySelector('.nl[onclick*="proyeccion"]');
-  if(navBtn) navBtn.textContent=fmt(USER_TARGET).replace('$','')+'M goal';
+  if(navBtn) navBtn.textContent=fmt(USER_TARGET).replace('$','')+'M meta';
   renderProyeccion();
   renderHero();
 }
@@ -1569,7 +1596,7 @@ function renderPerfecto() {
     const sign=isBelow?'−':'+';
     distEl.innerHTML+=`<div style="margin-bottom:12px">
       <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px">
-        <span style="color:var(--t);font-weight:500">${m.label}${m.isCurrentMonth?' <span style="font-size:9px;color:var(--ac2)">● live</span>':''}</span>
+        <span style="color:var(--t);font-weight:500">${m.label}${m.isCurrentMonth?' <span style="font-size:9px;color:var(--ac2)">● en vivo</span>':''}</span>
         <span style="color:${col};font-weight:600">${sign}${Math.abs(p).toFixed(0)}% · ${fmt(m.actual)}</span>
       </div>
       <div style="height:7px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden">
@@ -1691,18 +1718,65 @@ function renderPerfecto() {
 // ══════════════════════════════════════════════════════════
 let txType='expense', selCat='food';
 const CATS_EXP=[
-  {id:'food',col:'#22d47a',lbl:'🛒 Comida'},{id:'transport',col:'#f5a623',lbl:'🚌 Transport'},
+  {id:'food',col:'#22d47a',lbl:'🛒 Comida'},{id:'transport',col:'#f5a623',lbl:'🚌 Transporte'},
   {id:'personal',col:'#a78bfa',lbl:'👥 Personal'},{id:'social',col:'#4d9fff',lbl:'☕ Social'},
-  {id:'shopping',col:'#f05353',lbl:'🛍 Shopping'},{id:'bills',col:'#2dd4bf',lbl:'📱 Facturas'},
-  {id:'health',col:'#f472b6',lbl:'💊 Salud'},{id:'edu',col:'#34d399',lbl:'📚 Edu'},
+  {id:'shopping',col:'#f05353',lbl:'🛍 Compras'},{id:'bills',col:'#2dd4bf',lbl:'📱 Facturas'},
+  {id:'health',col:'#f472b6',lbl:'💊 Salud'},{id:'edu',col:'#34d399',lbl:'📚 Educación'},
   {id:'other',col:'#888',lbl:'⚙ Otro'},
 ];
 const CATS_INC=[
-  {id:'salary',col:'#22d47a',lbl:'💼 Salary'},{id:'freelance',col:'#4d9fff',lbl:'💻 Freelance'},
+  {id:'salary',col:'#22d47a',lbl:'💼 Salario'},{id:'freelance',col:'#4d9fff',lbl:'💻 Freelance'},
   {id:'didi',col:'#f5a623',lbl:'🚗 Didi'},{id:'interest',col:'#2dd4bf',lbl:'📈 Intereses'},
   {id:'other_in',col:'#888',lbl:'⚙ Otro'},
 ];
 const CMAP=Object.fromEntries([...CATS_EXP,...CATS_INC].map(c=>[c.id,c]));
+
+// ── Categorías personalizadas (guardadas en localStorage) ─────────────────
+let customCatsExp = JSON.parse(localStorage.getItem('dfg_custom_exp') || '[]');
+let customCatsInc = JSON.parse(localStorage.getItem('dfg_custom_inc') || '[]');
+
+function saveCustomCats(){
+  localStorage.setItem('dfg_custom_exp', JSON.stringify(customCatsExp));
+  localStorage.setItem('dfg_custom_inc', JSON.stringify(customCatsInc));
+}
+
+// Devuelve predefinidas + personalizadas según el tipo activo
+function getActiveCats(){
+  return txType==='expense' ? [...CATS_EXP,...customCatsExp] : [...CATS_INC,...customCatsInc];
+}
+
+function getCatById(id){
+  return [...CATS_EXP,...CATS_INC,...customCatsExp,...customCatsInc].find(c=>c.id===id);
+}
+
+function deleteCustomCat(id){
+  if(!confirm('¿Eliminar esta categoría personalizada?')) return;
+  if(txType==='expense') customCatsExp=customCatsExp.filter(c=>c.id!==id);
+  else                   customCatsInc=customCatsInc.filter(c=>c.id!==id);
+  saveCustomCats();
+  buildCatGrid();
+}
+
+function addCustomCat(){
+  const nameEl  = document.getElementById('newCatName');
+  const emojiEl = document.getElementById('newCatEmoji');
+  const colorEl = document.getElementById('newCatColor');
+  const name    = nameEl.value.trim();
+  if(!name){ nameEl.style.borderColor='var(--rd)'; nameEl.focus(); return; }
+  nameEl.style.borderColor='';
+  const emoji = (emojiEl.value.trim() || '🏷').slice(0,2);
+  const col   = colorEl.value;
+  const id    = 'custom_' + Date.now();
+  const cat   = { id, col, lbl:`${emoji} ${name}`, custom:true };
+  if(txType==='expense') customCatsExp.push(cat);
+  else                   customCatsInc.push(cat);
+  saveCustomCats();
+  // Reset form
+  nameEl.value=''; emojiEl.value=''; colorEl.value='#a78bfa';
+  document.getElementById('catAddForm').style.display='none';
+  selCat=id;
+  buildCatGrid();
+}
 
 function setType(t){
   txType=t;
@@ -1712,27 +1786,58 @@ function setType(t){
 }
 
 function buildCatGrid(){
-  const cats=txType==='expense'?CATS_EXP:CATS_INC;
-  selCat=cats[0].id;
-  const el=document.getElementById('catGrid');
-  el.innerHTML='';
-  cats.forEach(c=>{
-    const b=document.createElement('button');
-    b.id='cat_'+c.id; b.textContent=c.lbl;
-    b.onclick=()=>selectCat(c.id);
-    b.style.cssText=`padding:7px 3px;border:1px solid ${c.id===selCat?c.col+'66':'var(--b2)'};border-radius:8px;background:${c.id===selCat?c.col+'33':'var(--bg3)'};color:${c.id===selCat?c.col:'var(--m)'};font-family:var(--font-body);font-size:10px;cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent`;
-    el.appendChild(b);
+  const allCats = getActiveCats();
+  // Mantener selCat válido al cambiar de tipo
+  if(!allCats.find(c=>c.id===selCat)) selCat = allCats[0]?.id || '';
+  const el = document.getElementById('catGrid');
+  el.innerHTML = '';
+
+  allCats.forEach(c=>{
+    // Wrapper relativo para poder poner el botón × encima
+    const wrap = document.createElement('div');
+    wrap.style.cssText = 'position:relative';
+
+    const b = document.createElement('button');
+    b.id = 'cat_'+c.id;
+    b.textContent = c.lbl;
+    b.onclick = ()=>selectCat(c.id);
+    const sel = c.id===selCat;
+    b.style.cssText = `width:100%;padding:7px 3px;border:1px solid ${sel?c.col+'66':'var(--b2)'};border-radius:8px;background:${sel?c.col+'22':'var(--bg3)'};color:${sel?c.col:'var(--m)'};font-family:var(--font-body);font-size:10px;cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent`;
+    wrap.appendChild(b);
+
+    // Botón eliminar solo en categorías personalizadas
+    if(c.custom){
+      const del = document.createElement('button');
+      del.textContent = '×';
+      del.title = 'Eliminar';
+      del.onclick = e=>{ e.stopPropagation(); deleteCustomCat(c.id); };
+      del.style.cssText = 'position:absolute;top:-5px;right:-5px;width:16px;height:16px;border-radius:50%;background:var(--rd);color:#fff;border:none;font-size:11px;line-height:16px;text-align:center;cursor:pointer;padding:0;z-index:2;display:flex;align-items:center;justify-content:center';
+      wrap.appendChild(del);
+    }
+    el.appendChild(wrap);
   });
+
+  // Botón "+ Nueva categoría"
+  const addBtn = document.createElement('button');
+  addBtn.textContent = '＋ Nueva';
+  addBtn.onclick = ()=>{
+    const f = document.getElementById('catAddForm');
+    const open = f.style.display !== 'none';
+    f.style.display = open ? 'none' : 'block';
+    if(!open) document.getElementById('newCatName').focus();
+  };
+  addBtn.style.cssText = 'padding:7px 3px;border:1px dashed rgba(167,139,250,0.4);border-radius:8px;background:rgba(167,139,250,0.06);color:rgba(167,139,250,0.8);font-family:var(--font-body);font-size:10px;cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent';
+  el.appendChild(addBtn);
 }
 
 function selectCat(id){
-  const cats=txType==='expense'?CATS_EXP:CATS_INC;
-  selCat=id;
-  cats.forEach(c=>{
-    const b=document.getElementById('cat_'+c.id); if(!b)return;
-    b.style.background=c.id===id?c.col+'33':'var(--bg3)';
-    b.style.color=c.id===id?c.col:'var(--m)';
-    b.style.borderColor=c.id===id?c.col+'66':'var(--b2)';
+  selCat = id;
+  getActiveCats().forEach(c=>{
+    const b = document.getElementById('cat_'+c.id); if(!b) return;
+    const sel = c.id===id;
+    b.style.background    = sel ? c.col+'22' : 'var(--bg3)';
+    b.style.color         = sel ? c.col      : 'var(--m)';
+    b.style.borderColor   = sel ? c.col+'66' : 'var(--b2)';
   });
 }
 
@@ -1744,16 +1849,19 @@ function liveAmt(inp){
 
 async function addTx(){
   const amount=parseInt(document.getElementById('txAmt').value);
-  const desc=document.getElementById('txDesc').value.trim()||(CMAP[selCat]?.lbl||selCat);
+  const activeCat = getCatById(selCat);
+  const desc=document.getElementById('txDesc').value.trim()||(activeCat?.lbl||selCat);
   const date=document.getElementById('txDate').value||new Date().toISOString().slice(0,10);
   const msgEl=document.getElementById('txMsg');
   if(!amount||amount<=0){msgEl.textContent='Ingresa un monto';msgEl.style.color='var(--rd)';return;}
   msgEl.textContent='Guardando...';msgEl.style.color='var(--m)';
   try {
     const d=new Date(date+'T12:00:00');
+    // Extraer nombre limpio (sin emoji) para la columna category
+    const catLabel = activeCat?.lbl.replace(/^\S+\s*/,'').trim() || selCat;
     const [res]=await sbPost('transactions',{
       date,type:txType,amount,
-      category:txType==='expense'?(CATS_EXP.find(c=>c.id===selCat)?.lbl.replace(/^.{2}/,'').trim()||selCat):'Income',
+      category:txType==='expense'? catLabel :'Income',
       subcategory:selCat,
       description:desc,
       account:'Rappi',
@@ -1934,12 +2042,602 @@ async function deleteTx(id){
   if(ok){ DB.all=DB.all.filter(t=>t.id!==id); DB.income=DB.income.filter(t=>t.id!==id); DB.expenses=DB.expenses.filter(t=>t.id!==id); DB.real_exp=DB.real_exp.filter(t=>t.id!==id); DB.monthly=buildMonthly(DB.all); renderAll(); }
 }
 
-function exportCSV(){
-  const rows=DB.all.map(t=>`${t.date},${t.type},${t.category},"${(t.description||'').replace(/"/g,"'")}",${t.type==='expense'?-t.amount:t.amount}`);
-  const blob=new Blob(['date,type,category,description,amount\n'+rows.join('\n')],{type:'text/csv'});
-  const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
-  a.download='dfg_'+new Date().toISOString().slice(0,10)+'.csv'; a.click();
+// ══════════════════════════════════════════════════════════
+//  PDF FINANCIAL STATEMENT GENERATOR
+//  exportStatement(sections=[]) — lazy-loads jsPDF + AutoTable on first call
+// ══════════════════════════════════════════════════════════
+let _pdfReady = false;
+async function _loadPdfLibs() {
+  if (_pdfReady) return;
+  const load = src => new Promise((res, rej) => {
+    const s = document.createElement('script');
+    s.src = src; s.onload = res; s.onerror = rej;
+    document.head.appendChild(s);
+  });
+  await load('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
+  await load('https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js');
+  _pdfReady = true;
 }
+
+function _pf(v) { // format number → $1.2M / $450K / $12K
+  const a = Math.abs(v), sg = v < 0 ? '-' : '';
+  if (a >= 1e6) return sg + '$' + (a/1e6).toFixed(1) + 'M';
+  if (a >= 1e3) return sg + '$' + Math.round(a/1e3) + 'K';
+  return sg + '$' + Math.round(a);
+}
+
+async function exportStatement(sections = []) {
+  // Show cursor feedback
+  document.body.style.cursor = 'wait';
+  // Update all matching buttons
+  const btns = [...document.querySelectorAll('[onclick*="exportStatement"]')];
+  const origLabels = btns.map(b => b.textContent);
+  btns.forEach(b => { b.textContent = '⏳ Generando...'; b.disabled = true; });
+
+  try {
+    await _loadPdfLibs();
+
+    // ── Resolve allowed sections ──────────────────────────────────────────
+    const M = CFG?.modules || {};
+    const enabled = {
+      overview:   M.overview?.enabled   !== false,
+      flujo:      M.flujo?.enabled      !== false,
+      gastos:     M.gastos?.enabled     !== false,
+      perfecto:   M.mes_perfecto?.enabled !== false,
+      diario:     M.diario?.enabled     !== false,
+      proyeccion: M.proyeccion?.enabled !== false,
+      montecarlo: M.montecarlo?.enabled !== false,
+      insights:   M.insights?.enabled   !== false,
+    };
+    const ALL = ['overview','flujo','gastos','perfecto','diario','proyeccion','montecarlo','insights'];
+    let inc = (sections.length ? sections : ALL).filter(s => enabled[s] !== false);
+    if (!inc.length) inc = ALL;
+
+    // ── Init doc ──────────────────────────────────────────────────────────
+    const { jsPDF } = window.jspdf;
+    const doc  = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
+    const W = 210, H = 297, ML = 14, MR = 14, CW = W - ML - MR;
+
+    // Palette
+    const PU  = [124, 92, 252];   // purple
+    const DK  = [8,   9,  16];    // dark bg
+    const DK2 = [14,  15, 21];    // dark2 band
+    const GR  = [22,  163, 74];   // green
+    const RD  = [220, 38,  38];   // red
+    const GY  = [100, 102, 120];  // gray
+    const LG  = [200, 200, 215];  // light gray border
+    const AL  = [248, 248, 255];  // alternating row
+    const WH  = [255, 255, 255];
+    const NK  = [25,  26,  38];   // near-black text
+    const TL  = [45,  212, 191];  // teal accent
+
+    // Date helpers
+    const genDate = new Date().toLocaleDateString('es-CO',{year:'numeric',month:'long',day:'numeric'});
+    const allDates = DB.all.map(t=>t.date).filter(Boolean).sort();
+    const d0 = allDates[0]  ? new Date(allDates[0]).toLocaleDateString('es',{month:'short',year:'numeric'}) : '';
+    const d1 = allDates[allDates.length-1] ? new Date(allDates[allDates.length-1]).toLocaleDateString('es',{month:'short',year:'numeric'}) : '';
+    const period = d0 && d1 ? `${d0} – ${d1}` : genDate;
+
+    let pageN = 0; // visible page counter (cover unnumbered)
+
+    // ── Client branding from CFG ──────────────────────────────────────────
+    const clientName     = CFG?.client?.branding?.hero_name || CFG?.client?.name || 'Cliente';
+    const clientInitials = CFG?.client?.branding?.initials  ||
+                           clientName.split(' ').map(p=>p[0]).join('').slice(0,3).toUpperCase();
+    const appTitle       = CFG?.client?.branding?.app_title || 'Finance OS';
+
+    // ── Strip emoji / non-Latin chars (jsPDF built-in fonts can't render them) ─
+    const cleanTxt = s => (s||'').replace(/[^\u0020-\u007E\u00A0-\u017E]/g,'').replace(/\s+/g,' ').trim();
+
+    // ── Header / Footer on every content page ────────────────────────────
+    function addHF() {
+      doc.setDrawColor(...PU); doc.setLineWidth(0.7);
+      doc.line(ML, 7, W-MR, 7);
+      doc.setFont('helvetica','bold'); doc.setFontSize(7.5); doc.setTextColor(...PU);
+      doc.text(appTitle, ML, 12.5);
+      doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(...GY);
+      doc.text(genDate, W-MR, 12.5, {align:'right'});
+      doc.setDrawColor(...LG); doc.setLineWidth(0.25);
+      doc.line(ML, H-9, W-MR, H-9);
+      doc.setFontSize(7.5); doc.setTextColor(...GY);
+      doc.text(String(pageN), W/2, H-5, {align:'center'});
+      doc.text(`Confidencial \xB7 ${clientName}`, W-MR, H-5, {align:'right'});
+    }
+
+    // ── Section titles map ────────────────────────────────────────────────
+    const SLBL = {
+      overview:   '01 \xB7 PATRIMONIO NETO & EVOLUCION',
+      flujo:      '02 \xB7 FLUJO MENSUAL',
+      gastos:     '03 \xB7 ANALISIS DE GASTOS',
+      proyeccion: '04 \xB7 PROYECCION A META',
+      diario:     '05 \xB7 DIARIO DE TRANSACCIONES',
+      perfecto:   '06 \xB7 MES PERFECTO',
+      montecarlo: '07 \xB7 MODELOS PROBABILISTICOS',
+      insights:   '09 \xB7 ALERTAS & ANALISIS',
+    };
+    const SICO = { overview:'o', flujo:'~', gastos:'$', proyeccion:'^',
+                   diario:'+', perfecto:'*', montecarlo:'%', insights:'>' };
+
+    // Open a new section page, return y cursor after dark banner
+    function newSection(key) {
+      doc.addPage(); pageN++;
+      addHF();
+      doc.setFillColor(...DK2); doc.rect(0, 15, W, 21, 'F');
+      doc.setFillColor(...PU);  doc.rect(0, 15, 4, 21, 'F');
+      doc.setFont('helvetica','bold'); doc.setFontSize(11); doc.setTextColor(...WH);
+      doc.text(SLBL[key] || key.toUpperCase(), ML+7, 28.5);
+      doc.setFontSize(12); doc.setTextColor(...PU);
+      doc.text(SICO[key]||'·', W-MR, 28.5, {align:'right'});
+      return 44;
+    }
+
+    // ── 3-box KPI callout row ─────────────────────────────────────────────
+    function addKpiRow(y, kpis) {
+      const bw = (CW - 8) / 3;
+      kpis.forEach((k, i) => {
+        const x = ML + i*(bw+4);
+        const cx = x + bw/2; // horizontal center of box
+        doc.setFillColor(245,245,255); doc.setDrawColor(...LG); doc.setLineWidth(0.25);
+        doc.roundedRect(x, y, bw, 22, 2, 2, 'FD');
+        // top purple accent bar (full width, thin)
+        doc.setFillColor(...PU); doc.rect(x, y, bw, 2, 'F');
+        doc.setFont('helvetica','normal'); doc.setFontSize(6.5); doc.setTextColor(...GY);
+        doc.text((k.label||'').toUpperCase(), cx, y+9, {align:'center'});
+        doc.setFont('helvetica','bold'); doc.setFontSize(12);
+        doc.setTextColor(...(k.neg ? RD : k.pos ? GR : PU));
+        doc.text(String(k.val), cx, y+18, {align:'center'});
+      });
+      return y + 27;
+    }
+
+    // ── AutoTable wrapper with consistent styling ─────────────────────────
+    function addTable(startY, head, body, colStyles={}) {
+      doc.autoTable({
+        startY, head, body,
+        margin: { left:ML, right:MR, top:19, bottom:14 },
+        styles: {
+          font:'helvetica', fontSize:8.5,
+          cellPadding:{top:3.5, right:5, bottom:3.5, left:5},
+          textColor:NK, lineColor:LG, lineWidth:0.2,
+        },
+        headStyles: { fillColor:PU, textColor:WH, fontStyle:'bold', fontSize:9 },
+        alternateRowStyles: { fillColor:AL },
+        columnStyles: colStyles,
+        didAddPage: () => { pageN++; addHF(); },
+        didDrawCell: (d) => {
+          // Purple left accent on header rows
+          if (d.row.section==='head' && d.column.index===0) {
+            doc.setFillColor(...PU);
+            doc.rect(d.cell.x, d.cell.y, 2.5, d.cell.height, 'F');
+          }
+        },
+      });
+      return doc.lastAutoTable.finalY;
+    }
+
+    // Cell builder helpers
+    const cAmt = (v, pos, neg) => ({
+      content: _pf(v),
+      styles: { halign:'right', fontStyle:'bold',
+                textColor: (v>0&&pos)?GR : (v<0||neg)?RD : NK }
+    });
+    const cSign = v => ({
+      content: (v>=0?'+':'')+_pf(v),
+      styles: { halign:'right', fontStyle:'bold', textColor: v>=0?GR:RD }
+    });
+    const cCtr = (txt, col) => ({
+      content: String(txt),
+      styles: { halign:'center', textColor: col||NK }
+    });
+
+    // ════════════════════════════════════════════════════════════════════
+    // COVER PAGE — full dark background
+    // ════════════════════════════════════════════════════════════════════
+    doc.setFillColor(...DK); doc.rect(0, 0, W, H, 'F');
+
+    // Client monogram — initials from CFG
+    doc.setFillColor(...PU); doc.roundedRect(ML, 17, 26, 26, 3, 3, 'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(clientInitials.length > 2 ? 11 : 14);
+    doc.setTextColor(...WH);
+    doc.text(clientInitials, ML+13, 32.5, {align:'center'});
+
+    // Title block
+    doc.setFont('helvetica','bold'); doc.setFontSize(32); doc.setTextColor(...WH);
+    doc.text('Estado Financiero', ML, 70);
+    // Client name under title
+    doc.setFont('helvetica','normal'); doc.setFontSize(13); doc.setTextColor(...PU);
+    doc.text(clientName, ML, 80);
+    // Period
+    doc.setFont('helvetica','normal'); doc.setFontSize(10); doc.setTextColor(140,140,165);
+    doc.text(period, ML, 88);
+
+    // Purple rule
+    doc.setDrawColor(...PU); doc.setLineWidth(0.8);
+    doc.line(ML, 94, W-MR, 94);
+
+    // Cover KPI cards — taller, fully centered
+    const ckw = (CW-10)/3;
+    [
+      { label:'PATRIMONIO NETO', val:_pf(DB.curBal),         color:GR  },
+      { label:'PERIODO',         val:period,                  color:PU  },
+      { label:'SECCIONES',       val:inc.length+' incluidas', color:TL  },
+    ].forEach((k, i) => {
+      const x  = ML + i*(ckw+5);
+      const cx = x + ckw/2;
+      // Card background
+      doc.setFillColor(...DK2); doc.setDrawColor(...PU); doc.setLineWidth(0.5);
+      doc.roundedRect(x, 100, ckw, 32, 3, 3, 'FD');
+      // Top accent line
+      doc.setFillColor(...k.color); doc.rect(x, 100, ckw, 2.5, 'F');
+      // Label
+      doc.setFont('helvetica','normal'); doc.setFontSize(6.5); doc.setTextColor(110,110,140);
+      doc.text(k.label, cx, 111, {align:'center'});
+      // Value — auto-shrink font for longer strings (period text)
+      const valStr = String(k.val);
+      const valFs  = valStr.length > 12 ? 8.5 : 12.5;
+      doc.setFont('helvetica','bold'); doc.setFontSize(valFs); doc.setTextColor(...k.color);
+      doc.text(valStr, cx, 124, {align:'center'});
+    });
+
+    // Sections list
+    doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.setTextColor(...PU);
+    doc.text('SECCIONES INCLUIDAS', ML, 148);
+    doc.setDrawColor(35,36,58); doc.setLineWidth(0.3);
+    doc.line(ML, 151, W-MR, 151);
+    inc.forEach((s, i) => {
+      const col = i%2===0 ? ML : ML+CW/2+2;
+      const row = Math.floor(i/2);
+      doc.setFont('helvetica','normal'); doc.setFontSize(8.5); doc.setTextColor(185,185,210);
+      doc.text('\xBB  '+(SLBL[s]||s), col, 160 + row*9);
+    });
+
+    // Footer tagline
+    doc.setFontSize(7); doc.setTextColor(55,56,78);
+    doc.text(`Generado el ${genDate}  \xB7  ${appTitle}  \xB7  Datos Supabase PostgreSQL`, W/2, H-15, {align:'center'});
+    doc.setFontSize(8); doc.setTextColor(40,40,65);
+    doc.text('C O N F I D E N C I A L', W/2, H-9, {align:'center'});
+
+    // ════════════════════════════════════════════════════════════════════
+    // 01 · OVERVIEW — Net Worth progression
+    // ════════════════════════════════════════════════════════════════════
+    if (inc.includes('overview')) {
+      let y = newSection('overview');
+      const avgSvOV = DB.monthly.length
+        ? DB.monthly.reduce((s,m)=>s+(m.income-m.expenses),0)/DB.monthly.length : 0;
+      const bestOV = DB.monthly.length
+        ? DB.monthly.reduce((b,m)=>(m.income-m.expenses)>(b.income-b.expenses)?m:b, DB.monthly[0]) : null;
+      y = addKpiRow(y, [
+        { label:'Patrimonio neto actual', val:_pf(DB.curBal),   pos:true },
+        { label:'Ahorro promedio / mes',  val:_pf(avgSvOV),     pos:avgSvOV>=0, neg:avgSvOV<0 },
+        { label:'Mejor mes',             val:bestOV?`${bestOV.month.slice(0,3)} ${bestOV.year}`:'-' },
+      ]);
+      addTable(y,
+        [['Mes', 'Patrimonio', 'Cambio MoM', 'Variación %', 'Fuente']],
+        DB.balances.map((b, i) => {
+          const prev = i > 0 ? DB.balances[i-1].balance : b.balance;
+          const ch = b.balance - prev;
+          return [
+            `${b.month} ${b.year}`,
+            cAmt(b.balance, true, false),
+            i > 0 ? cSign(ch) : cCtr('—', GY),
+            i > 0 ? { content:`${ch>=0?'+':''}${(ch/prev*100).toFixed(1)}%`,
+                       styles:{halign:'right', textColor:ch>=0?GR:RD} } : cCtr('—',GY),
+            cCtr(b._isLive ? '● En vivo' : '✓ Real', b._isLive ? [167,139,250] : GR),
+          ];
+        }),
+        { 1:{halign:'right'}, 2:{halign:'right'}, 3:{halign:'right'}, 4:{halign:'center',fontSize:7.5} }
+      );
+    }
+
+    // ════════════════════════════════════════════════════════════════════
+    // 02 · FLUJO — Income vs expenses vs savings
+    // ════════════════════════════════════════════════════════════════════
+    if (inc.includes('flujo')) {
+      let y = newSection('flujo');
+      const tI = DB.income.reduce((s,t)=>s+t.amount,0);
+      const tE = DB.expenses.reduce((s,t)=>s+t.amount,0);
+      const tS = tI - tE;
+      y = addKpiRow(y, [
+        { label:'Total ingresos',  val:_pf(tI), pos:true },
+        { label:'Total gastos',    val:_pf(tE), neg:true },
+        { label:'Total ahorrado',  val:_pf(tS), pos:tS>=0, neg:tS<0 },
+      ]);
+      const flujoFY = addTable(y,
+        [['Mes','Ingresos','Gastos','Ahorro Neto','Tasa Ahorro']],
+        DB.monthly.map(m => {
+          const sv = m.income - m.expenses;
+          const rt = m.income>0 ? `${((sv/m.income)*100).toFixed(0)}%` : '-';
+          return [
+            `${m.month} ${m.year}`,
+            cAmt(m.income, true, false),
+            cAmt(m.expenses, false, true),
+            cSign(sv),
+            { content:rt, styles:{halign:'center', textColor:sv>=0?GR:RD} },
+          ];
+        }),
+        { 1:{halign:'right'}, 2:{halign:'right'}, 3:{halign:'right'}, 4:{halign:'center'} }
+      );
+      // Income sources sub-table
+      const srcMap = {};
+      DB.income.forEach(t => { const k = t.subcategory||'Otro'; srcMap[k]=(srcMap[k]||0)+t.amount; });
+      let srcY = flujoFY + 9;
+      if (srcY > H-65) { doc.addPage(); pageN++; addHF(); srcY = 22; }
+      doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor(...PU);
+      doc.text('FUENTES DE INGRESO', ML, srcY);
+      addTable(srcY+4,
+        [['Fuente', 'Total Período', '% del Total']],
+        Object.entries(srcMap).sort((a,b)=>b[1]-a[1]).map(([sub,v]) => [
+          sub,
+          cAmt(v, true, false),
+          { content:`${(v/tI*100).toFixed(1)}%`, styles:{halign:'right'} },
+        ]),
+        { 1:{halign:'right'}, 2:{halign:'right'} }
+      );
+    }
+
+    // ════════════════════════════════════════════════════════════════════
+    // 03 · GASTOS — Category breakdown + top 10
+    // ════════════════════════════════════════════════════════════════════
+    if (inc.includes('gastos')) {
+      let y = newSection('gastos');
+      const catMap = {};
+      DB.real_exp.forEach(t => { catMap[t.category]=(catMap[t.category]||0)+t.amount; });
+      const tE2 = DB.real_exp.reduce((s,t)=>s+t.amount,0);
+      const avgME = DB.monthly.length ? tE2/DB.monthly.length : 0;
+      y = addKpiRow(y, [
+        { label:'Gasto total',           val:_pf(tE2),  neg:true },
+        { label:'Promedio mensual',       val:_pf(avgME), neg:true },
+        { label:'Categorías con gasto',   val:String(Object.keys(catMap).length) },
+      ]);
+      const catFY = addTable(y,
+        [['Categoría','Total','% del Total','Promedio / Mes']],
+        Object.entries(catMap).sort((a,b)=>b[1]-a[1]).map(([cat,v]) => [
+          { content:cat, styles:{fontStyle:'bold'} },
+          cAmt(v, false, true),
+          { content:`${(v/tE2*100).toFixed(1)}%`, styles:{halign:'right'} },
+          { content:_pf(v/DB.monthly.length), styles:{halign:'right', textColor:GY} },
+        ]),
+        { 1:{halign:'right'}, 2:{halign:'right'}, 3:{halign:'right'} }
+      );
+      // Top 10 transactions
+      let t10Y = catFY + 9;
+      if (t10Y > H-85) { doc.addPage(); pageN++; addHF(); t10Y = 22; }
+      doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor(...PU);
+      doc.text('TOP 10 TRANSACCIONES INDIVIDUALES', ML, t10Y);
+      addTable(t10Y+4,
+        [['#','Fecha','Descripción','Categoría','Monto']],
+        [...DB.real_exp].sort((a,b)=>b.amount-a.amount).slice(0,10).map((t,i) => [
+          cCtr(i+1, GY),
+          t.date,
+          cleanTxt(t.description||t.category||'').slice(0,34),
+          { content:cleanTxt(t.category||'-'), styles:{fontSize:7.5, textColor:GY} },
+          cAmt(t.amount, false, true),
+        ]),
+        { 0:{cellWidth:8,halign:'center'}, 4:{halign:'right'} }
+      );
+    }
+
+    // ════════════════════════════════════════════════════════════════════
+    // 06 · PERFECTO — Mes Perfecto table
+    // ════════════════════════════════════════════════════════════════════
+    if (inc.includes('perfecto')) {
+      let y = newSection('perfecto');
+      const REAL = OPTIMAL_BUDGET || 232000;
+      const scoreData = DB.monthly.map(m => {
+        const exp = DB.real_exp.filter(t=>t.month===m.month&&t.year===m.year)
+                               .reduce((s,t)=>s+t.amount,0);
+        const sc  = exp > 0 ? Math.round(REAL/exp*100) : 0;
+        return { lbl:`${m.month.slice(0,3)} ${m.year}`, exp, sc, diff:exp-REAL };
+      });
+      const avgSc = scoreData.length ? Math.round(scoreData.reduce((s,r)=>s+r.sc,0)/scoreData.length) : 0;
+      const bestSc = scoreData.length ? scoreData.reduce((b,r)=>r.sc>b.sc?r:b, scoreData[0]) : null;
+      y = addKpiRow(y, [
+        { label:'Presupuesto óptimo', val:_pf(REAL) },
+        { label:'Score promedio',     val:`${avgSc} / 100` },
+        { label:'Mejor mes',          val:bestSc ? `${bestSc.lbl} (${bestSc.sc}/100)` : '-' },
+      ]);
+      addTable(y,
+        [['Mes','Gasto Real','Óptimo','Δ vs Óptimo','Score']],
+        scoreData.map(r => [
+          r.lbl,
+          cAmt(r.exp, false, true),
+          { content:_pf(REAL), styles:{halign:'right', textColor:GY} },
+          cSign(-r.diff),   // positive = spent less than optimal (good = green)
+          { content:`${r.sc}/100`, styles:{halign:'center', fontStyle:'bold',
+            textColor: r.sc>=100?GR : r.sc>=70?[245,166,35] : RD } },
+        ]),
+        { 1:{halign:'right'}, 2:{halign:'right'}, 3:{halign:'right'}, 4:{halign:'center'} }
+      );
+    }
+
+    // ════════════════════════════════════════════════════════════════════
+    // 05 · DIARIO — Full transaction ledger
+    // ════════════════════════════════════════════════════════════════════
+    if (inc.includes('diario')) {
+      let y = newSection('diario');
+      const ledger = [...DB.all]
+        .filter(t => t.type !== 'transfer')
+        .sort((a,b) => (b.date||'').localeCompare(a.date||''));
+      y = addKpiRow(y, [
+        { label:'Total transacciones', val:String(ledger.length) },
+        { label:'Total ingresos',       val:_pf(DB.income.reduce((s,t)=>s+t.amount,0)),   pos:true },
+        { label:'Total gastos',         val:_pf(DB.expenses.reduce((s,t)=>s+t.amount,0)), neg:true },
+      ]);
+      addTable(y,
+        [['Fecha','Descripcion','Categoria','Tipo','Monto']],
+        ledger.map(t => [
+          t.date,
+          cleanTxt(t.description||t.category||'').slice(0,32),
+          { content:cleanTxt(t.category||'-').slice(0,20), styles:{fontSize:7.5, textColor:GY} },
+          cCtr(t.type==='income'?'Ingreso':'Gasto', t.type==='income'?GR:RD),
+          { content:(t.type==='income'?'+':'-')+_pf(t.amount),
+            styles:{halign:'right', fontStyle:'bold', textColor:t.type==='income'?GR:RD} },
+        ]),
+        { 0:{cellWidth:22}, 2:{cellWidth:26}, 3:{cellWidth:18,halign:'center'}, 4:{cellWidth:28,halign:'right'} }
+      );
+    }
+
+    // ════════════════════════════════════════════════════════════════════
+    // 04 · PROYECCIÓN — Scenario projection table
+    // ════════════════════════════════════════════════════════════════════
+    if (inc.includes('proyeccion')) {
+      let y = newSection('proyeccion');
+      const cur    = DB.curBal;
+      const rM     = USER_APY / 12;
+      const avgI   = DB.monthly.length ? DB.monthly.reduce((s,m)=>s+m.income,0)/DB.monthly.length   : 0;
+      const avgE   = DB.monthly.length ? DB.monthly.reduce((s,m)=>s+m.expenses,0)/DB.monthly.length : 400000;
+      const base   = Math.round(Math.max(avgI-avgE, 500000));
+      const scens  = [
+        { name:'Solo ahorros actuales',     save:base           },
+        { name:'+ Freelance $500 USD/mes',  save:base+2000000   },
+        { name:'+ Freelance $1000 USD/mes', save:base+4000000   },
+      ];
+      y = addKpiRow(y, [
+        { label:'Patrimonio actual', val:_pf(cur)                      },
+        { label:'Meta',              val:_pf(USER_TARGET)              },
+        { label:'APY anual',         val:`${(USER_APY*100).toFixed(1)}%` },
+      ]);
+      addTable(y,
+        [['Escenario','Ahorro / Mes','ETA Estimada','Meses','Capital Final']],
+        scens.map(s => {
+          let months = 0, bal = cur;
+          while (bal < USER_TARGET && months < 600) { bal = (bal+s.save)*(1+rM); months++; }
+          const ok  = bal >= USER_TARGET;
+          const eta = ok ? (()=>{ const d=new Date(); d.setMonth(d.getMonth()+months);
+                                   return d.toLocaleDateString('es',{month:'short',year:'numeric'}); })()
+                        : '> 50 años';
+          return [
+            { content:s.name, styles:{fontStyle:'bold'} },
+            cAmt(s.save, true, false),
+            { content:eta, styles:{halign:'center', fontStyle:ok?'bold':'normal', textColor:ok?GR:GY} },
+            cCtr(ok ? months : '—', ok ? NK : GY),
+            cAmt(bal, true, false),
+          ];
+        }),
+        { 1:{halign:'right'}, 2:{halign:'center'}, 3:{halign:'center'}, 4:{halign:'right'} }
+      );
+    }
+
+    // ════════════════════════════════════════════════════════════════════
+    // 07 · MONTECARLO — Portfolio simulation summary
+    // ════════════════════════════════════════════════════════════════════
+    if (inc.includes('montecarlo')) {
+      let y = newSection('montecarlo');
+      const N_SIM = 500, YRS = 5, M_SIM = YRS*12;
+      const cap0  = DB.curBal || 5e6;
+      const aport = 500000;
+      function runMC(mu, sigma) {
+        const muM = mu/12, sigM = sigma/Math.sqrt(12);
+        const out = [];
+        for (let i = 0; i < N_SIM; i++) {
+          let b = cap0;
+          for (let m = 0; m < M_SIM; m++) {
+            const u1 = Math.random() || 1e-9, u2 = Math.random() || 1e-9;
+            b = b*(1 + muM + sigM*Math.sqrt(-2*Math.log(u1))*Math.cos(2*Math.PI*u2)) + aport;
+          }
+          out.push(b);
+        }
+        out.sort((a,b)=>a-b);
+        return {
+          p10: out[Math.floor(N_SIM*.1)],
+          p50: out[Math.floor(N_SIM*.5)],
+          p90: out[Math.floor(N_SIM*.9)],
+          prob50: out.filter(v=>v>=50e6).length/N_SIM*100,
+        };
+      }
+      y = addKpiRow(y, [
+        { label:'Capital base',   val:_pf(cap0)  },
+        { label:'Aporte mensual', val:_pf(aport) },
+        { label:'Horizonte',      val:`${YRS} años · ${N_SIM} simulaciones` },
+      ]);
+      addTable(y,
+        [['Portafolio','Composición','Retorno','Volat.','P10 Pesimista','P50 Mediana','P90 Optimista','Prob. $50M']],
+        [
+          { name:'Conservador', mu:.10, sigma:.05, desc:'CDTs 60% · ETF Bonos 30% · Cash 10%' },
+          { name:'Moderado',    mu:.14, sigma:.12, desc:'VOO/VT 50% · CDTs 30% · Bonos 20%'   },
+          { name:'Agresivo',    mu:.22, sigma:.22, desc:'QQQ/VGT 60% · VOO 25% · Cripto 15%'  },
+        ].map(p => {
+          const r = runMC(p.mu, p.sigma);
+          return [
+            { content:p.name, styles:{fontStyle:'bold'} },
+            { content:p.desc, styles:{fontSize:7, textColor:GY} },
+            cCtr(`${(p.mu*100).toFixed(0)}%`, GR),
+            cCtr(`${(p.sigma*100).toFixed(0)}%`, [245,166,35]),
+            { content:_pf(r.p10), styles:{halign:'right', textColor:RD} },
+            { content:_pf(r.p50), styles:{halign:'right', fontStyle:'bold'} },
+            { content:_pf(r.p90), styles:{halign:'right', textColor:GR} },
+            { content:`${r.prob50.toFixed(0)}%`, styles:{halign:'center', fontStyle:'bold',
+              textColor: r.prob50>50?GR : r.prob50>20?[245,166,35] : RD} },
+          ];
+        }),
+        { 0:{cellWidth:22}, 1:{cellWidth:46}, 2:{cellWidth:14}, 3:{cellWidth:12} }
+      );
+    }
+
+    // ════════════════════════════════════════════════════════════════════
+    // 09 · INSIGHTS — Key insights as styled cards
+    // ════════════════════════════════════════════════════════════════════
+    if (inc.includes('insights')) {
+      let y = newSection('insights');
+      const mths    = DB.monthly.length || 1;
+      const tShop   = DB.real_exp.filter(t=>t.category==='Shopping').reduce((s,t)=>s+t.amount,0);
+      const avgShI  = tShop / mths;
+      const lastMI  = DB.monthly[DB.monthly.length-1];
+      const srI     = lastMI && lastMI.income>0
+                      ? ((lastMI.income-lastMI.expenses)/lastMI.income*100).toFixed(0) : '0';
+      const intI    = DB.income.filter(t=>(t.subcategory||'').toLowerCase()==='interest')
+                               .reduce((s,t)=>s+t.amount,0);
+      const avgSvI  = DB.monthly.reduce((s,m)=>s+(m.income-m.expenses),0) / mths;
+      const mLeftI  = avgSvI > 0 ? Math.ceil((USER_TARGET-DB.curBal)/avgSvI) : 999;
+      const trendI  = DB.monthly.length >= 2
+                      ? DB.monthly[DB.monthly.length-1].expenses - DB.monthly[DB.monthly.length-2].expenses : 0;
+
+      const cards = [
+        { col: Number(srI)>=80?GR:Number(srI)>=50?[245,166,35]:RD,
+          flag:`Tasa de ahorro: ${srI}% este mes`,
+          body:`${Number(srI)>=80?'Excepcional — por encima del objetivo del 80%.':Number(srI)>=50?'Sólido. Margen de mejora hacia el 80%.':'Por debajo del objetivo. Revisar gastos variables.'} Ahorro promedio histórico: ${_pf(avgSvI)}/mes.` },
+        { col: mLeftI<=12?GR:mLeftI<=36?TL:mLeftI<=60?[245,166,35]:GY,
+          flag:`Meta ${_pf(USER_TARGET)}: ${mLeftI>=999?'> 50 años':mLeftI+' meses'}`,
+          body:`Patrimonio ${_pf(DB.curBal)} = ${(DB.curBal/USER_TARGET*100).toFixed(1)}% de la meta. A ritmo de ${_pf(avgSvI)}/mes.` },
+        { col: TL,
+          flag:`Intereses acumulados: ${_pf(intI)}`,
+          body:`${(USER_APY*100).toFixed(1)}% APY ha generado ${_pf(intI)} en ingresos pasivos. Al llegar a la meta: ~${_pf(USER_TARGET*USER_APY/12)}/mes.` },
+        { col: avgShI>200000?RD:avgShI>0?[245,166,35]:GR,
+          flag:`Compras: ${_pf(avgShI)}/mes promedio`,
+          body:`Total acumulado: ${_pf(tShop)} en ${mths} meses. ${avgShI>200000?'Riesgo alto — reducir es la mayor palanca disponible.':avgShI>0?'Controlado. Meta: menos de $150K/mes.':'Sin gasto en esta categoría.'}` },
+        { col: trendI<0?GR:trendI>50000?RD:[245,166,35],
+          flag:`Tendencia: ${trendI<0?'↓ Gastos bajando':trendI>50000?'↑ Gastos subiendo':'→ Estable'}`,
+          body:`Variación vs mes anterior: ${trendI>=0?'+':''}${_pf(trendI)}. ${trendI<0?'Tendencia positiva.':trendI>50000?'Revisar categoría de mayor crecimiento.':'Gastos estables.'}` },
+      ];
+
+      cards.forEach(c => {
+        if (y > H-50) { doc.addPage(); pageN++; addHF(); y = 22; }
+        doc.setFillColor(245,245,255); doc.setDrawColor(...LG); doc.setLineWidth(0.25);
+        doc.roundedRect(ML, y, CW, 28, 1.5, 1.5, 'FD');
+        doc.setFillColor(...c.col); doc.rect(ML, y, 3, 28, 'F');
+        doc.setFont('helvetica','bold'); doc.setFontSize(9.5); doc.setTextColor(...c.col);
+        doc.text(c.flag, ML+6, y+10);
+        doc.setFont('helvetica','normal'); doc.setFontSize(8.5); doc.setTextColor(50,50,70);
+        const lines = doc.splitTextToSize(c.body, CW-12);
+        doc.text(lines.slice(0,2), ML+6, y+19);
+        y += 33;
+      });
+    }
+
+    // ── Save ─────────────────────────────────────────────────────────────
+    doc.save(`DFG_Estado_${new Date().toISOString().slice(0,10)}.pdf`);
+
+  } catch(e) {
+    console.error('PDF error:', e);
+    alert('Error generando el PDF: ' + e.message);
+  } finally {
+    document.body.style.cursor = 'default';
+    btns.forEach((b,i) => { b.textContent = origLabels[i]; b.disabled = false; });
+  }
+}
+
+// Legacy alias kept for backward compatibility
+function exportCSV() { exportStatement(['diario']); }
 
 // ══════════════════════════════════════════════════════════
 //  CALCULADORA
@@ -2113,11 +2811,11 @@ function renderInsights(){
 
   // 1. Shopping alert (dynamic severity)
   if(avgShop>200000){
-    ins.push({ic:'var(--rd)',flag:`🚨 Shopping: ${fmt(avgShop)}/mes promedio`,
-      txt:`Llevas ${fmt(shopping)} en shopping en ${mths} meses. Es tu mayor riesgo. Si lo bajas a $0 este mes ahorras ${fmt(avgShop)} extra — suficiente para acelerar la meta ${Math.ceil(avgShop*12/avgSave)} meses.`});
+    ins.push({ic:'var(--rd)',flag:`🚨 Compras: ${fmt(avgShop)}/mes promedio`,
+      txt:`Llevas ${fmt(shopping)} en compras en ${mths} meses. Es tu mayor riesgo. Si lo bajas a $0 este mes ahorras ${fmt(avgShop)} extra — suficiente para acelerar la meta ${Math.ceil(avgShop*12/avgSave)} meses.`});
   } else if(avgShop>0){
-    ins.push({ic:'var(--am)',flag:`🛍 Shopping controlado: ${fmt(avgShop)}/mes`,
-      txt:`Buen progreso en controlar el shopping. El promedio bajó a ${fmt(avgShop)}/mes. Meta: menos de $150K/mes.`});
+    ins.push({ic:'var(--am)',flag:`🛍 Compras controladas: ${fmt(avgShop)}/mes`,
+      txt:`Buen progreso en controlar las compras. El promedio bajó a ${fmt(avgShop)}/mes. Meta: menos de $150K/mes.`});
   }
 
   // 2. Spending trend
@@ -2135,7 +2833,7 @@ function renderInsights(){
       txt:`Estás ahorrando ${lastSavingsRate.toFixed(0)} de cada 100 pesos que ingresan. Eso es excepcional. La mayoría de las personas no llega al 20%.`});
   } else if(lastSavingsRate>50){
     ins.push({ic:'var(--tl)',flag:`💰 Tasa de ahorro: ${lastSavingsRate.toFixed(0)}% este mes`,
-      txt:`Ahorro del ${lastSavingsRate.toFixed(0)}% este mes. Solid. Para llegar al óptimo necesitas bajar gastos a ${fmt(REALISTIC)}/mes, lo que te daría ~${avgSalary>0?((avgSalary-REALISTIC)/avgSalary*100).toFixed(0)+'%':'?'} de tasa.`});
+      txt:`Ahorro del ${lastSavingsRate.toFixed(0)}% este mes. Sólido. Para llegar al óptimo necesitas bajar gastos a ${fmt(REALISTIC)}/mes, lo que te daría ~${avgSalary>0?((avgSalary-REALISTIC)/avgSalary*100).toFixed(0)+'%':'?'} de tasa.`});
   } else {
     ins.push({ic:'var(--rd)',flag:`⚠️ Tasa de ahorro: ${lastSavingsRate.toFixed(0)}% este mes`,
       txt:`Este mes solo estás ahorrando ${lastSavingsRate.toFixed(0)}%. El objetivo es 80%+. Revisa qué gasto puntual subió.`});
@@ -2268,7 +2966,7 @@ function renderPredictor(){
     <div class="kpi fu" style="--kc:var(--gr)">
       <div class="kpi-l">Tu objetivo</div>
       <div class="kpi-v" style="color:var(--gr)">${fmt(target)}</div>
-      <div class="kpi-s">−${stepPct}% del proyectado${improved?' ↑ bonus':''}</div>
+      <div class="kpi-s">−${stepPct}% del proyectado${improved?' ↑ bono':''}</div>
     </div>
     <div class="kpi fu" style="--kc:var(--am)">
       <div class="kpi-l">Ahorro potencial/mes</div>
@@ -2294,7 +2992,7 @@ function renderPredictor(){
     futureTargets.push(Math.round(target*Math.pow(1-stepRate,i-1)));
   }
 
-  const allLabels=[...pastLabels,'▶ Pred',...futureLabels];
+  const allLabels=[...pastLabels,'▶ Pron.',...futureLabels];
   const actualData=[...pastVals,pred,...Array(3).fill(null)];
   const targetData=[...Array(pastVals.length).fill(null),pred,...futureTargets];
   const optimalData=allLabels.map(()=>OPTIMAL_BUDGET);
@@ -2342,8 +3040,8 @@ function renderPredictor(){
   const nudgeEl=document.getElementById('predNudge');
   if(nudgeEl) nudgeEl.innerHTML=
     (improved?`<strong style="color:var(--gr)">✓ Mejorando:</strong> el mes pasado gastaste menos — objetivo reforzado a −${stepPct}%.`
-             :`<strong style="color:var(--am)">Tip:</strong> Reduce un gasto fijo este mes para arrancar la racha.`)+
-    (hasShop?` <span style="color:var(--rd)">Shopping (${fmt(hasShop[1])}/mes) es tu mayor palanca.</span>`:'  ')+
+             :`<strong style="color:var(--am)">Consejo:</strong> Reduce un gasto fijo este mes para arrancar la racha.`)+
+    (hasShop?` <span style="color:var(--rd)">Compras (${fmt(hasShop[1])}/mes) es tu mayor palanca.</span>`:'  ')+
     (streak>1?` <span style="color:var(--tl)">🔥 ${streak} ${streak===1?'mes':'meses'} consecutivos mejorando.</span>`:'');
 
   // ── Impact card ──
