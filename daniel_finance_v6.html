@@ -1790,9 +1790,13 @@ let USER_APY    = 0.09;  // default 9%, user can change
 const SNAPSHOT_DATE = new Date('2026-03-14T00:00:00'); // day after last Rappi statement
 
 function recalcBalance(){
+  // Always work from real Supabase snapshots — remove any previously computed live points
+  // IMPORTANT: this must happen before reading latestSnap, otherwise a stale live point
+  // becomes the base and all post-snapshot transactions get double-counted on every call.
+  DB.balances = DB.balances.filter(b=>b._isLive!==true);
   if(!DB.balances.length){ DB.curBal=0; return; }
 
-  // Start from the LATEST snapshot (March 2026 = $11,097,576)
+  // Start from the LATEST real snapshot
   const latestSnap = DB.balances[DB.balances.length-1];
   let base = latestSnap.balance;
 
@@ -1827,11 +1831,6 @@ function recalcBalance(){
   });
 
   if(Object.keys(diaryMonths).length > 0) {
-    // Start from latest Supabase snapshot
-    const latestSnap = DB.balances[DB.balances.length-1];
-    // Remove any previously computed live points (keep only real Supabase snapshots)
-    DB.balances = DB.balances.filter(b=>b._isLive!==true);
-
     // Simulate running balance month by month for diary months
     let runningBal = latestSnap.balance;
     const MONTH_NAMES = ['January','February','March','April','May','June',
