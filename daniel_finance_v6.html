@@ -579,7 +579,7 @@ input[type=range]{width:100%;accent-color:var(--ac2);cursor:pointer;height:20px;
             <div style="background:var(--bg3);border-radius:10px;border:1px solid var(--b);padding:12px;text-align:center"><div style="font-size:10px;color:var(--m);margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em">Ingresos</div><div id="mInc" style="font-family:var(--font-display);font-size:16px;font-weight:700;color:var(--gr)">$0</div></div>
             <div style="background:var(--bg3);border-radius:10px;border:1px solid var(--b);padding:12px;text-align:center"><div style="font-size:10px;color:var(--m);margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em">Gastos</div><div id="mExp" style="font-family:var(--font-display);font-size:16px;font-weight:700;color:var(--rd)">$0</div></div>
             <div style="background:var(--bg3);border-radius:10px;border:1px solid var(--b);padding:12px;text-align:center"><div style="font-size:10px;color:var(--m);margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em">Balance</div><div id="mNet" style="font-family:var(--font-display);font-size:16px;font-weight:700;color:var(--ac2)">$0</div></div>
-            <div style="background:var(--bg3);border-radius:10px;border:1px solid rgba(245,166,35,0.3);padding:12px;text-align:center"><div style="font-size:10px;color:var(--m);margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em">Presupuesto</div><div id="mBudget" style="font-family:var(--font-display);font-size:16px;font-weight:700;color:var(--am)">$0</div></div>
+            <div style="background:var(--bg3);border-radius:10px;border:1px solid rgba(245,166,35,0.3);padding:12px;text-align:center"><div style="font-size:10px;color:var(--m);margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em">Presupuesto Restante</div><div id="mBudget" style="font-family:var(--font-display);font-size:16px;font-weight:700;color:var(--am)">$0</div></div>
           </div>
           <div style="font-size:11px;color:var(--m);margin-bottom:5px;display:flex;justify-content:space-between"><span id="diarioBudgetLbl">Uso presupuesto</span><span id="bPct" style="color:var(--ac2);font-weight:500">0%</span></div>
           <div style="height:6px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden"><div id="bBar" style="height:100%;width:0%;border-radius:4px;background:var(--gr);transition:width .4s,background .3s"></div></div>
@@ -711,13 +711,7 @@ input[type=range]{width:100%;accent-color:var(--ac2);cursor:pointer;height:20px;
     <div class="g2" style="margin-bottom:14px">
       <div class="card">
         <div class="ct" id="perfBreakdownTitle">Desglose mes perfecto realista</div>
-        <div class="hb-row"><span class="hb-lbl">Comida (meal prep)</span><div class="hb-track"><div class="hb-fill" style="width:43%;background:var(--gr)"></div></div><span class="hb-val" style="color:var(--gr)">$100K</span></div>
-        <div class="hb-row"><span class="hb-lbl">Transporte</span><div class="hb-track"><div class="hb-fill" style="width:17%;background:var(--am)"></div></div><span class="hb-val" style="color:var(--am)">$40K</span></div>
-        <div class="hb-row"><span class="hb-lbl">Personal/familia</span><div class="hb-track"><div class="hb-fill" style="width:13%;background:var(--ac2)"></div></div><span class="hb-val" style="color:var(--ac2)">$30K</span></div>
-        <div class="hb-row"><span class="hb-lbl">Claro (plan mejor)</span><div class="hb-track"><div class="hb-fill" style="width:12%;background:var(--bl)"></div></div><span class="hb-val" style="color:var(--bl)">$28K</span></div>
-        <div class="hb-row"><span class="hb-lbl">Universidad</span><div class="hb-track"><div class="hb-fill" style="width:6%;background:var(--tl)"></div></div><span class="hb-val" style="color:var(--tl)">$14K</span></div>
-        <div class="hb-row"><span class="hb-lbl">Buffer</span><div class="hb-track"><div class="hb-fill" style="width:9%;background:var(--m)"></div></div><span class="hb-val" style="color:var(--m)">$20K</span></div>
-        <div class="hb-row" style="margin-top:8px;padding-top:10px;border-top:1px solid var(--b)"><span class="hb-lbl" style="color:var(--t)">Compras</span><div class="hb-track"><div class="hb-fill" style="width:0%"></div></div><span class="hb-val" style="color:var(--gr)">$0 ← regla</span></div>
+        <div id="perfBreakdown"></div>
       </div>
       <div class="card">
         <div class="ct">Distancia al mes perfecto por mes</div>
@@ -956,8 +950,8 @@ input[type=range]{width:100%;accent-color:var(--ac2);cursor:pointer;height:20px;
 // ══════════════════════════════════════════════════════════
 //  CONFIG — Supabase hardcoded
 // ══════════════════════════════════════════════════════════
-const SB_URL = 'https://rhzlbnlhubuorfujavec.supabase.co';
-const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJoemxibmxodWJ1b3JmdWphdmVjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5NjE4NzcsImV4cCI6MjA4OTUzNzg3N30.LmAHCn8dbRSjh4BowCHsJO98N9BEbnAnoGVPLED9tYQ';
+const SB_URL = 'https://vfhqrbadrnwmlncvlirn.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmaHFyYmFkcm53bWxuY3ZsaXJuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1NTI1MzksImV4cCI6MjA4OTEyODUzOX0.eQI1Qy2oxjqiC_YV7NzGX4OIkk2MZ9DzkW3mn0qEwgs';
 
 // ══════════════════════════════════════════════════════════
 //  SUPABASE CLIENT
@@ -1211,8 +1205,9 @@ async function loadAll() {
     setProgress(75);
     setSplash('Procesando datos...');
 
-    DB.balances  = sortChrono(balances);
-    DB.all       = allTx;
+    DB.balances      = sortChrono(balances);
+    DB._realBalances = sortChrono(balances); // immutable copy — never touched after this
+    DB.all           = allTx;
     DB.income    = allTx.filter(t=>t.type==='income');
     DB.expenses  = allTx.filter(t=>t.type==='expense');
     DB.real_exp  = allTx.filter(t=>t.type==='expense'&&!['Taxes','Transfers'].includes(t.category));
@@ -1266,8 +1261,8 @@ function renderAll() {
   if(M.flujo?.enabled!==false)        renderFlujo();
   if(M.gastos?.enabled!==false)       renderGastos();
   if(M.proyeccion?.enabled!==false)   renderProyeccion();
+  if(M.mes_perfecto?.enabled!==false) renderPerfecto();   // must run before diario to set OPTIMAL_BUDGET
   if(M.diario?.enabled!==false)       renderDiario();
-  if(M.mes_perfecto?.enabled!==false) renderPerfecto();
   if(M.calculator?.enabled!==false)   renderCalculadora();
   if(M.insights?.enabled!==false)     renderInsights();
   if(M.montecarlo?.enabled!==false)   updateMC();
@@ -1521,6 +1516,83 @@ function computePerfectTargets() {
   return { PERFECT, REALISTIC };
 }
 
+// ── ML-powered breakdown: reuses buildPrediction() model ─────────────────────
+// Requires ≥ 2 months of data (same gate as Predictor de Ahorro).
+// Shows per-category: avg spend (last 3 months) → model target (step-down),
+// sorted descending by avg spend, with savings potential per category.
+function renderPerfectBreakdown() {
+  const el = document.getElementById('perfBreakdown');
+  if (!el) return;
+
+  const p = buildPrediction();
+
+  // ── Not enough data ──
+  if (!p) {
+    el.innerHTML = `
+      <div style="padding:18px 0;text-align:center">
+        <div style="font-size:22px;margin-bottom:8px">📊</div>
+        <div style="font-size:12px;color:var(--m);line-height:1.6">
+          Necesitas al menos <strong style="color:var(--ac2)">2 meses de datos</strong>
+          para calcular el desglose óptimo por categoría.<br>
+          <span style="font-size:11px;color:var(--m2)">El modelo aprende de tu historial real.</span>
+        </div>
+      </div>`;
+    return;
+  }
+
+  const { catAvg, catTarget, stepRate, pred, target } = p;
+  const stepPct = (stepRate * 100).toFixed(0);
+  const cats = Object.entries(catAvg).sort((a, b) => b[1] - a[1]);
+  if (!cats.length) {
+    el.innerHTML = '<div style="font-size:12px;color:var(--m);padding:12px 0">Sin datos de categorías suficientes.</div>';
+    return;
+  }
+
+  const maxVal = cats[0][1] || 1;
+  const totalAvg    = cats.reduce((s,[,v]) => s + v, 0);
+  const totalTarget = cats.reduce((s,[c]) => s + (catTarget[c]||0), 0);
+
+  el.innerHTML = `
+    <div style="font-size:10px;color:var(--m);margin-bottom:10px;display:flex;justify-content:space-between">
+      <span>Promedio últimos 3 meses → <strong style="color:var(--gr)">Objetivo modelo (−${stepPct}%)</strong></span>
+      <span style="color:var(--ac2)">${p.improved ? '↑ Bono aplicado' : 'Base −5%'}</span>
+    </div>
+    ${cats.map(([cat, avg]) => {
+      const t   = catTarget[cat] || 0;
+      const col = CAT_COL[cat]  || '#888';
+      const saving = avg - t;
+      const pctAvg = (avg / maxVal * 100).toFixed(0);
+      const pctTgt = (t   / maxVal * 100).toFixed(0);
+      return `
+        <div style="margin-bottom:13px">
+          <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px;align-items:baseline">
+            <span style="color:var(--t);font-weight:500">${cat}</span>
+            <span style="color:var(--m)">
+              ${fmt(avg)}
+              <span style="margin:0 4px;color:var(--m2)">→</span>
+              <strong style="color:var(--gr)">${fmt(t)}</strong>
+            </span>
+          </div>
+          <div style="width:100%;height:8px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden;position:relative">
+            <div style="position:absolute;height:100%;width:${pctAvg}%;background:${col}33;border-radius:4px"></div>
+            <div style="position:absolute;height:100%;width:${pctTgt}%;background:${col};border-radius:4px"></div>
+          </div>
+          <div style="font-size:10px;color:var(--m2);margin-top:3px">
+            Ahorra <span style="color:var(--gr)">${fmt(saving)}</span>/mes alcanzando el objetivo
+          </div>
+        </div>`;
+    }).join('')}
+    <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--b);display:flex;justify-content:space-between;font-size:11px">
+      <span style="color:var(--m)">Total proyectado</span>
+      <span>
+        <span style="color:var(--m)">${fmt(totalAvg)}</span>
+        <span style="margin:0 5px;color:var(--m2)">→</span>
+        <strong style="color:var(--gr)">${fmt(totalTarget)}</strong>
+        <span style="margin-left:6px;color:var(--tl);font-size:10px">(−${fmt(totalAvg - totalTarget)}/mes)</span>
+      </span>
+    </div>`;
+}
+
 function renderPerfecto() {
   const { PERFECT, REALISTIC } = computePerfectTargets();
 
@@ -1538,6 +1610,9 @@ function renderPerfecto() {
 
   // Sync global so renderInsights / renderDiario use the same target
   OPTIMAL_BUDGET = REALISTIC;
+
+  // ML-powered category breakdown
+  renderPerfectBreakdown();
 
   const nowP=new Date();
   const currentYearP=nowP.getFullYear();
@@ -1898,18 +1973,16 @@ let USER_APY    = 0.09;  // default 9%, user can change
 const SNAPSHOT_DATE = new Date('2026-03-14T00:00:00'); // day after last Rappi statement
 
 function recalcBalance(){
-  // ── Step 1: Strip stale live points FIRST so latestSnap always comes from
-  //            a real Supabase row.  Skipping this caused double-counting on
-  //            every call after the first deposit was added.
-  DB.balances = DB.balances.filter(b => b._isLive !== true);
+  // ── Anchor: always read from the IMMUTABLE real Supabase rows.
+  //    DB._realBalances is set once in loadAll() and never mutated.
+  //    This prevents the bug where the first recalc overwrites a real
+  //    row with a live point, destroying it for all subsequent calls.
+  const realSnaps   = DB._realBalances || [];
+  const latestSnap  = realSnaps.length ? realSnaps[realSnaps.length - 1] : null;
+  const snapBalance = latestSnap ? latestSnap.balance : 0;
 
-  // ── Step 2: Anchor balance.  If monthly_balance table is empty we start
-  //            from 0 so transactions still update the net-worth box.
-  const latestSnap   = DB.balances.length ? DB.balances[DB.balances.length - 1] : null;
-  const snapBalance  = latestSnap ? latestSnap.balance : 0;
-
-  // ── Step 3: Walk every post-snapshot diary entry exactly once.
-  //            Build diaryMonths at the same time (used for the chart below).
+  // ── Walk every post-snapshot diary entry exactly once.
+  //    Build diaryMonths at the same time (used for the chart below).
   const diaryMonths = {};
   let   totalIncome = 0, totalExpenses = 0;
 
@@ -1925,12 +1998,15 @@ function recalcBalance(){
     else if (t.type === 'expense')  diaryMonths[mo].expenses += t.amount;
   });
 
-  // ── Step 4: Set current net worth (snapshot + live diary delta).
+  // ── Set current net worth (snapshot + live diary delta).
   DB.curBal   = Math.max(0, snapBalance + totalIncome - totalExpenses);
   DB.real_exp = DB.expenses.filter(t => !['Taxes','Transfers'].includes(t.category));
 
-  // ── Step 5: Rebuild live chart points month-by-month so the overview
-  //            graph tracks forward from the last real snapshot.
+  // ── Rebuild DB.balances fresh each call: real rows + new live points.
+  //    Starting from a fresh copy of realSnaps means live points can safely
+  //    overwrite entries for the same month/year without destroying anything.
+  DB.balances = [...realSnaps];
+
   if (Object.keys(diaryMonths).length > 0) {
     const MONTH_NAMES = ['January','February','March','April','May','June',
                          'July','August','September','October','November','December'];
@@ -1938,18 +2014,19 @@ function recalcBalance(){
 
     Object.keys(diaryMonths).sort().forEach(ym => {
       const [y, mo] = ym.split('-');
-      const m = diaryMonths[ym];
-      runningBal += m.income - m.expenses;
-      const monthName  = MONTH_NAMES[+mo - 1];
-      const existingIdx = DB.balances.findIndex(b => b.month === monthName && b.year === +y);
+      const m        = diaryMonths[ym];
+      runningBal    += m.income - m.expenses;
+      const monthName   = MONTH_NAMES[+mo - 1];
       const livePoint   = { month: monthName, year: +y, balance: Math.max(0, runningBal), _isLive: true };
+      // Replace any same-month entry (real or stale live) so the live point
+      // is always the authoritative value for that month on the chart.
+      const existingIdx = DB.balances.findIndex(b => b.month === monthName && b.year === +y);
       if (existingIdx >= 0) DB.balances[existingIdx] = livePoint;
       else                  DB.balances.push(livePoint);
     });
 
     DB.balances = sortChrono(DB.balances);
-    // curBal is the last live point (same value already set above, but kept in sync)
-    DB.curBal = DB.balances[DB.balances.length - 1].balance;
+    DB.curBal   = DB.balances[DB.balances.length - 1].balance;
   }
 }
 
@@ -1992,7 +2069,8 @@ function renderDiario(){
   const curMonth=DB.all.filter(t=>t.date&&t.date.startsWith(currentYM)&&t.type!=='transfer');
   const inc=curMonth.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0);
   const exp=curMonth.filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0);
-  const BUDGET=OPTIMAL_BUDGET||computePerfectTargets().REALISTIC;
+  // Budget source priority: ML model target → statistical realistic → JSON default
+  const BUDGET = buildPrediction()?.target || computePerfectTargets().REALISTIC || OPTIMAL_BUDGET;
   const net=inc-exp, rem=BUDGET-exp;
   const pctVal=Math.min(200,exp/BUDGET*100);
   document.getElementById('mInc').textContent=fmt(inc);
@@ -3077,11 +3155,29 @@ function renderPredictor(){
 function goTo(id){const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});}
 function setTab(key){document.querySelectorAll('.tab-item').forEach(b=>b.classList.toggle('active',b.dataset.module===key));}
 window.addEventListener('scroll',()=>{
-  const ids=['home','overview','flujo','gastos','proyeccion','diario','perfecto','calculator','insights','predictor'];
-  const links=document.querySelectorAll('.nl');
-  let ai=0;
-  ids.forEach((id,i)=>{const el=document.getElementById(id);if(el&&el.getBoundingClientRect().top<130)ai=i;});
-  links.forEach((l,i)=>l.classList.toggle('active',i===Math.max(0,ai-1)));
+  // Map section element ID → data-nav-module key (handles perfecto ≠ mes_perfecto)
+  const SNAV={
+    home:'home',diario:'diario',overview:'overview',flujo:'flujo',
+    gastos:'gastos',proyeccion:'proyeccion',perfecto:'mes_perfecto',
+    montecarlo:'montecarlo',calculator:'calculator',
+    predictor:'predictor',insights:'insights'
+  };
+  const DOM_ORDER=['home','diario','overview','flujo','gastos','proyeccion',
+                   'perfecto','montecarlo','calculator','predictor','insights'];
+  let activeId='home';
+  DOM_ORDER.forEach(id=>{
+    const el=document.getElementById(id);
+    if(el&&el.getBoundingClientRect().top<130) activeId=id;
+  });
+  const activeKey=SNAV[activeId]||activeId;
+  // Desktop nav
+  document.querySelectorAll('.nl').forEach(l=>{
+    l.classList.toggle('active',l.dataset.navModule===activeKey);
+  });
+  // Mobile tab bar
+  document.querySelectorAll('.tab-item').forEach(b=>{
+    b.classList.toggle('active',b.dataset.module===activeKey);
+  });
 },{passive:true});
 
 
