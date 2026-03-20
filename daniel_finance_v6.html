@@ -535,7 +535,7 @@ input[type=range]{width:100%;accent-color:var(--ac2);cursor:pointer;height:20px;
     <p class="ssub">Datos directos de Supabase · monthly_balance</p>
     <div class="g64">
       <div class="card"><div class="ct">Net worth mes a mes</div><div class="chart-wrap" style="height:220px"><canvas id="cNW"></canvas></div></div>
-      <div class="card" data-module="overview" data-feature="salary_timeline"><div class="ct">Salary Affirm</div><div id="salaryList" class="tl" style="margin-top:6px"></div></div>
+      <div class="card" data-module="overview" data-feature="salary_timeline"><div class="ct">Salary</div><div id="salaryList" class="tl" style="margin-top:6px"></div></div>
     </div>
   </div>
 </div>
@@ -1268,8 +1268,8 @@ function renderHero() {
 
   document.getElementById('heroSub').textContent=`${DB.all.length} transacciones · ${DB.monthly.length} meses · Live`;
   document.getElementById('kpiGrid').innerHTML=`
-    <div class="kpi fu" style="--kc:var(--gr)"><div class="kpi-l">Net Worth</div><div class="kpi-v" style="color:var(--gr)">${fmt(cur)}</div><div class="kpi-s">COP Rappi 9% APY</div><div class="badge bg">en tiempo real</div></div>
-    <div class="kpi fu" style="--kc:var(--bl)"><div class="kpi-l">Salary prom.</div><div class="kpi-v">${fmt(avgSal)}</div><div class="kpi-s">COP/mes</div><div class="badge ba">Affirm</div></div>
+    <div class="kpi fu" style="--kc:var(--gr)"><div class="kpi-l">Net Worth</div><div class="kpi-v" style="color:var(--gr)">${fmt(cur)}</div><div class="kpi-s">COP</div><div class="badge bg">en tiempo real</div></div>
+    <div class="kpi fu" style="--kc:var(--bl)"><div class="kpi-l">Salary prom.</div><div class="kpi-v">${fmt(avgSal)}</div><div class="kpi-s">COP/mes</div><div class="badge ba">Salary</div></div>
     <div class="kpi fu" style="--kc:var(--tl)"><div class="kpi-l">Intereses</div><div class="kpi-v" style="color:var(--tl)">${fmt(interest)}</div><div class="kpi-s">acumulados</div><div class="badge bt">9% APY</div></div>
     <div class="kpi fu" style="--kc:${topCatColor}"><div class="kpi-l">${topCatName} #1</div><div class="kpi-v" style="color:${topCatColor}">${fmt(topCatAmt)}</div><div class="kpi-s">mayor gasto acumulado</div><div class="badge br">~${fmt(topCatAmt/mthsCount)}/mes</div></div>`;
 
@@ -1289,7 +1289,7 @@ function renderOverview() {
   document.getElementById('salaryList').innerHTML=salTx.map((t,i)=>`
     <div class="tl-item"><div class="tl-dot" style="background:${cols[i%cols.length]}"></div>
     <div class="tl-date">${t.date}</div>
-    <div style="font-size:11px;color:var(--m);margin-bottom:2px">${t.description||'Affirm salary'}</div>
+    <div style="font-size:11px;color:var(--m);margin-bottom:2px">${t.description||'Salary'}</div>
     <div class="tl-amount" style="color:${cols[i%cols.length]}">${fmtF(t.amount)}</div></div>`).join('');
 }
 
@@ -1300,7 +1300,7 @@ function renderFlujo() {
   // Build source datasets dynamically — only show sources that have data
   // Build source datasets — one bar per real income source, only show if has data
   const SRC_SOURCES = [
-    {key:'salary',    label:'Affirm',     color:'rgba(34,212,122,0.75)'},
+    {key:'salary',    label:'Salary',     color:'rgba(34,212,122,0.75)'},
     {key:'didi',      label:'Didi/Uber',  color:'rgba(245,166,35,0.75)'},
     {key:'freelance', label:'Freelance',  color:'rgba(77,159,255,0.75)'},
     {key:'interest',  label:'Intereses',  color:'rgba(45,212,191,0.75)'},
@@ -1427,7 +1427,7 @@ function renderProyeccion() {
   const baseSave=Math.round(Math.max(avgMonthlySalProy-avgExpProy, 500000));
 
   const scenarios=[
-    {label:'Solo Affirm',        save:baseSave,            color:'#6b7280',dash:[4,4]},
+    {label:'Solo el salario',        save:baseSave,            color:'#6b7280',dash:[4,4]},
     {label:'+ Freelance $500 USD',save:baseSave+2000000,  color:'#22d47a',dash:[],feat:true},
     {label:'+ Freelance $1000 USD',save:baseSave+4000000, color:'#f5a623',dash:[]},
   ];
@@ -1698,7 +1698,7 @@ const CATS_EXP=[
   {id:'other',col:'#888',lbl:'⚙ Otro'},
 ];
 const CATS_INC=[
-  {id:'salary',col:'#22d47a',lbl:'💼 Affirm'},{id:'freelance',col:'#4d9fff',lbl:'💻 Freelance'},
+  {id:'salary',col:'#22d47a',lbl:'💼 Salary'},{id:'freelance',col:'#4d9fff',lbl:'💻 Freelance'},
   {id:'didi',col:'#f5a623',lbl:'🚗 Didi'},{id:'interest',col:'#2dd4bf',lbl:'📈 Intereses'},
   {id:'other_in',col:'#888',lbl:'⚙ Otro'},
 ];
@@ -1790,64 +1790,58 @@ let USER_APY    = 0.09;  // default 9%, user can change
 const SNAPSHOT_DATE = new Date('2026-03-14T00:00:00'); // day after last Rappi statement
 
 function recalcBalance(){
-  // Always work from real Supabase snapshots — remove any previously computed live points
-  // IMPORTANT: this must happen before reading latestSnap, otherwise a stale live point
-  // becomes the base and all post-snapshot transactions get double-counted on every call.
-  DB.balances = DB.balances.filter(b=>b._isLive!==true);
-  if(!DB.balances.length){ DB.curBal=0; return; }
+  // ── Step 1: Strip stale live points FIRST so latestSnap always comes from
+  //            a real Supabase row.  Skipping this caused double-counting on
+  //            every call after the first deposit was added.
+  DB.balances = DB.balances.filter(b => b._isLive !== true);
 
-  // Start from the LATEST real snapshot
-  const latestSnap = DB.balances[DB.balances.length-1];
-  let base = latestSnap.balance;
+  // ── Step 2: Anchor balance.  If monthly_balance table is empty we start
+  //            from 0 so transactions still update the net-worth box.
+  const latestSnap   = DB.balances.length ? DB.balances[DB.balances.length - 1] : null;
+  const snapBalance  = latestSnap ? latestSnap.balance : 0;
 
-  // Only apply transactions entered AFTER the snapshot date (new diary entries)
-  DB.all.forEach(t => {
-    if(t.type==='transfer') return;
-    const txDate = new Date(t.date+'T12:00:00');
-    if(txDate < SNAPSHOT_DATE) return;  // skip historical data already in snapshot
-    if(t.type==='income')       base += t.amount;
-    else if(t.type==='expense') base -= t.amount;
-  });
-
-  DB.curBal = Math.max(0, base);
-
-  // Rebuild real_exp from all expenses (catches new diary entries)
-  DB.real_exp = DB.expenses.filter(t=>!['Taxes','Transfers'].includes(t.category));
-
-  // Rebuild DB.balances: start from Supabase snapshots + simulate forward
-  // for every month that has diary entries after the snapshot date
-  // This way the chart reflects ALL months with transactions
-
-  // Get all months with diary entries after snapshot
+  // ── Step 3: Walk every post-snapshot diary entry exactly once.
+  //            Build diaryMonths at the same time (used for the chart below).
   const diaryMonths = {};
+  let   totalIncome = 0, totalExpenses = 0;
+
   DB.all.forEach(t => {
-    if(t.type==='transfer') return;
-    const txDate = new Date(t.date+'T12:00:00');
-    if(txDate < SNAPSHOT_DATE) return;
-    const mo = t.date.slice(0,7); // '2026-04'
-    if(!diaryMonths[mo]) diaryMonths[mo] = {income:0, expenses:0};
-    if(t.type==='income')       diaryMonths[mo].income   += t.amount;
-    else if(t.type==='expense') diaryMonths[mo].expenses += t.amount;
+    if (t.type === 'transfer') return;
+    const txDate = new Date(t.date + 'T12:00:00');
+    if (txDate < SNAPSHOT_DATE) return;           // already baked into snapshot
+    if (t.type === 'income')        totalIncome   += t.amount;
+    else if (t.type === 'expense')  totalExpenses += t.amount;
+    const mo = t.date.slice(0, 7);                // '2026-03'
+    if (!diaryMonths[mo]) diaryMonths[mo] = { income: 0, expenses: 0 };
+    if (t.type === 'income')        diaryMonths[mo].income   += t.amount;
+    else if (t.type === 'expense')  diaryMonths[mo].expenses += t.amount;
   });
 
-  if(Object.keys(diaryMonths).length > 0) {
-    // Simulate running balance month by month for diary months
-    let runningBal = latestSnap.balance;
+  // ── Step 4: Set current net worth (snapshot + live diary delta).
+  DB.curBal   = Math.max(0, snapBalance + totalIncome - totalExpenses);
+  DB.real_exp = DB.expenses.filter(t => !['Taxes','Transfers'].includes(t.category));
+
+  // ── Step 5: Rebuild live chart points month-by-month so the overview
+  //            graph tracks forward from the last real snapshot.
+  if (Object.keys(diaryMonths).length > 0) {
     const MONTH_NAMES = ['January','February','March','April','May','June',
                          'July','August','September','October','November','December'];
+    let runningBal = snapBalance;
+
     Object.keys(diaryMonths).sort().forEach(ym => {
       const [y, mo] = ym.split('-');
       const m = diaryMonths[ym];
       runningBal += m.income - m.expenses;
-      const monthName = MONTH_NAMES[+mo-1];
-      const existingIdx = DB.balances.findIndex(b=>b.month===monthName&&b.year===+y);
-      const livePoint = {month:monthName, year:+y, balance:Math.max(0,runningBal), _isLive:true};
-      if(existingIdx>=0) DB.balances[existingIdx] = livePoint;
-      else { DB.balances.push(livePoint); }
+      const monthName  = MONTH_NAMES[+mo - 1];
+      const existingIdx = DB.balances.findIndex(b => b.month === monthName && b.year === +y);
+      const livePoint   = { month: monthName, year: +y, balance: Math.max(0, runningBal), _isLive: true };
+      if (existingIdx >= 0) DB.balances[existingIdx] = livePoint;
+      else                  DB.balances.push(livePoint);
     });
 
     DB.balances = sortChrono(DB.balances);
-    DB.curBal = DB.balances[DB.balances.length-1].balance;
+    // curBal is the last live point (same value already set above, but kept in sync)
+    DB.curBal = DB.balances[DB.balances.length - 1].balance;
   }
 }
 
@@ -2534,7 +2528,7 @@ document.getElementById('txDate').value=new Date().toISOString().slice(0,10);
 //  Para cambiar: sha256 de tu nuevo PIN en
 //  https://emn178.github.io/online-tools/sha256.html
 // ══════════════════════════════════════════════════════════
-const PIN_HASH = '4739ee3bd29e4f415da8ba9298a087e0fdc9c61378420ba8fbbab298bd74c4df';
+const PIN_HASH = '2cec8cf0e321c284fa0c2ebef804aac18bf1cbb85546f89e7e3d0b6aa8b9d2cf';
 
 async function sha256(str){
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));

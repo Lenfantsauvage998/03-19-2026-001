@@ -1,15 +1,15 @@
 {
   "client": {
-    "id": "dfg-daniel",
+    "id": "dfg-diana",
     "name": "Diana Gutierrez",
     "branding": {
       "app_title": "DG Finance OS",
       "initials": "DG",
       "hero_name": "Diana Gutierrez",
-      "goal_amount": 1000000,
-      "goal_label": "Meta 50M",
+      "goal_amount": 10000000,
+      "goal_label": "Meta 10M",
       "budget_limit": 400000,
-      "optimal_budget": 232000,
+      "optimal_budget": 1000000,
       "currency": "COP",
       "theme": "phantom",
       "_theme_options": ["phantom","carbon","forest","solar","arctic"]
@@ -29,7 +29,7 @@
       }
     },
     "overview": {
-      "enabled": true,
+      "enabled": false,
       "label": "Overview",
       "features": {
         "networth_chart": true,
@@ -37,7 +37,7 @@
       }
     },
     "flujo": {
-      "enabled": true,
+      "enabled": false,
       "label": "Flujo",
       "features": {
         "cashflow_chart": true,
@@ -46,7 +46,7 @@
       }
     },
     "gastos": {
-      "enabled": true,
+      "enabled": false,
       "label": "Gastos",
       "features": {
         "month_filter": true,
