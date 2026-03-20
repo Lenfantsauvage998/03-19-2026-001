@@ -950,8 +950,8 @@ input[type=range]{width:100%;accent-color:var(--ac2);cursor:pointer;height:20px;
 // ══════════════════════════════════════════════════════════
 //  CONFIG — Supabase hardcoded
 // ══════════════════════════════════════════════════════════
-const SB_URL = 'https://vfhqrbadrnwmlncvlirn.supabase.co';
-const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmaHFyYmFkcm53bWxuY3ZsaXJuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1NTI1MzksImV4cCI6MjA4OTEyODUzOX0.eQI1Qy2oxjqiC_YV7NzGX4OIkk2MZ9DzkW3mn0qEwgs';
+const SB_URL = 'https://rhzlbnlhubuorfujavec.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJoemxibmxodWJ1b3JmdWphdmVjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5NjE4NzcsImV4cCI6MjA4OTUzNzg3N30.LmAHCn8dbRSjh4BowCHsJO98N9BEbnAnoGVPLED9tYQ';
 
 // ══════════════════════════════════════════════════════════
 //  SUPABASE CLIENT
@@ -992,7 +992,20 @@ const fmtF = v => '$'+Math.round(v).toLocaleString('es-CO');
 const pct  = v => v.toFixed(1)+'%';
 const MONTH_NUM = {January:1,February:2,March:3,April:4,May:5,June:6,July:7,August:8,September:9,October:10,November:11,December:12};
 const sortChrono = arr => [...arr].sort((a,b)=>a.year!==b.year?a.year-b.year:(MONTH_NUM[a.month]||0)-(MONTH_NUM[b.month]||0));
-const CAT_COL = {'Shopping':'#f05353','Food & Transport':'#f5a623','Personal':'#a78bfa','Bills':'#4d9fff','Education':'#2dd4bf','Taxes':'#6b7280'};
+const CAT_COL = {
+  // ── Spanish (current) ──────────────────────────────────────
+  'Comida':    '#22d47a', 'Transporte':'#f5a623', 'Personal':  '#a78bfa',
+  'Social':    '#4d9fff', 'Compras':   '#f05353', 'Facturas':  '#2dd4bf',
+  'Salud':     '#f472b6', 'Educacion': '#34d399', 'Educación': '#34d399',
+  'Otro':      '#888888',
+  // ── Income ────────────────────────────────────────────────
+  'Salario':   '#22d47a', 'Freelance': '#4d9fff', 'Didi':      '#f5a623',
+  'Intereses': '#2dd4bf', 'Income':    '#22d47a',
+  // ── English legacy (for existing Supabase data) ───────────
+  'Shopping':         '#f05353', 'Food & Transport': '#f5a623',
+  'Bills':            '#2dd4bf', 'Education':        '#34d399',
+  'Taxes':            '#6b7280', 'Transfers':        '#6b7280',
+};
 // Read a CSS custom property from :root (or active [data-theme])
 const cssVar = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 
@@ -1381,15 +1394,22 @@ function renderGastos() {
   }
   const filterVal=sel?sel.value:'all';
   const re=filterVal==='all'?DB.real_exp:DB.real_exp.filter(t=>`${t.month}-${t.year}`===filterVal);
+  // Resolve color: CAT_COL map → CATS_EXP/INC label match → custom cats → gray fallback
+  const resolveCatColor = name => {
+    if (CAT_COL[name]) return CAT_COL[name];
+    const allCats = [...CATS_EXP, ...CATS_INC, ...(customCatsExp||[]), ...(customCatsInc||[])];
+    const found = allCats.find(c => c.lbl.replace(/^\S+\s*/,'').trim() === name);
+    return found?.col || '#888888';
+  };
   const catMap={};
   re.forEach(t=>{catMap[t.category]=(catMap[t.category]||0)+t.amount;});
   const cats=Object.entries(catMap).sort((a,b)=>b[1]-a[1]);
   const maxC=cats[0]?.[1]||1;
-  document.getElementById('catBars').innerHTML=cats.map(([c,v])=>{const col=CAT_COL[c]||'#888';return`<div class="hb-row"><span class="hb-lbl">${c}</span><div class="hb-track"><div class="hb-fill" style="width:${(v/maxC*100).toFixed(0)}%;background:${col}"></div></div><span class="hb-val" style="color:${col}">${fmt(v)}</span></div>`;}).join('');
+  document.getElementById('catBars').innerHTML=cats.map(([c,v])=>{const col=resolveCatColor(c);return`<div class="hb-row"><span class="hb-lbl">${c}</span><div class="hb-track"><div class="hb-fill" style="width:${(v/maxC*100).toFixed(0)}%;background:${col}"></div></div><span class="hb-val" style="color:${col}">${fmt(v)}</span></div>`;}).join('');
   const isMobile=window.innerWidth<600;
   const pieWrap=document.getElementById('cPieWrap');
   if(pieWrap) pieWrap.style.height=isMobile?'220px':'160px';
-  mkCh('cPie',{type:'doughnut',data:{labels:cats.map(c=>c[0]),datasets:[{data:cats.map(c=>c[1]),backgroundColor:cats.map(c=>CAT_COL[c[0]]||'#888'),borderColor:cssVar('--color-surface')||'#0e0f15',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,cutout:'65%',plugins:{legend:{position:isMobile?'bottom':'right',labels:{boxWidth:9,font:{size:10},padding:isMobile?6:10}}}}});
+  mkCh('cPie',{type:'doughnut',data:{labels:cats.map(c=>c[0]),datasets:[{data:cats.map(c=>c[1]),backgroundColor:cats.map(c=>resolveCatColor(c[0])),borderColor:cssVar('--color-surface')||'#0e0f15',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,cutout:'65%',plugins:{legend:{position:isMobile?'bottom':'right',labels:{boxWidth:9,font:{size:10},padding:isMobile?6:10}}}}});
   const m=DB.monthly;
   const dynLimit=buildPrediction()?.target||BUDGET_LIMIT;
   const limitLbl=fmt(dynLimit)+' objetivo';
@@ -1405,7 +1425,7 @@ function renderGastos() {
   const top=[...re].sort((a,b)=>b.amount-a.amount).slice(0,10);
   const titleEl=document.getElementById('topTblTitle');
   if(titleEl) titleEl.textContent=filterVal==='all'?'Top 10 gastos individuales — Todos los meses':`Top 10 gastos — ${filterVal.replace('-',' ')}`;
-  document.getElementById('topTbl').innerHTML=top.map((t,i)=>{const col=CAT_COL[t.category]||'#888';return`<tr><td style="color:var(--m)">${i+1}</td><td style="color:var(--m)">${t.date}</td><td style="font-weight:500">${t.description||t.category}</td><td><span class="cpill" style="background:${col}22;color:${col}">${t.category}</span></td><td class="td-neg" style="text-align:right;font-family:var(--font-display);font-weight:600">-${fmtF(t.amount)}</td></tr>`;}).join('');
+  document.getElementById('topTbl').innerHTML=top.map((t,i)=>{const col=resolveCatColor(t.category);return`<tr><td style="color:var(--m)">${i+1}</td><td style="color:var(--m)">${t.date}</td><td style="font-weight:500">${t.description||t.category}</td><td><span class="cpill" style="background:${col}22;color:${col}">${t.category}</span></td><td class="td-neg" style="text-align:right;font-family:var(--font-display);font-weight:600">-${fmtF(t.amount)}</td></tr>`;}).join('');
 }
 
 function updateTarget(val){
