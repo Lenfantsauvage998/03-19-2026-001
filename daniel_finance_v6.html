@@ -2591,16 +2591,17 @@ async function exportStatement(sections = [], sendEmail = false, stmtYM = null) 
 
     // ── Cover income / expense summary row ───────────────────────────────
     const coverInc = _all.filter(t=>t.type==='income').reduce((s,t)=>s+Math.abs(t.amount),0);
-    const coverExp = _all.filter(t=>t.type!=='income').reduce((s,t)=>s+Math.abs(t.amount),0);
-    const netFlow  = coverInc - coverExp;
+    const coverExp = _all.filter(t=>t.type==='expense').reduce((s,t)=>s+Math.abs(t.amount),0);
     const ckw2 = (CW-8)/2;
+    // Use gold for income, soft beige-border color for expenses (both visible on dark bg)
+    const EXP_COL = [229, 213, 192]; // #e5d5c0 — visible on dark, distinct from gold
     [
-      { label:'DINERO RECIBIDO',  val:_pf(coverInc), color:GR },
-      { label:'DINERO SALIENTE',  val:_pf(coverExp), color:RD },
+      { label:'DINERO RECIBIDO', val:_pf(coverInc), color:GR      },
+      { label:'DINERO SALIENTE', val:_pf(coverExp), color:EXP_COL },
     ].forEach((k,i) => {
       const x  = ML + i*(ckw2+8);
       const cx = x + ckw2/2;
-      doc.setFillColor(...DK2); doc.setDrawColor(...k.color); doc.setLineWidth(0.3);
+      doc.setFillColor(...DK2); doc.setDrawColor(...k.color); doc.setLineWidth(0.4);
       doc.roundedRect(x, 141, ckw2, 28, 3, 3, 'FD');
       doc.setFillColor(...k.color); doc.rect(x, 141, ckw2, 2.5, 'F');
       doc.setFont('helvetica','normal'); doc.setFontSize(6.5); doc.setTextColor(...GY);
