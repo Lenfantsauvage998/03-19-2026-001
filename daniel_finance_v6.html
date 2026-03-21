@@ -2589,16 +2589,36 @@ async function exportStatement(sections = [], sendEmail = false, stmtYM = null) 
       doc.text(valStr, cx, 124, {align:'center'});
     });
 
+    // ── Cover income / expense summary row ───────────────────────────────
+    const coverInc = _all.filter(t=>t.type==='income').reduce((s,t)=>s+Math.abs(t.amount),0);
+    const coverExp = _all.filter(t=>t.type!=='income').reduce((s,t)=>s+Math.abs(t.amount),0);
+    const netFlow  = coverInc - coverExp;
+    const ckw2 = (CW-8)/2;
+    [
+      { label:'DINERO RECIBIDO',  val:_pf(coverInc), color:GR },
+      { label:'DINERO SALIENTE',  val:_pf(coverExp), color:RD },
+    ].forEach((k,i) => {
+      const x  = ML + i*(ckw2+8);
+      const cx = x + ckw2/2;
+      doc.setFillColor(...DK2); doc.setDrawColor(...k.color); doc.setLineWidth(0.3);
+      doc.roundedRect(x, 141, ckw2, 28, 3, 3, 'FD');
+      doc.setFillColor(...k.color); doc.rect(x, 141, ckw2, 2.5, 'F');
+      doc.setFont('helvetica','normal'); doc.setFontSize(6.5); doc.setTextColor(...GY);
+      doc.text(k.label, cx, 152, {align:'center'});
+      doc.setFont('helvetica','bold'); doc.setFontSize(12.5); doc.setTextColor(...k.color);
+      doc.text(k.val, cx, 163, {align:'center'});
+    });
+
     // Sections list
     doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.setTextColor(...PU);
-    doc.text('SECCIONES INCLUIDAS', ML, 148);
+    doc.text('SECCIONES INCLUIDAS', ML, 183);
     doc.setDrawColor(...LG); doc.setLineWidth(0.3);
-    doc.line(ML, 151, W-MR, 151);
+    doc.line(ML, 186, W-MR, 186);
     inc.forEach((s, i) => {
       const col = i%2===0 ? ML : ML+CW/2+2;
       const row = Math.floor(i/2);
       doc.setFont('helvetica','normal'); doc.setFontSize(8.5); doc.setTextColor(...AU);
-      doc.text('\xBB  '+(SLBL[s]||s), col, 160 + row*9);
+      doc.text('\xBB  '+(SLBL[s]||s), col, 195 + row*9);
     });
 
     // Footer tagline
