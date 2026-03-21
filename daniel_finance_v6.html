@@ -974,7 +974,8 @@ input[type=range]{width:100%;accent-color:var(--ac2);cursor:pointer;height:20px;
       // ── PIN screen branding (shown before auth) ────────
       const b = cfg?.client?.branding || {};
       const el = document.getElementById('pinTitle');
-      if(el) el.textContent = b.initials || cfg?.client?.name || 'Finance';
+      const ini = b.initials || (cfg?.client?.name||'').split(' ').map(p=>p[0]).join('').toUpperCase().slice(0,3) || 'Φ';
+      if(el) el.innerHTML = '<span style="opacity:0.75;margin-right:4px">Φ</span>Finanzas<span style="opacity:0.55;margin-left:6px;font-size:0.8em">' + ini + '</span>';
     }
   }catch(e){}
 })();
@@ -1134,9 +1135,9 @@ function applyConfig(cfg){
   const lastName  = nameParts.slice(1).join(' ') || '';
   const initials  = b.initials || nameParts.map(p=>p[0]).join('').toUpperCase().slice(0,3);
 
-  // PIN screen title
+  // PIN screen title — matches navbar: Φ Finanzas DG
   const pinTitleEl = document.getElementById('pinTitle');
-  if(pinTitleEl) pinTitleEl.textContent = initials;
+  if(pinTitleEl) pinTitleEl.innerHTML = '<span style="opacity:0.75;margin-right:4px">Φ</span>Finanzas<span style="opacity:0.55;margin-left:6px;font-size:0.8em">' + initials + '</span>';
 
   // Navbar logo: Φ symbol + initials from JSON
   const navLogoEl = document.getElementById('navLogo');
