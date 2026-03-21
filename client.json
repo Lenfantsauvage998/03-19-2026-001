@@ -28,7 +28,7 @@
 
   "modules": {
     "home": {
-      "enabled": true,
+      "enabled": false,
       "label": "Home",
       "features": {
         "kpi_networth": false,
