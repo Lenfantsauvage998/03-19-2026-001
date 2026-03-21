@@ -1,7 +1,7 @@
 {
   "client": {
     "id": "dfg-diana",
-    "name": "Diana Gutierrez",
+    "name": "Daniel Enrique Figueredo Gutierrez",
     "repo": "03-19-2026-001",
     "email": "lefantsauvage998@gmail.com",
     "emailjs": {
@@ -13,7 +13,7 @@
       "storage_bucket": "statements"
     },
     "branding": {
-      "app_title": "Φ Finances DG",
+      "app_title": "Φ Finanzas DG",
       "initials": "DG",
       "hero_name": "Diana Gutierrez",
       "goal_amount": 50000000,
@@ -47,12 +47,12 @@
       }
     },
     "flujo": {
-      "enabled": false,
+      "enabled": true,
       "label": "Flujo",
       "features": {
         "cashflow_chart": true,
         "income_sources_chart": true,
-        "interest_yield_grid": true
+        "interest_yield_grid": false
       }
     },
     "gastos": {
@@ -82,7 +82,7 @@
       "label": "Diario",
       "features": {
         "transaction_form": true,
-        "transaction_types": "expense",
+        "transaction_types": "both",
         "month_summary": false,
         "history": false,
         "csv_export": false
