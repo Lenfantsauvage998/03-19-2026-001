@@ -297,7 +297,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 nav{position:sticky;top:0;z-index:100;background:var(--nav-bg);backdrop-filter:blur(20px);border-bottom:1px solid var(--b);}
 .nav-inner{max-width:1300px;margin:0 auto;padding:0 16px;display:flex;align-items:center;justify-content:space-between;height:52px;gap:8px;}
 @media(min-width:768px){.nav-inner{padding:0 24px;}}
-.nav-logo{font-family:var(--font-display);font-weight:800;font-size:15px;letter-spacing:.06em;color:var(--ac2);white-space:nowrap;flex-shrink:0;}
+.nav-logo{font-family:var(--font-display);font-weight:800;font-size:17px;letter-spacing:.06em;color:var(--ac2);white-space:nowrap;flex-shrink:0;}
 .nav-logo span{color:var(--m);font-weight:400;}
 
 /* Bottom tab bar for mobile */
@@ -1140,7 +1140,7 @@ function applyConfig(cfg){
 
   // Navbar logo: Φ symbol + initials from JSON
   const navLogoEl = document.getElementById('navLogo');
-  if(navLogoEl) navLogoEl.innerHTML = '<span style="opacity:0.7;margin-right:2px">Φ</span>' + initials;
+  if(navLogoEl) navLogoEl.innerHTML = '<span style="opacity:0.75;margin-right:3px">Φ</span>Finanzas<span style="opacity:0.6;margin-left:5px">' + initials + '</span>';
 
   // Hero H1 first & last name
   const heroFirstEl = document.getElementById('heroFirstName');
