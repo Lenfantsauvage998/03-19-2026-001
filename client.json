@@ -39,7 +39,7 @@
       }
     },
     "overview": {
-      "enabled": false,
+      "enabled": true,
       "label": "Overview",
       "features": {
         "networth_chart": true,
@@ -68,7 +68,7 @@
       }
     },
     "proyeccion": {
-      "enabled": false,
+      "enabled": true,
       "label": "Proyección",
       "features": {
         "goal_slider": true,
