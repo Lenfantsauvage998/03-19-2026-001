@@ -3811,6 +3811,48 @@ if('serviceWorker' in navigator){
 }
 
 // loadAll() called by PIN auth above
+
+// ── Auto-update checker ─────────────────────────────────────────────────
+(function(){
+  const CURRENT_V = '20260321-001';
+  const BANNER_ID  = 'updateBanner';
+
+  function showUpdateBanner(){
+    if(document.getElementById(BANNER_ID)) return;
+    const b = document.createElement('div');
+    b.id = BANNER_ID;
+    b.style.cssText = `position:fixed;bottom:80px;left:50%;transform:translateX(-50%);
+      z-index:9999;background:var(--color-primary);color:#fff;
+      padding:12px 20px;border-radius:12px;font-size:13px;font-family:var(--font-body);
+      box-shadow:0 8px 32px rgba(0,0,0,0.4);display:flex;align-items:center;gap:14px;
+      max-width:90vw;white-space:nowrap;`;
+    b.innerHTML = `<span>🚀 Nueva versión disponible</span>
+      <button onclick="window.location.reload(true)" style="background:rgba(255,255,255,0.22);
+        border:none;color:#fff;padding:6px 14px;border-radius:8px;font-size:12px;
+        cursor:pointer;font-family:inherit;font-weight:600;">Actualizar</button>`;
+    document.body.appendChild(b);
+  }
+
+  async function checkVersion(){
+    try{
+      const r = await fetch('version.json?_=' + Date.now());
+      if(!r.ok) return;
+      const {v} = await r.json();
+      if(v && v !== CURRENT_V) showUpdateBanner();
+    }catch(_){}
+  }
+
+  // Check on load + every 5 minutes
+  setTimeout(checkVersion, 3000);
+  setInterval(checkVersion, 5 * 60 * 1000);
+
+  // Also listen for SW update signal
+  if('serviceWorker' in navigator){
+    navigator.serviceWorker.addEventListener('message', e => {
+      if(e.data?.type === 'NEW_VERSION') showUpdateBanner();
+    });
+  }
+})();
 </script>
 </body>
 </html>
