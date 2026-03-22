@@ -582,7 +582,7 @@ input[type=range]{width:100%;accent-color:var(--ac2);cursor:pointer;height:20px;
           </div>
         </div>
         <div class="fi">
-          <label>Descripción</label>
+          <label>Descripción <span style="color:var(--rd)">*</span></label>
           <div style="display:flex;gap:8px;align-items:center">
             <input id="txDesc" type="text" class="fi" placeholder="ej: Mercado, Uber..." style="flex:1;margin:0">
             <button id="voiceBtn" onclick="toggleVoice()" title="Usar voz"
@@ -2136,11 +2136,19 @@ function toggleVoice(){
 async function addTx(){
   const amount=parseInt(document.getElementById('txAmt').value);
   const activeCat = getCatById(selCat);
-  const desc=document.getElementById('txDesc').value.trim()||(activeCat?.lbl||selCat);
+  const desc=document.getElementById('txDesc').value.trim();
   const date=document.getElementById('txDate').value||new Date().toISOString().slice(0,10);
   const msgEl=document.getElementById('txMsg');
   if(!amount||amount<=0){msgEl.textContent='Ingresa un monto';msgEl.style.color='var(--rd)';return;}
   if(!selCat){msgEl.textContent='Selecciona una categoría';msgEl.style.color='var(--rd)';return;}
+  if(!desc){
+    msgEl.textContent='La descripción es obligatoria';msgEl.style.color='var(--rd)';
+    const descEl=document.getElementById('txDesc');
+    descEl.style.borderColor='var(--rd)';
+    descEl.focus();
+    setTimeout(()=>{descEl.style.borderColor='';},2000);
+    return;
+  }
   msgEl.textContent='Guardando...';msgEl.style.color='var(--m)';
   try {
     const d=new Date(date+'T12:00:00');
@@ -3814,7 +3822,7 @@ if('serviceWorker' in navigator){
 
 // ── Auto-update checker ─────────────────────────────────────────────────
 (function(){
-  const CURRENT_V = '20260321-001';
+  const CURRENT_V = '20260322-001';
   const BANNER_ID  = 'updateBanner';
 
   function showUpdateBanner(){
